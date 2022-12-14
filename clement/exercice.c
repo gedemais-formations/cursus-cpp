@@ -6,7 +6,7 @@ int main (int argc, char **argv){
 	int a;
 	int b;
 	char *o;
-	if(sizeof(*argv) < 4 || atoi(argv[1]) == 0 || atoi(argv[3]) == 0){
+	if(sizeof(*argv) < 3 || atoi(argv[1]) == 0 || atoi(argv[3]) == 0){
 		printf("error : invalid number of arguments or invalid arguments\n");
 	}
 	else{
@@ -28,13 +28,8 @@ int main (int argc, char **argv){
 					printf("\n");
 				}
 				else{
-					if(strcmp(o, "/") == 0){
-						printf("%d", a/b);
-						printf("\n");
-					}
-					else{
-						printf("Error: invalid operator.\n");
-					}
+					printf("%d", a/b);
+					printf("\n");
 				}
 			}
 		}
