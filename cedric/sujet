@@ -1,0 +1,29 @@
+Créer une calculatrice dans la fonction main. La calculatrice doit prendre un facteur entouré de deux valeurs, et afficher son résultat.
+
+exemple :
+
+gcc main.c -o calculatrice
+./calculatrice 4 + 5
+9
+
+./calculatrice 4+ 9
+error : invalid number of arguments
+
+./calculatrice 4 +9
+error : invalid number of arguments
+
+./calculatrice 4+9
+error : invalid number of arguments
+
+./calculatrice 4 9
+error : invalid number of arguments
+
+./calculatrice 4 bonjour 9
+error : invalid operator
+
+Bonus 1 :
+Faites en sorte de prendre en compte plusieurs facteurs et plusieurs opérateurs, sans respecter les priorités de calcul.
+
+
+Bonus 2 :
+Respectez les priorités de calcul (division, multiplication, addition et soustraction).
