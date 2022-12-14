@@ -5,7 +5,7 @@
 int main(int argc, char** argv) {
 
     if(argc != 4) {
-        printf("error : invalid number of arguments");
+        printf("error : invalid number of arguments \n");
         return 1;
     }
     char* test = NULL;
