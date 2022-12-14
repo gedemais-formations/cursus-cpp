@@ -77,5 +77,11 @@ int main(int argc, char const *argv[]) {
     res = calculate(res, val[i], op[i]);
   }
   printf("%lf\n", res);
+
+  /* Prediction for bonus 2: transform val and op into a single list, go through
+  the list, until you find x or /, do a calculate on the operator and its
+  neighbours, and remove the operator and its right neighbour and replace the
+  its neighbours, and remove the operator and its right-hand neighbour and
+  replace the neighbour by its left neighbour.*/
   return 0;
 }
