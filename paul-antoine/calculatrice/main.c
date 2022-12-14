@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-int main(int argc, char** argv) {
 
+int simple_calc(int argc, char** argv) {
     if(argc != 4) {
         printf("error : invalid number of arguments \n");
         return 1;
@@ -38,4 +38,9 @@ int main(int argc, char** argv) {
     }
 
     return 0;
+}
+
+int main(int argc, char** argv) {
+    // return simple_calc(argc, argv);
+
 }
