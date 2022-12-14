@@ -1,29 +1,34 @@
 #include <stdio.h>
+#include <string.h>
 
 int main (int argc, char **argv){
 	int a = 5;
 	int b = 3;
-	char o='a';
-	switch(o){
-		case '+':
-			printf("%d", a+b);
-			printf("\n");
-			break;
-		case '-':
+	char *o = "-";
+	if(strcmp(o, "+") == 0){
+		printf("%d", a+b);
+		printf("\n");
+	}
+	else{
+		if(strcmp(o, "-") == 0){
 			printf("%d", a-b);
 			printf("\n");
-			break;
-		case '*':
-			printf("%d", a*b);
-			printf("\n");
-			break;
-		case '/':
-			printf("%d", a/b);
-			printf("\n");
-			break;
-		default:
-			printf("Error: invalid operator.\n");
-			break;
+		}
+		else{
+			if(strcmp(o, "*") == 0){
+				printf("%d", a*b);
+				printf("\n");
+			}
+			else{
+				if(strcmp(o, "/") == 0){
+					printf("%d", a/b);
+					printf("\n");
+				}
+				else{
+					printf("Error: invalid operator.\n");
+				}
+			}
+		}
 	}
 	return 0;
 }
