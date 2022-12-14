@@ -42,5 +42,73 @@ int simple_calc(int argc, char** argv) {
 
 int main(int argc, char** argv) {
     // return simple_calc(argc, argv);
+    char equation[500][20];
+    int curr_equ = 0;
+    int curr_char = 0;
 
+    for(int i=1 ; i < argc ; i++) {
+        for(int j=0; argv[i][j] != '\0' ; j++) {
+            if(argv[i][j] == '/') {
+                equation[curr_equ][curr_char] = '\0';
+                curr_equ++;
+                equation[curr_equ][0] = '/';
+                equation[curr_equ][1] = '\0';
+                curr_equ++;
+                curr_char=0;
+            } else if (argv[i][j] == '-') {
+                equation[curr_equ][curr_char] = '\0';
+                curr_equ++;
+                equation[curr_equ][0] = '-';
+                equation[curr_equ][1] = '\0';
+                curr_equ++;
+                curr_char=0;
+            } else if (argv[i][j] == '+') {
+                equation[curr_equ][curr_char] = '\0';
+                curr_equ++;
+                equation[curr_equ][0] = '+';
+                equation[curr_equ][1] = '\0';
+                curr_equ++;
+                curr_char=0;
+            } else if (argv[i][j] == 'x') {
+                equation[curr_equ][curr_char] = '\0';
+                curr_equ++;
+                equation[curr_equ][0] = 'x';
+                equation[curr_equ][1] = '\0';
+                curr_equ++;
+                curr_char=0;
+            } else if (argv[i][j] == '(') {
+                equation[curr_equ][curr_char] = '\0';
+                curr_equ++;
+                equation[curr_equ][0] = '(';
+                equation[curr_equ][1] = '\0';
+                curr_equ++;
+                curr_char=0;
+            } else if (argv[i][j] == ')') {
+                equation[curr_equ][curr_char] = '\0';
+                curr_equ++;
+                equation[curr_equ][0] = ')';
+                equation[curr_equ][1] = '\0';
+                curr_equ++;
+                curr_char=0;
+            } else if (argv[i][j] >= '0' &&  argv[i][j] <= '9' || equation[curr_equ][curr_char] == '.') {
+                equation[curr_equ][curr_char] = argv[i][j];
+                curr_char++;
+            } else {
+                printf("Error: %c is invalid character", argv[i][j]);
+                return 1;
+            }
+        }
+        if(equation[curr_equ][curr_char-1] >= '0' && equation[curr_equ][curr_char-1] <= '9' || equation[curr_equ][curr_char] == '.') {
+            equation[curr_equ][curr_char] = '\0';
+            curr_char = 0;
+            curr_equ++;
+        }
+    }
+
+
+    for(int i=0 ; i<500 ; i++) {
+        printf("%s \n", equation[i]);
+    }
+
+    return 0;
 }
