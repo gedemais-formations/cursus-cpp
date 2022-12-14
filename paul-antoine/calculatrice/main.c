@@ -13,13 +13,13 @@ int main(int argc, char** argv) {
     float arg2 = atof(argv[3]);
 
     if(strcmp("+", operator) == 0) {
-        printf("%f + %f = %f", arg1, arg2, arg1 + arg2);
+        printf("%.2f + %.2f = %.2f \n", arg1, arg2, arg1 + arg2);
     } else if(strcmp("*", operator) == 0) {
-        printf("%f * %f = %f", arg1, arg2, arg1 * arg2);
+        printf("%.2f * %.2f = %.2f \n", arg1, arg2, arg1 * arg2);
     } else if(strcmp("/", operator) == 0) {
-        printf("%f / %f = %f", arg1, arg2, arg1 / arg2);
+        printf("%.2f / %.2f = %.2f \n", arg1, arg2, arg1 / arg2);
     } else if(strcmp("-", operator) == 0) {
-        printf("%f - %f = %f", arg1, arg2, arg1 - arg2);
+        printf("%.2f - %.2f = %.2f \n", arg1, arg2, arg1 - arg2);
     } else {
         printf("error : invalid operator %s \n", operator);
         return 1;
