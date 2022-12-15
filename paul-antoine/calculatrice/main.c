@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 char** dyn_equ;
 int dyn_size;
@@ -53,14 +54,20 @@ void free_exit(int code) {
     exit(code);
 }
 
-int is_digit(char c1, char c2) {
+/**
+ * Verify if first character is a number or a minus sign and second character is a number
+ * @param c1 first character either a number or a negative sign
+ * @param c2 second character tested only if c1 is a negative sign verify if it is a number
+ * @return true if a number is found or false otherwise
+ */
+bool is_digit(char c1, char c2) {
     if(c1 >= '0' && c1 <= '9') {
-        return 1;
+        return true;
     } else if(c1 == '-') {
         return is_digit(c2, 'a');
     }
 
-    return 0;
+    return false;
 }
 
 /**
