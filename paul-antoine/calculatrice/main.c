@@ -9,6 +9,12 @@ const int MAX_EQU=500;
 const int MAX_NUM_CHAR = 20;
 const char IGNORE_EQU_CAR = '&';
 
+/**
+ * Old calc function only take 3 arguments
+ * @param argc Number of argument passed to main
+ * @param argv Array of arguments passed to main
+ * @return end code
+ */
 int simple_calc(int argc, char** argv) {
     if(argc != 4) {
         printf("error : invalid number of arguments \n");
@@ -80,7 +86,7 @@ float resolve_equation(char** equation, int size) {
     int nb_of_parenthesis = 0;
     int parenthesis_start = -1;
 
-    //handle parenthesis
+    //handle parenthesis as subequation (recursively call resolve equation to solve them and store result in their stead)
     for (int i = 0; i < size; ++i) {
         if(equation[i][0] == '(') {
             if(nb_of_parenthesis == 0) {
@@ -96,7 +102,7 @@ float resolve_equation(char** equation, int size) {
                     equation[j][0] = IGNORE_EQU_CAR;
                     equation[j][1] = '\0';
                 }
-            } else if(nb_of_parenthesis < 0) {
+            } else if(nb_of_parenthesis < 0) { //if under 0 that means we closed a parenthesis that wasn't open first therefore incorrect pattern
                 printf("Error: Bad pattern\n");
                 free_exit(1);
             }
@@ -108,7 +114,7 @@ float resolve_equation(char** equation, int size) {
     int n_size = 0;
     for (int i = 0; i < size; ++i) {
         if(equation[i][0] != IGNORE_EQU_CAR) {
-            if(i>0 && is_digit(equation[i-1][0], equation[i-1][1] ) && is_digit(equation[i][0], equation[i][1])) {
+            if(i>0 && is_digit(n_equation[n_size-1][0], n_equation[n_size-1][1] ) && is_digit(equation[i][0], equation[i][1])) {
                 strcpy(n_equation[n_size],"x");
                 n_size++;
             }
