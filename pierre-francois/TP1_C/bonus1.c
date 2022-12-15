@@ -10,13 +10,12 @@ int main(int argc, char **argv)
 	float resultat = atof(argv[1]);
 
 /*On utilise une boucle for dont le corps est semblable à la fonction de
-  base. On initialise la boucle for avec le second nombre présent dans 
-  les arguments */
+  base */
 
-	for (int i = 3; i <= nombreArgument-2; i = i+2)
+	for (int i = 1; i <= nombreArgument-2; i = i+2)
 	{
-		float nombre = atof(argv[i]);
-		char * operateur = argv[i-1];
+		float nombre = atof(argv[i+2]);
+		char * operateur = argv[i+1];
 
 			if (strcmp(operateur,"+") == 0)
 			{
@@ -37,6 +36,7 @@ int main(int argc, char **argv)
 			else 	
 			{
 				printf("error: invalid operator \n");
+				return (0);
 			}
 		}
 	printf ("%f \n", resultat)
