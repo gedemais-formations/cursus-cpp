@@ -293,6 +293,12 @@ int main(int argc, char** argv) {
                 }
                 equation[curr_equ][curr_char] = argv[i][j];
                 curr_char++;
+            } else if (argv[i][j] == ' ') {
+                if(curr_char > 0) {
+                    equation[curr_equ][curr_char] = '\0';
+                    curr_equ++;
+                    curr_char = 0;
+                }
             } else {
                 printf("Error: %c is invalid character \n", argv[i][j]);
                 return 1;
