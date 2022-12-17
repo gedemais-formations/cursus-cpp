@@ -42,11 +42,14 @@ int main(int argc, char **argv)
 }
 
 char addition (char str[], int pos){
-	char num1[30];
+	char num1[30], num2[30];
 
 	previous_word(num1, str, pos);
+	next_word(num2, str, pos);
 
 	printf("%s\n", num1);
+	printf("%s\n", num2);
+
 	return 0;
 }
 
@@ -76,13 +79,13 @@ void next_word(char *word, char str[], int pos){
 	j=0;
 	i=pos + 1;
 
-	while(i <= strlen(word)-1){
+	while(i <= strlen(str) - 1){
 		if(str[i] <= '9' || str[i] >= '0' || str[i] == '.'){
 			word[j] = str[i];
 			j++;
 			i++;
 		}else {
-			word[j] = '\0';			
+			word[j] = '\0';	
 			break;
 		}	
 	}
