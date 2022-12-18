@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <math.h>
 
 //Function declaration
-char addition(char str[], int pos);
+void addition(char str[], int pos);
+void substraction(char str[], int pos);
+void multiplication(char str[], int pos);
+void division(char str[], int pos);
 void previous_word(char *s, char str[], int pos);
 void next_word(char *s, char str[], int pos);
 void revstr(char *str1);
@@ -16,9 +21,8 @@ int main(int argc, char **argv)
 		strcat(concat, argv[i]);
 		i++;
 	}
-
-	int res;
-	int size = sizeof(concat);
+	
+	int size = strlen(concat);
 	i = 0;
 	while(i < size - 1){
 		if(concat[i] == '\0'){
@@ -29,28 +33,93 @@ int main(int argc, char **argv)
 				addition(concat, i);
 				break;
 			case '-':
+				substraction(concat, i);
 				break;
 			case '*':
+				multiplication(concat, i);
 				break;
 			case '/':
+				division(concat, i);
 				break;
 		}
 
+		size = strlen(concat);
 		i++;
 	}
+	printf("%s\n", concat);
 	return 0;
 }
 
-char addition (char str[], int pos){
-	char num1[30], num2[30];
+void addition (char str[], int pos){
+	char num1[30]={}, num2[30]={};
 
 	previous_word(num1, str, pos);
+	pos = pos - strlen(num1);
 	next_word(num2, str, pos);
+	memmove(str, str+1, strlen(str));
+	
+	float num_p = atof(num1);
+	float num_n = atof(num2);
 
-	printf("%s\n", num1);
-	printf("%s\n", num2);
+	float res_f = num_p + num_n;
+	char str_res[30];
+	sprintf(str_res, "%f", res_f);
 
-	return 0;
+	strcpy(str, strcat(str_res, str));	
+}
+
+void substraction(char str[], int pos){
+	char num1[30]={}, num2[30]={};
+
+	previous_word(num1, str, pos);
+	pos = pos - strlen(num1);
+	next_word(num2, str, pos);
+	memmove(str, str+1, strlen(str));
+	
+	float num_p = atof(num1);
+	float num_n = atof(num2);
+
+	float res_f = num_p - num_n;
+	char str_res[30];
+	sprintf(str_res, "%f", res_f);
+
+	strcpy(str, strcat(str_res, str));		
+}
+
+void multiplication(char str[], int pos){
+	char num1[30]={}, num2[30]={};
+
+	previous_word(num1, str, pos);
+	pos = pos - strlen(num1);
+	next_word(num2, str, pos);
+	memmove(str, str+1, strlen(str));
+	
+	float num_p = atof(num1);
+	float num_n = atof(num2);
+
+	float res_f = num_p * num_n;
+	char str_res[30];
+	sprintf(str_res, "%f", res_f);
+
+	strcpy(str, strcat(str_res, str));	
+}
+
+void division(char str[], int pos){
+	char num1[30]={}, num2[30]={};
+
+	previous_word(num1, str, pos);
+	pos = pos - strlen(num1);
+	next_word(num2, str, pos);
+	memmove(str, str+1, strlen(str));
+	
+	float num_p = atof(num1);
+	float num_n = atof(num2);
+
+	float res_f = num_p / num_n;
+	char str_res[30];
+	sprintf(str_res, "%f", res_f);
+
+	strcpy(str, strcat(str_res, str));	
 }
 
 void previous_word(char *word, char str[], int pos){
@@ -60,8 +129,9 @@ void previous_word(char *word, char str[], int pos){
 	i=pos - 1;
 	
 	while(i >= 0){
-		if(str[i] <= '9' || str[i] >= '0' || str[i] == '.'){
+		if((str[i] <= '9' && str[i] >= '0') || str[i] == '.'){
 			word[j] = str[i];
+			memmove(&str[i], &str[i+1], strlen(str) - i);
 			j++;
 			i--;
 		}else {
@@ -69,8 +139,9 @@ void previous_word(char *word, char str[], int pos){
 			break;
 		}	
 	}
-	
-	revstr(word);
+	if(strlen(word) > 2){
+		revstr(word);
+	}
 }
 
 void next_word(char *word, char str[], int pos){
@@ -80,10 +151,10 @@ void next_word(char *word, char str[], int pos){
 	i=pos + 1;
 
 	while(i <= strlen(str) - 1){
-		if(str[i] <= '9' || str[i] >= '0' || str[i] == '.'){
+		if((str[i] <= '9' && str[i] >= '0') || str[i] == '.'){
 			word[j] = str[i];
-			j++;
-			i++;
+			memmove(&str[i], &str[i+1], strlen(str) - i);
+			j++;			
 		}else {
 			word[j] = '\0';	
 			break;
