@@ -26,7 +26,7 @@ int calculate(int value1, int value2, char op){
   return result;
 }
 
-int main(int argc, char const *argv[]) {
+int main(int argc, char *argv[]) {
   double val1, val2, res;
   char *ptr;
   int arg = argc/2;
@@ -46,14 +46,10 @@ int main(int argc, char const *argv[]) {
   //Check args
   for(int i=1;i<argc;i++){
     if(i%2==1){ //Check Number
-      ptr = "";
-      val[(i-1)/2] = strtod(argv[i], &ptr);
-      if(strlen(ptr)!=0){
-        printf("error : invald argument (%s)", argv[i]);
-        return 0;
-      }
+      val[(i-1)/2] = strtod(argv[i], NULL);
     } else{ //Check Operator
-      if(strlen(argv[i]) == 1){ //Check if the string has only one char
+      if(strlen(argv[i]) == 1){
+		  //Check if the string has only one char
         ptr = strchr("+-x/",argv[i][0]); //Check if operator is in calculator
         if(ptr == NULL){
           printf("error : invald operator (%s)", argv[i]);
@@ -69,8 +65,8 @@ int main(int argc, char const *argv[]) {
   }
   res = val[0];
 
-  //Check number of arg
-  //printf("Argc %d\n", arg);
+	//Check number of arg
+	//printf("Argc %d\n", arg);
 
   //Calculate
   for(int i=1;i<arg;i++){
