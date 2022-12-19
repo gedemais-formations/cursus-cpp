@@ -3,8 +3,9 @@
 #include <string.h>
 #include <stdbool.h>
 
-char** dyn_equ;
-int dyn_size;
+char** dyn_equ; //Dynamic array of string to store all args
+int dyn_size; //size of the dynamic array
+
 const int MAX_EQU=500;
 const int MAX_NUM_CHAR = 20;
 const char IGNORE_EQU_CAR = '&';
@@ -146,14 +147,13 @@ float resolve_equation(char** equation, int size) {
             } else {
                 float arg1 = atof(n_equation[i-1]);
                 float arg2 = atof(n_equation[i+1]);
-                printf("%f * %f = %f \n", arg1, arg2, arg1 * arg2);
+                //printf("%f * %f = %f \n", arg1, arg2, arg1 * arg2);
                 sprintf(n_equation[i+1], "%.2f", arg1 * arg2 );
                 n_equation[i-1][0] = IGNORE_EQU_CAR ; n_equation[i-1][1] = '\0';
                 n_equation[i][0] = IGNORE_EQU_CAR ; n_equation[i][1] = '\0';
             }
         } else if(n_equation[i][0] == '/') {
             int is_negative_number = i < n_size - 2 && n_equation[i+1][0] == '-' && is_digit(n_equation[i+2][0],n_equation[i+2][1]);
-            printf("%i", is_negative_number);
             int is_invalid = i == 0 || i == n_size - 1
                              || !is_digit(n_equation[i-1][0],n_equation[i-1][1])
                              || (!is_digit(n_equation[i+1][0],n_equation[i+1][1]) && !is_negative_number);
@@ -165,7 +165,7 @@ float resolve_equation(char** equation, int size) {
             if(is_negative_number){
                 float arg1 = atof(n_equation[i-1]);
                 float arg2 = -1 * atof(n_equation[i+2]);
-                printf("%f / %f = %f \n", arg1, arg2, arg1 / arg2);
+                //printf("%f / %f = %f \n", arg1, arg2, arg1 / arg2);
                 sprintf(n_equation[i+2], "%.2f", arg1 / arg2 );
                 n_equation[i-1][0] = IGNORE_EQU_CAR ; n_equation[i-1][1] = '\0';
                 n_equation[i][0] = IGNORE_EQU_CAR ; n_equation[i][1] = '\0';
@@ -173,7 +173,7 @@ float resolve_equation(char** equation, int size) {
             } else {
                 float arg1 = atof(n_equation[i-1]);
                 float arg2 = atof(n_equation[i+1]);
-                printf("%f / %f = %f \n", arg1, arg2, arg1 / arg2);
+                //printf("%f / %f = %f \n", arg1, arg2, arg1 / arg2);
                 sprintf(n_equation[i+1], "%.2f", arg1 / arg2 );
                 n_equation[i-1][0] = IGNORE_EQU_CAR ; n_equation[i-1][1] = '\0';
                 n_equation[i][0] = IGNORE_EQU_CAR ; n_equation[i][1] = '\0';
@@ -223,10 +223,10 @@ float resolve_equation(char** equation, int size) {
         }
     }
 
-    printf("====SOLVING====\n");
+    /*printf("====SOLVING====\n");
     for (int i = 0; i < n2_size; ++i) {
         printf("%s\n", n2_equation[i] );
-    }
+    }*/
 
 
     return atof(n2_equation[n2_size-1]);
@@ -332,7 +332,7 @@ int main(int argc, char** argv) {
         strcpy(dyn_equ[i], equation[i]);
     }
 
-    resolve_equation(dyn_equ, dyn_size);
+    printf("%.2f\n", resolve_equation(dyn_equ, dyn_size));
 
     free_exit(0);
 }
