@@ -316,7 +316,7 @@ int main(int argc, char** argv) {
                 equation[curr_equ][1] = '\0';
                 curr_equ++;
                 curr_char=0;
-            } else if (argv[i][j] == 'x') {
+            } else if (argv[i][j] == 'x' || argv[i][j] == '*' ) {
                 if(curr_char > 0) {
                     equation[curr_equ][curr_char] = '\0';
                     curr_equ++;
@@ -382,3 +382,6 @@ int main(int argc, char** argv) {
     free_exit(0);
 }
 
+int test (void) {
+    return 0;
+}
