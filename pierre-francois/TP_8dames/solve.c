@@ -69,6 +69,7 @@ void print_chessboard(int chessboard[CHESS_SIZE][CHESS_SIZE])
 
 int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x)
 {
+	chessboard[0][0]=1;
     (void)chessboard;
     (void)x;
     return (0);
