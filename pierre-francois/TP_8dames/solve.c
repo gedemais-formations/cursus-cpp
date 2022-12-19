@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdio.h>
 #define CHESS_SIZE 8
 
 bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int x, int y)
@@ -28,6 +29,9 @@ int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x)
 
 int    main(void)
 {
+	for (unsigned int i = 0; i < CHESS_SIZE; i++)
+        memset(chessboard[i], 0, sizeof(int) * CHESS_SIZE);
+
     int chessboard[CHESS_SIZE][CHESS_SIZE] = {};
 
     print_chessboard(chessboard);
