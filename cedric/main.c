@@ -45,22 +45,25 @@ int main(int argc, char *argv[]) {
 
   //Check args
   for(int i=1;i<argc;i++){
-    if(i%2==1){ //Check Number
-      val[(i-1)/2] = strtod(argv[i], NULL);
-    } else{ //Check Operator
-      if(strlen(argv[i]) == 1){
-		  //Check if the string has only one char
-        ptr = strchr("+-x/",argv[i][0]); //Check if operator is in calculator
-        if(ptr == NULL){
-          printf("error : invald operator (%s)", argv[i]);
-          return 0;
-        } else {
-            op[i/2] = argv[i][0];
-        }
-      } else { //Ope with multiple char
-        printf("error : invald operator (%s)", argv[i]);
-        return 0;
-      }
+	  //Check if even, it's a number, else it's an operator
+	  if(i%2==1){
+		val[(i-1)/2] = strtod(argv[i], NULL);
+
+	  } else{ //Operator
+		//Check if the string has only one char
+		if(strlen(argv[i]) == 1){
+			//Check if operator is in calculator
+			ptr = strchr("+-x/",argv[i][0]); 
+			if(ptr == NULL){
+				printf("error : invald operator (%s)", argv[i]);
+			return 0;
+			} else {
+				op[i/2] = argv[i][0];
+			}
+		} else { //Ope with multiple char
+			printf("error : invald operator (%s)", argv[i]);
+			return 0;
+		}
     }
   }
   res = val[0];
