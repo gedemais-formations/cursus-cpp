@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 /*On utilise une boucle for dont le corps est semblable à la fonction de
   base */
 
-	for (int i = 1; i <= nombreArgument-2; i = i+2)
+	for (int i = 1; i <= nombreArguments-2; i = i+2)
 	{
 		float nombre = atof(argv[i+2]);
 		char * operateur = argv[i+1];
@@ -39,6 +39,6 @@ int main(int argc, char **argv)
 				return (0);
 			}
 		}
-	printf ("%f \n", resultat)
+	printf ("%f \n", resultat);
 	return (0);
 }
