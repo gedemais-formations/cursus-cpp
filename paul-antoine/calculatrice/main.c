@@ -178,6 +178,32 @@ float resolve_equation(char** equation, int size) {
                 n_equation[i-1][0] = IGNORE_EQU_CAR ; n_equation[i-1][1] = '\0';
                 n_equation[i][0] = IGNORE_EQU_CAR ; n_equation[i][1] = '\0';
             }
+        } else if(n_equation[i][0] == '%') {
+            int is_negative_number = i < n_size - 2 && n_equation[i+1][0] == '-' && is_digit(n_equation[i+2][0],n_equation[i+2][1]);
+            int is_invalid = i == 0 || i == n_size - 1
+                             || !is_digit(n_equation[i-1][0],n_equation[i-1][1])
+                             || (!is_digit(n_equation[i+1][0],n_equation[i+1][1]) && !is_negative_number);
+            if(is_invalid) {
+                printf("Error: Bad pattern\n");
+                free_exit(1);
+            }
+
+            if(is_negative_number){
+                float arg1 = atof(n_equation[i-1]);
+                float arg2 = -1 * atof(n_equation[i+2]);
+                //printf("%f / %f = %f \n", arg1, arg2, arg1 / arg2);
+                sprintf(n_equation[i+2], "%d", (int)arg1 % (int)arg2 );
+                n_equation[i-1][0] = IGNORE_EQU_CAR ; n_equation[i-1][1] = '\0';
+                n_equation[i][0] = IGNORE_EQU_CAR ; n_equation[i][1] = '\0';
+                n_equation[i+1][0] = IGNORE_EQU_CAR ; n_equation[i+1][1] = '\0';
+            } else {
+                float arg1 = atof(n_equation[i-1]);
+                float arg2 = atof(n_equation[i+1]);
+                //printf("%f / %f = %f \n", arg1, arg2, arg1 / arg2);
+                sprintf(n_equation[i+1], "%d", (int)arg1 % (int)arg2 );
+                n_equation[i-1][0] = IGNORE_EQU_CAR ; n_equation[i-1][1] = '\0';
+                n_equation[i][0] = IGNORE_EQU_CAR ; n_equation[i][1] = '\0';
+            }
         }
     }
 
@@ -254,7 +280,16 @@ int main(int argc, char** argv) {
                 equation[curr_equ][1] = '\0';
                 curr_equ++;
                 curr_char=0;
-            } else if (argv[i][j] == '-') {
+            } else if(argv[i][j] == '%') {
+                if(curr_char > 0) {
+                    equation[curr_equ][curr_char] = '\0';
+                    curr_equ++;
+                }
+                equation[curr_equ][0] = '%';
+                equation[curr_equ][1] = '\0';
+                curr_equ++;
+                curr_char=0;
+            }else if (argv[i][j] == '-') {
                 if(curr_char > 0) {
                     equation[curr_equ][curr_char] = '\0';
                     curr_equ++;
