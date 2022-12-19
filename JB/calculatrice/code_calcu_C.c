@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   code_calcu_C.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/19 03:39:55 by gedemais          #+#    #+#             */
+/*   Updated: 2022/12/19 04:03:08 by gedemais         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 // code_calcu_C.c
 
 // Inclusions des bibliothèques nécessaires au fonctionnement du programme
@@ -15,41 +27,47 @@ int main(int argc, char * argv[])
 	// transforme une chaine de caractère en un entier
 	char b = argv[2][0];
 	// selectione le 1er caractère de la chaine de caractère du 3eme argument de argv
-	int length = strlen(char argv[2]); 
+	int length = strlen(argv[2]); 
 	double result;
 
-	if (length != 1) || ('b' != '+') || ('b' != '-') || ('b' != '*') || ('b' != '/') || ('b' != '%') 
+
+	if (argc != 4)
 	{
-		printf("invalid operator");
+		printf("invalid number of arguments\n");
 	}
-	else if ('b' == '+')
+
+	if (length != 1) 
+	{
+		printf("invalid operator\n");
+	}
+	else if (b == '+')
 	{
 		result=a + c;
-		printf(result);
+		printf("Result = %f\n", result);
 	}
-	else if ('b' == '-')
+	else if (b == '-')
 	{
 		result = a - c;
-		printf(result)
+		printf("Result = %f\n", result);
 	}
-	else if ('b' == '*')
+	else if (b == '*')
 	{
-		result = a * c
-		printf(result)
+		result = a * c;
+		printf("Result = %f\n", result);
 	}
-	else if ('b' == '/')
+	else if (b == '/')
 	{
-		result = a / c
-		printf(result)
+		result = a / c;
+		printf("Result = %f\n", result);
 	}
-	else if ('b' == '%') 
+	else if (b == '%') 
 	{
-		result = a % c
-		printf(result)
+		result = a % c;
+		printf("Result = %f\n", result);
 	}
 	else 
 	{
-		printf("invalid number of arguments")
+		printf("invalid operator\n");
 	} 
 }	
 	// voir strcmp
