@@ -87,7 +87,8 @@ float resolve_equation(char** equation, int size) {
     int nb_of_parenthesis = 0;
     int parenthesis_start = -1;
 
-    //handle parenthesis as subequation (recursively call resolve equation to solve them and store result in their stead)
+    //handle parenthesis as sub-equation
+    //(recursively call resolve equation to solve them and store result in their stead)
     for (int i = 0; i < size; ++i) {
         if(equation[i][0] == '(') {
             if(nb_of_parenthesis == 0) {
@@ -98,12 +99,14 @@ float resolve_equation(char** equation, int size) {
             nb_of_parenthesis--;
             if(nb_of_parenthesis == 0 ) {
                 sprintf(equation[parenthesis_start],
-                          "%.2f", resolve_equation(&equation[parenthesis_start+1],i - parenthesis_start -1) );
+                          "%.2f", resolve_equation(&equation[parenthesis_start+1],
+                                                   i - parenthesis_start -1) );
                 for (int j = parenthesis_start +1; j <= i ; ++j) {
                     equation[j][0] = IGNORE_EQU_CAR;
                     equation[j][1] = '\0';
                 }
-            } else if(nb_of_parenthesis < 0) { //if under 0 that means we closed a parenthesis that wasn't open first therefore incorrect pattern
+            //if under 0 that means we closed a parenthesis that wasn't open first therefore incorrect pattern
+            } else if(nb_of_parenthesis < 0) {
                 printf("Error: Bad pattern\n");
                 free_exit(1);
             }
@@ -115,7 +118,8 @@ float resolve_equation(char** equation, int size) {
     int n_size = 0;
     for (int i = 0; i < size; ++i) {
         if(equation[i][0] != IGNORE_EQU_CAR) {
-            if(i>0 && is_digit(n_equation[n_size-1][0], n_equation[n_size-1][1] ) && is_digit(equation[i][0], equation[i][1])) {
+            if(i>0 && is_digit(n_equation[n_size-1][0], n_equation[n_size-1][1] )
+                && is_digit(equation[i][0], equation[i][1])) {
                 strcpy(n_equation[n_size],"x");
                 n_size++;
             }
@@ -127,7 +131,8 @@ float resolve_equation(char** equation, int size) {
     //handle division and multiplication
     for (int i = 0; i < n_size; ++i) {
         if(n_equation[i][0] == 'x') {
-            int is_negative_number = i < n_size - 2 && n_equation[i+1][0] == '-' && is_digit(n_equation[i+2][0],n_equation[i+2][1]);
+            int is_negative_number = i < n_size - 2 && n_equation[i+1][0] == '-'
+                    && is_digit(n_equation[i+2][0],n_equation[i+2][1]);
             int is_invalid = i == 0 || i == n_size - 1
                     || !is_digit(n_equation[i-1][0],n_equation[i-1][1])
                     || (!is_digit(n_equation[i+1][0],n_equation[i+1][1]) && !is_negative_number);
@@ -153,7 +158,8 @@ float resolve_equation(char** equation, int size) {
                 n_equation[i][0] = IGNORE_EQU_CAR ; n_equation[i][1] = '\0';
             }
         } else if(n_equation[i][0] == '/') {
-            int is_negative_number = i < n_size - 2 && n_equation[i+1][0] == '-' && is_digit(n_equation[i+2][0],n_equation[i+2][1]);
+            int is_negative_number = i < n_size - 2 && n_equation[i+1][0] == '-'
+                    && is_digit(n_equation[i+2][0],n_equation[i+2][1]);
             int is_invalid = i == 0 || i == n_size - 1
                              || !is_digit(n_equation[i-1][0],n_equation[i-1][1])
                              || (!is_digit(n_equation[i+1][0],n_equation[i+1][1]) && !is_negative_number);
@@ -179,7 +185,8 @@ float resolve_equation(char** equation, int size) {
                 n_equation[i][0] = IGNORE_EQU_CAR ; n_equation[i][1] = '\0';
             }
         } else if(n_equation[i][0] == '%') {
-            int is_negative_number = i < n_size - 2 && n_equation[i+1][0] == '-' && is_digit(n_equation[i+2][0],n_equation[i+2][1]);
+            int is_negative_number = i < n_size - 2 && n_equation[i+1][0] == '-'
+                    && is_digit(n_equation[i+2][0],n_equation[i+2][1]);
             int is_invalid = i == 0 || i == n_size - 1
                              || !is_digit(n_equation[i-1][0],n_equation[i-1][1])
                              || (!is_digit(n_equation[i+1][0],n_equation[i+1][1]) && !is_negative_number);
@@ -191,7 +198,7 @@ float resolve_equation(char** equation, int size) {
             if(is_negative_number){
                 float arg1 = atof(n_equation[i-1]);
                 float arg2 = -1 * atof(n_equation[i+2]);
-                //printf("%f / %f = %f \n", arg1, arg2, arg1 / arg2);
+                //printf("%f / %f = %d \n", arg1, arg2, (int)arg1 % (int)arg2);
                 sprintf(n_equation[i+2], "%d", (int)arg1 % (int)arg2 );
                 n_equation[i-1][0] = IGNORE_EQU_CAR ; n_equation[i-1][1] = '\0';
                 n_equation[i][0] = IGNORE_EQU_CAR ; n_equation[i][1] = '\0';
@@ -199,7 +206,7 @@ float resolve_equation(char** equation, int size) {
             } else {
                 float arg1 = atof(n_equation[i-1]);
                 float arg2 = atof(n_equation[i+1]);
-                //printf("%f / %f = %f \n", arg1, arg2, arg1 / arg2);
+                //printf("%f / %f = %d \n", arg1, arg2, (int)arg1 % (int)arg2);
                 sprintf(n_equation[i+1], "%d", (int)arg1 % (int)arg2 );
                 n_equation[i-1][0] = IGNORE_EQU_CAR ; n_equation[i-1][1] = '\0';
                 n_equation[i][0] = IGNORE_EQU_CAR ; n_equation[i][1] = '\0';
@@ -226,7 +233,8 @@ float resolve_equation(char** equation, int size) {
                 n2_equation[0][0] = IGNORE_EQU_CAR ; n2_equation[0][1] = '\0';
                 i++;
             } else {
-                if(!is_digit(n2_equation[i-1][0],n2_equation[i-1][1]) || i >= (n2_size - 1) || !is_digit(n2_equation[i+1][0],n2_equation[i+1][1])) {
+                if(!is_digit(n2_equation[i-1][0],n2_equation[i-1][1]) || i >= (n2_size - 1)
+                    || !is_digit(n2_equation[i+1][0],n2_equation[i+1][1])) {
                     printf("Error: Bad pattern\n");
                     free_exit(1);
                 }
@@ -237,7 +245,8 @@ float resolve_equation(char** equation, int size) {
                 n2_equation[i][0] = IGNORE_EQU_CAR ; n2_equation[i][1] = '\0';
             }
         } else if(n2_equation[i][0] == '+') {
-            if(i==0 || !is_digit(n2_equation[i-1][0],n2_equation[i-1][1]) || i >= (n2_size - 1) || !is_digit(n2_equation[i+1][0],n2_equation[i+1][1])) {
+            if(i==0 || !is_digit(n2_equation[i-1][0],n2_equation[i-1][1])
+                || i >= (n2_size - 1) || !is_digit(n2_equation[i+1][0],n2_equation[i+1][1])) {
                 printf("Error: Bad pattern\n");
                 free_exit(1);
             }
@@ -352,7 +361,8 @@ int main(int argc, char** argv) {
                 return 1;
             }
         }
-        if(equation[curr_equ][curr_char-1] >= '0' && equation[curr_equ][curr_char-1] <= '9' || equation[curr_equ][curr_char] == '.') {
+        if(equation[curr_equ][curr_char-1] >= '0' && equation[curr_equ][curr_char-1] <= '9'
+            || equation[curr_equ][curr_char] == '.') {
             equation[curr_equ][curr_char] = '\0';
             curr_char = 0;
             curr_equ++;
