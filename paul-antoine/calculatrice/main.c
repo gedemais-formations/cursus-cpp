@@ -334,8 +334,8 @@ int main(int argc, char** argv) {
                 equation[curr_equ][1] = '\0';
                 curr_equ++;
                 curr_char=0;
-            } else if (argv[i][j] >= '0' &&  argv[i][j] <= '9' || equation[curr_equ][curr_char] == '.') {
-                if(curr_char > (MAX_NUM_CHAR -2)) { // -1 because start from 0 and -1 for the \0
+            } else if (argv[i][j] >= '0' &&  argv[i][j] <= '9' || argv[i][j] == '.') {
+                if(curr_char > (MAX_NUM_CHAR -2)) { // -1 because we start from 0 and -1 for the \0
                     printf("Error: Max number size reached \n");
                     return 1;
                 }
