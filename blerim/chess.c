@@ -1,32 +1,39 @@
-
-
-
-#include <stdbool.h>
 #include <stdio.h>
+#include <stdbool.h>
 #define CHESS_SIZE 8
+ 
+// chessboard
 
-
+// Function to check if two queens threaten each other or not
 bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int x, int y)
 {
-    // check lines, column, diags
-   
-    //check if there is a queen on the left
-    for(int i =0;i<y;i++) {
-        if(chessboard[CHESS_SIZE][i])
-                return (false);
+    // return 0 if two queens share the same column
+    for (int i = 0; i < x; i++)
+    {
+        if (chessboard[i][y]) {
+            return false;
+        }
     }
-   
-    for (int i=x,j=y; i>=0 && j>=0; i--,j--) {
-      if (chessboard[i][j]) //check whether there is queen in the left upper diagonal or not
-         return (false);
-   }
-   for (int i=x,j=y; j>=0 && i<CHESS_SIZE; i++,j--) {
-      if (chessboard[i][j]) //check whether there is queen in the left lower diagonal or not
-         return (false);
-   }
-   return (true);
+ 
+    // return 0 if two queens share the same `\` diagonal
+    for (int i = x, j = y; i >= 0 && j >= 0; i--, j--)
+    {
+        if (chessboard[i][j]) {
+            return false;
+        }
+    }
+ 
+    // return 0 if two queens share the same `/` diagonal
+    for (int i = x, j = y; i >= 0 && j < CHESS_SIZE; i--, j++)
+    {
+        if (chessboard[i][j]) {
+            return false;
+        }
+    }
+ 
+    return true;
 }
-
+ 
 void print_chessboard(int chessboard[CHESS_SIZE][CHESS_SIZE])
 {
     printf("--------------------------\n");
@@ -38,30 +45,51 @@ void print_chessboard(int chessboard[CHESS_SIZE][CHESS_SIZE])
     }
     printf("--------------------------\n");
 }
-
-
-
-int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int y) {
-   if (y >= CHESS_SIZE) //when y queense placed successfully
-      return true;
-   for (int i = 0; i < CHESS_SIZE; i++) { //for each row, check placing of queen is possible or not
-      if (check_queen(chessboard, i, y) ) {
-         chessboard[i][y] = 1; //if validate, place the queen at place (i, col)
-         if ( solve(chessboard, y + 1)) //Go for the other columns recursively
-            return true;
-         chessboard[i][y] = 0; //When no place is vacant remove that queen
-      }
-   }
-   return false; //when no possible order is found*
-   print_chessboard(chessboard);  
+ 
+int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x)
+{
+    // if `N` queens are placed successfully, print the solution
+    if (x == CHESS_SIZE)
+    {
+        print_chessboard(chessboard);
+        return 0;
+    }
+ 
+    // place queen at every square in the current row `r`
+    // and recur for each valid movement
+    for (int i = 0; i < CHESS_SIZE; i++)
+    {
+        // if no two queens threaten each other
+        if (check_queen(chessboard, x, i))
+        {
+            // place queen on the current square
+            chessboard[x][i] = 1;
+ 
+            // recur for the next row
+            solve(chessboard, x + 1);
+ 
+            // backtrack and remove the queen from the current square
+            chessboard[x][i] = 0;
+        }
+    }
 }
-
+ 
 int main()
 {
- int chessboard[CHESS_SIZE][CHESS_SIZE];
-        solve(chessboard, 0);
-        return 0;
-}
-
-
+    // `chessboard[][]` keeps track of the position of queens in the current configuration
+    int chessboard[CHESS_SIZE][CHESS_SIZE];
     
+    for(int i = 0; i<CHESS_SIZE; i++) {
+         for(int j = 0; j<CHESS_SIZE; j++) {
+             chessboard[i][j]= 0;  //set all element to zero
+         }
+         }
+         if ( solve(chessboard, 0) == false ) { //starting from 0th column
+      printf( "Solution does not exist");
+      return false;
+      }
+      return true;
+      
+ 
+    return 0;
+}
