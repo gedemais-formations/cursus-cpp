@@ -6,6 +6,7 @@
 #include<math.h>
 #include<stdbool.h>
 #include<string.h>
+#include<time.h>
 
 /* demander le nb de Queens/taille d'un coté de l'échéquier carré
 
@@ -44,48 +45,49 @@ bool check_queen (int chessboard[CHESS_SIZE][CHESS_SIZE], int c, int r)
 	{	
 		fflush(stdout);
 
-	if ((c-i > -1 && r-i > -1 && chessboard[c-i][r-i]==1) || (c+i < (CHESS_SIZE) && r-i > -1 && chessboard[c+i][r-i]==1))			// check diagonales gauche montante ou descendante
+	if ((c-i > -1 && r-i > -1 && chessboard[c-i][r-i]==1) || (c+i < CHESS_SIZE && r-i > -1 && chessboard[c+i][r-i]==1))			// check diagonales gauche montante ou descendante
+	{
+		//chessboard[c][r]=2;			// conflit
+		return (false);
+	}
+	else if (c-i > -1 && chessboard[c-i][r]==1)			//check horizontal gauche
 		{
-		chessboard[c][r]=2;			// conflit
-		i=CHESS_SIZE;
+		//chessboard[c][r]=3;			// conflit
+		return (false);
 		}
-	else if ( c-i > -1 && chessboard[c-1][r]==1)			//check horizontal gauche
-		{
-		chessboard[c][r]=3;			// conflit
-		i=CHESS_SIZE;
-		}
-	else
-		{
-		chessboard[c][r]=1;			// no conflit mettre le 1
-		i=CHESS_SIZE;
-		}
-		printf("i : %d\n", i);
-		printf("r : %d\n", r);
-		printf("c : %d\n", c);
-		printf("c-i : %d\n", c-i);
-		printf("r-i : %d\n", r-i);
+//		printf("i : %d\n", i);
+//		printf("r : %d\n", r);
+//		printf("c : %d\n", c);
+//		printf("c-i : %d\n", c-i);
+//		printf("r-i : %d\n", r-i);
 	}
 	print_chessboard(chessboard);
-	return(0);
+	return(true);
 }
 
 
 
-int solve (int chessboard[CHESS_SIZE][CHESS_SIZE], int r)
+int solve (int chessboard[CHESS_SIZE][CHESS_SIZE], int c)
 {
-int count = 0;
-	for(int c=0; c<CHESS_SIZE; c++)
+	int count = 0;
+	print_chessboard(chessboard);
+	usleep(500000);
+	if (c == CHESS_SIZE)
 	{
-		if (check_queen(chessboard,c,r)==true)
-	{
-	chessboard[c][r]=1;
-	solve(chessboard,r+1);
-	chessboard[c][r]=0;
+		printf("THERE\n");
 	}
+	for(int r=0; r<CHESS_SIZE; r++)
+	{
+		if (check_queen(chessboard, c, r)==true)
+		{
+			chessboard[c][r]=1;
+			solve(chessboard,c+1);
+			chessboard[c][r]=0;
+		}
 	count++;
-	printf("Number of solution for %d-Queen Problem is :\n", CHESS_SIZE);
 	}
-return(count);
+	//printf("Number of solution for %d-Queen Problem is :\n", CHESS_SIZE);
+	return(count);
 }
 
 int main(void)
