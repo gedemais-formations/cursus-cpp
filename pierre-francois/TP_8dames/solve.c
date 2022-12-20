@@ -3,53 +3,33 @@
 #include <string.h>
 #define CHESS_SIZE 8
 
-bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int x, int y)
+bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int ligne, int colonne)
 {
     // check lines, column, diags
 
 	//Check sur la ligne
 	for(int i=0; i<CHESS_SIZE; i++)
 	{
-		if(chessboard[x][i] == 1)
+		if(chessboard[ligne][i] == 1)
 			return false;
 	}
 
-	//Check sur la colonne
-	for(int i=0; i<CHESS_SIZE; i++)
-	{
-		if(chessboard[i][y] == 1)
-			return false;
-	}
-
-	//Check sur les diagonales
+	/* Check sur les diagonales
+	 * On ne regarde que le côté gauche de la dame car nous n'auront pas
+	 * de pièces sur la droite*/ 
 	int j = 0;
-	while ((x+j<CHESS_SIZE) && (y+j<CHESS_SIZE))
+
+	while ((ligne-j>=0) && (colonne-j>=0))
 	{
-		if(chessboard[x+j][y+j] == 1)
-			return false;
-		j++;
-	}
-	
-	j = 0;
-	while ((x-j>=0) && (y-j>=0))
-	{
-		if(chessboard[x-j][y-j] == 1)
+		if(chessboard[ligne-j][colonne-j] == 1)
 			return false;
 		j++;
 	}
 	
 	j =0 ;
-	while ((x+j<CHESS_SIZE) && (y-j>=0))
+	while ((ligne+j<CHESS_SIZE) && (colonne-j>=0))
 	{
-		if(chessboard[x+j][y-j] == 1)
-			return false;
-		j++;
-	}
-
-	j = 0;
-	while ((x-j>=0) && (y+j<CHESS_SIZE))
-	{
-		if(chessboard[x-j][y+j] == 1)
+		if(chessboard[ligne+j][colonne-j] == 1)
 			return false;
 		j++;
 	}
