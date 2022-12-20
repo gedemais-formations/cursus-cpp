@@ -27,10 +27,9 @@ void print_chessboard(int chessboard[CHESS_SIZE][CHESS_SIZE])
 	{
 		for (r=0; r<CHESS_SIZE;r++)
 		{
-		printf("%d", chessboard[r][c]);		// va "print" un 1 dans la case r,c
-		printf("\n");
-		
+		printf("%d ", chessboard[r][c]);		// va "print" un 1 dans la case r,c
 		}
+		printf("\n");
 	}
 	printf("----------\n");				// imprime une ligne de - pour faciliter la lecture
 }
@@ -42,14 +41,21 @@ void print_chessboard(int chessboard[CHESS_SIZE][CHESS_SIZE])
 
 bool check_queen (int chessboard[CHESS_SIZE][CHESS_SIZE], int r, int c)
 {
-	for(int i=1;i<=CHESS_SIZE-1;i++)
-	{		
-	if ((chessboard[r-i][c-i]==1 && r-i > -1 && c-i > -1) || (chessboard[r+i][c-i] && r+i < CHESS_SIZE && c-i > -1))			// check diagonales gauche montante ou descendante
+	for(int i=1;i<CHESS_SIZE;i++)
+	{	
+		fflush(stdout);
+		printf("i : %d\n", i);
+		printf("r : %d\n", r);
+		printf("c : %d\n", c);
+		printf("c-i : %d\n", c-i);
+		printf("r-i : %d\n", r-i);
+
+		if ((chessboard[r-i][c-i]==1 && r-i > -1 && c-i > -1) || (chessboard[r+i][c-i]==1 && r+i < (CHESS_SIZE+1) && c-i > -1))			// check diagonales gauche montante ou descendante
 		{
 		chessboard[r][c]=0;			// conflit
 		i=CHESS_SIZE;
 		}
-	else if (chessboard[r][c-i]==1)			//check horizontal gauche
+	else if (chessboard[r][c-i]==1 && c-i > -1)			//check horizontal gauche
 		{
 		chessboard[r][c]=0;			// conflit
 		i=CHESS_SIZE;
@@ -88,12 +94,11 @@ return(0);
 int main(void)
 {
 	int chessboard[CHESS_SIZE][CHESS_SIZE] = {};
-	for (unsigned int i = 0; i < CHESS_SIZE; i++)
+		for (unsigned int i = 0; i < CHESS_SIZE; i++)
 		{
 		memset(chessboard[i], 0, sizeof(int) * CHESS_SIZE);
 		}
 	// int game_size ();
 	print_chessboard(chessboard);
-	int solve ();
-
+	solve(chessboard, 0);
 }
