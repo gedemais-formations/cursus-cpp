@@ -1,14 +1,15 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#define CHESS_SIZE 8
+#define CHESS_SIZE 10
+
+int count_solved = 0;
 
 // Fonction to check if queen can be here
 bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int x, int y){
-    // check lines, column, diags
+  // check lines, column, diags
 	bool check = true;
 	int i;
-
 
 	//Check rows above
 	i = 1;
@@ -52,7 +53,7 @@ bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int x, int y){
 	//Check diagonal above
 	i = 1;
 	while(check==true && x+i < CHESS_SIZE && y+i < CHESS_SIZE){
-		printf("+ %d et %d \n", x+i, y+i);
+		//printf("+ %d et %d \n", x+i, y+i);
 		if(chessboard[x+i][y+i] == 1){
 			check = false;
 			printf("false");
@@ -63,7 +64,7 @@ bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int x, int y){
 	//Check diagonal before
 	i = 1;
 	while(check==true && x-i >= 0 && y-i >= 0){
-		printf("- %d et %d \n", x-i, y-i);
+		//printf("- %d et %d \n", x-i, y-i);
 		if(chessboard[x-i][y-i] == 1){
 			check = false;
 		}
@@ -102,21 +103,21 @@ void print_chessboard(int chessboard[CHESS_SIZE][CHESS_SIZE]){
     printf("--------------------------\n");
 }
 
-int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x){
-    (void)chessboard;
-    (void)x;
-		int i = 0;
-		while(!check_queen(chessboard, x, i) && i < CHESS_SIZE-1){
-			i ++;
-		}
-		if(check_queen(chessboard, x, i)){
+int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x) {
+	int i;
+	if(x == CHESS_SIZE) {
+		print_chessboard(chessboard);
+		count_solved++;
+		return 0;
+	}
+	for(i = 0; i < CHESS_SIZE; i++) {
+		if(check_queen(chessboard, x, i)) {
 			chessboard[x][i] = 1;
-			print_chessboard(chessboard);
-			if(x < 8){
-				solve(chessboard, x+1);
-			}
+			solve(chessboard, x + 1);
 		}
-		return (0);
+		chessboard[x][i] = 0; //No solution
+	}
+	return count_solved;
 }
 
 int main(void){
@@ -125,8 +126,7 @@ int main(void){
 	for (unsigned int i = 0; i < CHESS_SIZE; i++){
 		memset(chessboard[i], 0, sizeof(int) * CHESS_SIZE);
 	}
-	chessboard[0][0]=1;
-	print_chessboard(chessboard);
+	//chessboard[0][0]=1;
 	printf("%d\n", solve(chessboard, 0));
 	return (1);
 }
