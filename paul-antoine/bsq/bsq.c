@@ -8,7 +8,7 @@
 #include <malloc.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
+#include <string.h> // memcpy
 
 
 int get_field(char* file, t_field **field_ptr) {
@@ -38,6 +38,37 @@ int get_field(char* file, t_field **field_ptr) {
         return ERROR_CANT_READ_FILE
     }
 
+    return parse(buffer, field_ptr);
+
+}
+
+int get_field_std(t_field ** field_pointer) {
+#define BATCH_SIZE 1000
+    char *buffer;
+    int total=0, batch;
+    do {
+        char* tmp_buff = malloc(sizeof(char) * BATCH_SIZE);
+        batch = read(0, tmp_buff, BATCH_SIZE);
+
+        if(total==0) {
+            buffer = tmp_buff;
+            total += batch;
+        } else if(batch != 0) {
+            char* new_buff = malloc(sizeof(char) * (total + batch));
+            memcpy(new_buff, buffer, total);
+            free(buffer);
+            memcpy(&new_buff[total], tmp_buff, batch);
+            free(tmp_buff);
+            buffer = new_buff;
+        }
+    } while (batch >= BATCH_SIZE);
+
+    parse(buffer, field_pointer);
+
+    return 0;
+}
+
+int parse(char *buffer, t_field **field_ptr) {
     static t_field field;
 
     int iter = 0;

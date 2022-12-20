@@ -31,5 +31,9 @@ typedef struct {
 } t_field;
 
 int get_field(char* file, t_field **field_ptr);
+int get_field_std(t_field **field_ptr);
+
+int parse(char* buffer, t_field **field_pointer);
+
 
 void print_field(t_field field);
