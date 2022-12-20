@@ -5,7 +5,6 @@
 #include<stdlib.h>
 #include<math.h>
 #include<stdbool.h>
-#include<string.h>
 
 /* demander le nb de Queens/taille d'un coté de l'échéquier carré
 
@@ -44,45 +43,46 @@ bool check_queen (int chessboard[CHESS_SIZE][CHESS_SIZE], int r, int c)
 {
 	for(int i=1;i<=CHESS_SIZE-1;i++)
 	{		
-	if ((chessboard[r-i][c-i]==1 && r-i > -1 && c-i > -1) || (chessboard[r+i][c-i] && r+i < CHESS_SIZE && c-i > -1))			// check diagonales gauche montante ou descendante
+	if (chessboard[r-i][c-i]==1 && r-i > -1 && c-i > -1 || chessboard[r+i][c-i] && r+i < CHESS_SIZE && c-i > -1)							// check diagonales gauche montante ou descendante
 		{
-		chessboard[r][c]=0;			// conflit
-		i=CHESS_SIZE;
+		chessboard[r][c]=0;						// conflit
+		i=CHESS_SIZE
 		}
-	else if (chessboard[r][c-i]==1)			//check horizontal gauche
+	else if (chessboard[r][c-i
+	]==1)									//check horizontal gauche
 		{
-		chessboard[r][c]=0;			// conflit
+		chessboard[r][c]=0;						// conflit
 		i=CHESS_SIZE;
 		}
 	else
 		{
-		chessboard[r][c]=1;			// no conflit mettre le 1
+		chessboard[r][c]=1;
 		}	
+	
 	}
-	print_chessboard(chessboard);
-	return(0);
+	print_chessboard( );
+	return( );
 }
 
 
 
 int solve (int chessboard[CHESS_SIZE][CHESS_SIZE], int c)
 {
-int count = 0;
+int count = 0
 	for(int r=0;r<=CHESS_SIZE;r++)
 	{
-		if (check_queen(chessboard,r,c)==true)
+	if check_queen(chessboard[CHESS_SIZE][CHESS_SIZE], r, c)==true
 	{
-	chessboard[r][c]=1;
-	solve(chessboard,c+1);
-	chessboard[r][c]=0;
+	chess_board[r][c]==1
+	solve(int chessboard([CHESS_SIZE][CHESS_SIZE], c+1);
+	chess_board[r][c]==0
 	return(0);
 	}
 	count++;
 	return(count);
-	printf("Number of solution for %dCHESS_SIZE -Queen Problem is ", CHESS_SIZE);
-	printf("%dcount\n", solve(chessboard,c));
+	printf("Number of solution for %d\CHESS_SIZE-Queen Problem is ");
+	printf("%d\count\n", solve())
 	}
-return(0);
 }
 
 int main(void)
@@ -93,7 +93,7 @@ int main(void)
 		memset(chessboard[i], 0, sizeof(int) * CHESS_SIZE);
 		}
 	// int game_size ();
-	print_chessboard(chessboard);
+	print_chessboard();
 	int solve ();
 
 }
