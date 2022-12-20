@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#define CHESS_SIZE 10
+#define CHESS_SIZE 6
 
 int count_solved = 0;
 
@@ -31,6 +31,7 @@ bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int x, int y){
 		i++;
 	}
 
+	/* Useless to check columns (we add a queen columns by columns)
 	//Check columns above
 	i = 1;
 	while(check==true && y+i < CHESS_SIZE){
@@ -48,7 +49,7 @@ bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int x, int y){
 			check = false;
 		}
 		i++;
-	}
+	} */
 
 	//Check diagonal above
 	i = 1;
@@ -92,6 +93,7 @@ bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int x, int y){
 	return (check);
 }
 
+// Print the chessboard in consol
 void print_chessboard(int chessboard[CHESS_SIZE][CHESS_SIZE]){
     printf("--------------------------\n");
     for (int x = 0; x < CHESS_SIZE; x++){
@@ -103,11 +105,13 @@ void print_chessboard(int chessboard[CHESS_SIZE][CHESS_SIZE]){
     printf("--------------------------\n");
 }
 
+// Solve the problem
 int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x) {
 	int i;
+	//Print 1 solution (x is between 0 and 7)
 	if(x == CHESS_SIZE) {
 		print_chessboard(chessboard);
-		count_solved++;
+		count_solved++; //global variable
 		return 0;
 	}
 	for(i = 0; i < CHESS_SIZE; i++) {
