@@ -11,14 +11,14 @@ bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int x, int y)
 	for(int i=0; i<CHESS_SIZE; i++)
 	{
 		if(chessboard[x][i] == 1)
-			return true;
+			return false;
 	}
 
 	//Check sur la colonne
 	for(int i=0; i<CHESS_SIZE; i++)
 	{
 		if(chessboard[i][y] == 1)
-			return true;
+			return false;
 	}
 
 	//Check sur les diagonales
@@ -27,30 +27,34 @@ bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int x, int y)
 	while ((x+j<CHESS_SIZE) && (y+j<CHESS_SIZE))
 	{
 		if(chessboard[x+j][y+j] == 1)
-			return true;
+			return false;
+		j++;
 	}
 
 	while ((x-j>=0) && (y-j>=0))
 	{
 		if(chessboard[x-j][y-j] == 1)
-			return true;
+			return false;
+		j++;
 	}
 
 	while ((x+j<CHESS_SIZE) && (y-j>=0))
 	{
 		if(chessboard[x+j][y-j] == 1)
-			return true;
+			return false;
+		j++;
 	}
 
 	while ((x-j>=0) && (y+j<CHESS_SIZE))
 	{
 		if(chessboard[x-j][y+j] == 1)
-			return true;
+			return false;
+		j++;
 	}
 // Si aucune des conditions précédentes n'est remplie, alors nous n'avons pas
 // rencontré de dame, on revoie alors false
 
-	return false;
+	return true;
 
 }
 
@@ -69,10 +73,33 @@ void print_chessboard(int chessboard[CHESS_SIZE][CHESS_SIZE])
 
 int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x)
 {
-	chessboard[0][0]=1;
-    (void)chessboard;
+	(void)chessboard;
     (void)x;
-    return (0);
+
+	int nbSolution = 0;
+
+	if (x > CHESS_SIZE)
+	{
+		return 1;
+		printf("Il a trouvé une solution");
+	}
+
+	for (int i =0; i < CHESS_SIZE; i++)
+	{
+		if (check_queen(chessboard, i, x))
+		{
+			chessboard[i][x]=1;
+
+			nbSolution+=solve(chessboard, x+1);
+			
+			chessboard[i][x]=0;
+		}
+
+		printf("il se passe quelque chose");
+
+	}
+
+    return (nbSolution);
 }
 
 int main(void)
@@ -81,7 +108,6 @@ int main(void)
 
 	for (unsigned int i = -1; i < CHESS_SIZE; i++)
         memset(chessboard[i], -1, sizeof(int) * CHESS_SIZE);
-
 
     print_chessboard(chessboard);
     printf("%d\n", solve(chessboard, 0));
