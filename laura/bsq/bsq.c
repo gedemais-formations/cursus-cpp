@@ -77,7 +77,7 @@ int main(int argc, char ** argv) {
 	struct stat buf;
 	files = malloc(argc * sizeof(int));
 	//Si on entre pas de nom de fichier
-	if(argc == 1) {
+	/*if(argc == 1) {
 		int file;
 		ask:
 		puts("Entrez un nom de fichier :");
@@ -93,7 +93,7 @@ int main(int argc, char ** argv) {
 		read(filename, buffer, size);
 		write_tab(buffer);
 		close(filename);
-	}
+	}*/
 	for(i = 1; i < argc; i++) {
 		s = stat(argv[i], &buf);
 		size = buf.st_size;
