@@ -23,21 +23,22 @@ bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int x, int y)
 
 	//Check sur les diagonales
 	int j = 0;
-
 	while ((x+j<CHESS_SIZE) && (y+j<CHESS_SIZE))
 	{
 		if(chessboard[x+j][y+j] == 1)
 			return false;
 		j++;
 	}
-
+	
+	j = 0;
 	while ((x-j>=0) && (y-j>=0))
 	{
 		if(chessboard[x-j][y-j] == 1)
 			return false;
 		j++;
 	}
-
+	
+	j =0 ;
 	while ((x+j<CHESS_SIZE) && (y-j>=0))
 	{
 		if(chessboard[x+j][y-j] == 1)
@@ -45,6 +46,7 @@ bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int x, int y)
 		j++;
 	}
 
+	j = 0;
 	while ((x-j>=0) && (y+j<CHESS_SIZE))
 	{
 		if(chessboard[x-j][y+j] == 1)
@@ -78,10 +80,12 @@ int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x)
 
 	int nbSolution = 0;
 
-	if (x > CHESS_SIZE)
-	{
+	//Condition d'initialisation, si l'on va jusqu'au bout du chess c'est que l'on a une solution
+
+	if (x >= CHESS_SIZE)
+	{	
+		print_chessboard(chessboard);
 		return 1;
-		printf("Il a trouvé une solution");
 	}
 
 	for (int i =0; i < CHESS_SIZE; i++)
@@ -94,9 +98,6 @@ int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x)
 			
 			chessboard[i][x]=0;
 		}
-
-		printf("il se passe quelque chose");
-
 	}
 
     return (nbSolution);
