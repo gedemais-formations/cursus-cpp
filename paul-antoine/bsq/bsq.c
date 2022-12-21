@@ -203,3 +203,34 @@ void print_field(t_field field, int size, int row, int col) {
         printf("\n");
     }
 }
+
+int square_size(t_field field,int row, int col) {
+    int i;
+    for (i = 1; i + row < field.row_size && i + col < field.col_size ; ++i) {
+        for (int j = 0; j < i*i; ++j) {
+            if(field.field[j/i+row][j%i+col].t_case){
+                return i-1;
+            }
+        }
+    }
+
+    return i-1;
+}
+
+void find_best(t_field field) {
+    int best = 0;
+    int best_col=0, best_row=0;
+
+    for (int i = 0; i < field.row_size; ++i) {
+        for (int j = 0; j < field.col_size; ++j) {
+            int n_best = square_size(field,i,j);
+            if(n_best > best) {
+                best = n_best;
+                best_row = i;
+                best_col = j;
+            }
+        }
+    }
+
+    print_field(field, best, best_row, best_col);
+}

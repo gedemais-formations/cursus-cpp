@@ -37,4 +37,6 @@ int parse(char* buffer, t_field **field_pointer);
 
 void print_field(t_field field, int size, int row, int col);
 
-void print_field(t_field field);
+int square_size(t_field field,int row, int col);
+
+void find_best(t_field field);
