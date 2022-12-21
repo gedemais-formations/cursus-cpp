@@ -6,8 +6,6 @@
 #include<math.h>
 #include<stdbool.h>
 #include<string.h>
-#include<time.h>
-#include <unistd.h>
 
 /* demander le nb de Queens/taille d'un coté de l'échéquier carré
 
@@ -46,68 +44,58 @@ bool check_queen (int chessboard[CHESS_SIZE][CHESS_SIZE], int c, int r)
 	{	
 		fflush(stdout);
 
-	if ((c-i > -1 && r-i > -1 && chessboard[c-i][r-i]==1) || (c-i > -1 && r+i < CHESS_SIZE && chessboard[c-i][r+i]==1))			// check diagonales gauche montante ou descendante
-	{
-		// printf("r : %d\n", r);
-		// printf("c : %d\n", c);
-		// chessboard[c][r]=2;			// conflit
-		chessboard[c][r]=0;			// conflit
-		return (false);
-		return (false);
-	}
-	else if (c-i > -1 && chessboard[c-i][r]==1)			//check horizontal gauche
+	if ((c-i > -1 && r-i > -1 && chessboard[c-i][r-i]==1) || (c+i < (CHESS_SIZE) && r-i > -1 && chessboard[c+i][r-i]==1))			// check diagonales gauche montante ou descendante
 		{
-		// printf("r : %d\n", r);
-		// printf("c : %d\n", c);
-		// chessboard[c][r]=3;			// conflit
-		chessboard[c][r]=0;			// conflit
-		return (false);
+		chessboard[c][r]=2;			// conflit
+		i=CHESS_SIZE;
 		}
-//		printf("i : %d\n", i);
-//		printf("c-i : %d\n", c-i);
-//		printf("r-i : %d\n", r-i);
+	else if ( c-i > -1 && chessboard[c-1][r]==1)			//check horizontal gauche
+		{
+		chessboard[c][r]=3;			// conflit
+		i=CHESS_SIZE;
+		}
+	else
+		{
+		chessboard[c][r]=1;			// no conflit mettre le 1
+		i=CHESS_SIZE;
+		}
+		printf("i : %d\n", i);
+		printf("r : %d\n", r);
+		printf("c : %d\n", c);
+		printf("c-i : %d\n", c-i);
+		printf("r-i : %d\n", r-i);
 	}
-	// print_chessboard(chessboard);
-	return(true);
+	print_chessboard(chessboard);
+	return(0);
 }
 
 
 
-int solve (int chessboard[CHESS_SIZE][CHESS_SIZE], int c)
+int solve (int chessboard[CHESS_SIZE][CHESS_SIZE], int r)
 {
-	int count = 0;
-	int s_return;
-	// print_chessboard(chessboard);
-	// usleep(100);
-	if (c == CHESS_SIZE)
+int count = 0;
+	for(int c=0; c<CHESS_SIZE; c++)
 	{
-		// printf("THERE\n");
-		print_chessboard(chessboard);
-		return(1);
-	}
-	for(int r=0; r<CHESS_SIZE; r++)
+		if (check_queen(chessboard,c,r)==true)
 	{
-		if (check_queen(chessboard, c, r)==true)
-		{
-			chessboard[c][r]=1;
-			s_return = solve(chessboard,c+1);
-			count += s_return;
-			chessboard[c][r]=0;
-		}
+	chessboard[c][r]=1;
+	solve(chessboard,r+1);
+	chessboard[c][r]=0;
 	}
-	return(count);
+	count++;
+	printf("Number of solution for %d-Queen Problem is :\n", CHESS_SIZE);
+	}
+return(count);
 }
 
 int main(void)
 {
-	int count =0;
 	int chessboard[CHESS_SIZE][CHESS_SIZE] = {};
-	for (unsigned int i = 0; i < CHESS_SIZE; i++)
-	{
+		for (unsigned int i = 0; i < CHESS_SIZE; i++)
+		{
 		memset(chessboard[i], 0, sizeof(int) * CHESS_SIZE);
-	}
+		}
 	// int game_size ();
 	print_chessboard(chessboard);
-	count = solve(chessboard,0);
-	printf("Number of solution for %d-Queen Problem is : %d\n", CHESS_SIZE, count);
+	printf("%d\n", solve(chessboard,0));
 }
