@@ -89,23 +89,25 @@ int main(int argc, char ** argv) {
 		}
 		s = stat(filename, &buf);
 		size = buf.st_size;
-		buffer = (char *) malloc(size);
+		buffer = (char *) malloc(size * sizeof(int));
 		read(file, buffer, size);
 		write_tab(buffer);
 		close(file);
 	}
-	for(i = 1; i < argc; i++) {
-		s = stat(argv[i], &buf);
-		size = buf.st_size;
-		files[i] = open(argv[i], O_RDWR);
-		if(!files[i]) {
-			puts("Fichier inexistant");
-			break;
+	else {
+		for(i = 1; i < argc; i++) {
+			s = stat(argv[i], &buf);
+			size = buf.st_size;
+			files[i] = open(argv[i], O_RDWR);
+			if(!files[i]) {
+				puts("Fichier inexistant");
+				break;
+			}
+			buffer = (char *)malloc(size * sizeof(int));
+			read(files[i], buffer, size);
+			write_tab(buffer);
+			close(files[i]);
 		}
-		buffer = (char *)malloc(size);
-		read(files[i], buffer, size);
-		write_tab(buffer);
-		close(files[i]);
 	}
 	free(buffer);
 	free(files);
