@@ -35,5 +35,6 @@ int get_field_std(t_field **field_ptr);
 
 int parse(char* buffer, t_field **field_pointer);
 
+void print_field(t_field field, int size, int row, int col);
 
 void print_field(t_field field);

@@ -186,11 +186,13 @@ int parse(char *buffer, t_field **field_ptr) {
     return 0;
 }
 
-void print_field(t_field field) {
+void print_field(t_field field, int size, int row, int col) {
 
     for (int i = 0; i < field.row_size; ++i) {
         for (int j = 0; j < field.col_size; ++j) {
-            if(field.field[i][j].t_case) {
+            if(i>=row && i < (row + size) && j >= col && j < (col + size)) {
+                printf("%c", field.full);
+            }else if(field.field[i][j].t_case) {
                 printf("%c", field.obstacle);
             } else {
                 printf("%c", field.empty);
