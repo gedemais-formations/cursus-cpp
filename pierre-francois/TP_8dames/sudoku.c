@@ -67,29 +67,31 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int x)
     (void)x;
 
 	int nbSolution = 0;
+	int chiffre = 1;
 
 	//Condition d'initialisation, si l'on va jusqu'au bout du chess c'est que l'on a une solution
-
+while(chiffre<=9)
+{
 	if (x >= SUDOKU_SIZE)
 	{	
-		print_sudoku(sudoku);
 		return 1;
 	}
 
-	//for (int j=1; j<=9; i++)
-	//{
 	for (int i =0; i < SUDOKU_SIZE; i++)
 	{
-		if (check_number(sudoku, 1, i, x) && sudoku[i][x] == 0)
-		{
-			sudoku[i][x]=1;
 
-			nbSolution+=solve(sudoku, x+1);
+		if (check_number(sudoku, chiffre, i, x) && sudoku[i][x] == 0)
+			{
+				sudoku[i][x]=chiffre;
+
+				nbSolution+=solve(sudoku, x+1);
 			
-			sudoku[i][x]=0;
-		}
+				sudoku[i][x]=0;
+			}
 	}
-
+	chiffre++;
+}
+	print_sudoku(sudoku);
     return (nbSolution);
 }
 
@@ -98,9 +100,13 @@ int main(void)
     int sudoku[SUDOKU_SIZE][SUDOKU_SIZE] = {};
 
 	for (unsigned int i = -1; i < SUDOKU_SIZE; i++)
-        memset(sudoku[i], -1, sizeof(int) * SUDOKU_SIZE);
+	{
+		memset(sudoku[i], -1, sizeof(int) * SUDOKU_SIZE);
+	}
 
-    print_sudoku(sudoku);
-    printf("%d\n", solve(sudoku, 0));
+//	for (int j=1; j<=SUDOKU_SIZE; j++)
+//	{
+	printf("%d\n", solve(sudoku, 0));
+//	}
 	return (0);
 }
