@@ -110,9 +110,10 @@ void create_file() {
 	}
 	while(1) {
 		puts("Entrez une ligne : ");
-		line_size = scanf("%s", &str);
+		scanf("%s", &str);
 		if(str[0] != '.' && str[0] != 'o') break;
-		w = write(f, str, line_size);
+		strcat(str, "\n");
+		w = write(f, str, strlen(str));
 		if(w == -1) {
 			puts(strerror(errno));
 			return;
