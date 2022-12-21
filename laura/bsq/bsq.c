@@ -5,6 +5,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <string.h>
+#include <errno.h>
 
 void write_x(int ** coord, int size, char ** tab, int max_x, int max_y) {
 	int i, j, maxX, maxY, minX, minY;
@@ -23,14 +24,26 @@ void write_x(int ** coord, int size, char ** tab, int max_x, int max_y) {
 
 //Retourne un tableau de coordonnées de o
 void check_o(char ** tab, int max_x, int max_y) {
-	int i, j, size = 0, ** coord, k = 0; // Same, la il faut penser aux dyslexiques etc. Plus une ligne est longue et plus elle est fatiguante a lire.
+	int i, j, size, ** coord, k;
+	k = 0;
+	size = 0;
 	for(i = 0; i < max_y; i++) {
 		for(j = 0; j < max_x; j++) {
 			if(tab[i][j] == 'o') size++;
 		}
 	}
-	coord = (int **)malloc(sizeof(int *) * size); // Malloc non protege
-	for(i = 0; i < size; i++) coord[i] = (int *)malloc(sizeof(int) * 2); // Malloc non protege
+	coord = (int **)malloc(sizeof(int *) * size);
+	if(!coord) {
+		puts(strerror(errno));
+		return;
+	}
+	for(i = 0; i < size; i++) {
+		coord[i] = (int *)malloc(sizeof(int) * 2);
+		if(!coord[i]) {
+			puts(strerror(errno));
+			return;
+		}
+	}
 	for(i = 0; i < max_y; i++) {
 		for(j = 0; j < max_x; j++) {
 			if(tab[i][j] == 'o') {
@@ -40,14 +53,14 @@ void check_o(char ** tab, int max_x, int max_y) {
 			}
 		}
 	}
-	write_x(coord, size, tab, max_x, max_y); // Write non protege.
+	write_x(coord, size, tab, max_x, max_y);
 	free(coord);
 }
 
 void write_tab(char * buffer) {
 	int i, height = 0, j, len, width, k;
 	char ** tab;
-	len = strlen(buffer); // Segfault si buffer == NULL (malloc non protege)
+	len = strlen(buffer);
 	k = 0;
 	for(i = 0; i < len; i++) {
 		if(buffer[i] == '\n') {
@@ -56,9 +69,17 @@ void write_tab(char * buffer) {
 		}
 	}
 	for(i = 0; i < len; i++) if(buffer[i] == '\n') height++;
-	tab = (char **)malloc(sizeof(char *) * height); // Malloc non protege
+	tab = (char **)malloc(sizeof(char *) * height);
+	if(!tab) {
+		puts(strerror(errno));
+		return;
+	}
 	for(i = 0, k = 0; i < height; i++) {
-		tab[i] = (char *)malloc(sizeof(char) * width); // Malloc non protege
+		tab[i] = (char *)malloc(sizeof(char) * width);
+		if(!tab[i]) {
+			puts(strerror(errno));
+			return;
+		}
 		for(j = 0; j < width; j++) {
 			if(buffer[k] != 'o' && buffer[k] != '.') k++;
 			tab[i][j] = buffer[k];
@@ -70,46 +91,100 @@ void write_tab(char * buffer) {
 	free(tab);
 }
 
-int main(int argc, char ** argv) {
-	int i, * files = NULL, size, s; // On evite generalement de declarer un type et un pointeur sur ce meme type sur la meme ligne, question de clarte.
-	char * buffer = NULL, * filename;  // Buffer n'a pas besoin d'etre set a NULL
+//Cas où aucun argument n'est passé, création d'un nouveau fichier
+void create_file() {
+	int line_size, size_buffer, s, f, w, cl, r;
+	char str[100], new_filename[100], * buffer;
 	struct stat buf;
-	files = malloc(argc * sizeof(int)); // Malloc non protege
-	//Si on entre pas de nom de fichier
-	//Dans ce cas, on est plutot censes attendre le contenu du fichier sur l'entree standard, et pas son chemin (Good Luck).
-	if(argc == 1) {
-		int file;
-		ask:
-		puts("Entrez un nom de fichier :");
-		scanf("%s", &filename); // scanf non protege
-		file = open(filename, O_RDWR); // open non protege
-		if(!file) { // Oulala oulala, RTFM...
-			puts("Fichier introuvable");  // C'est pas forcement ca le probleme.
-			goto ask; // I swear to God next time I'll find where you live and I'll come to get you (https://stackoverflow.com/questions/3517726/what-is-wrong-with-using-goto)
-		}
-		s = stat(filename, &buf); // Stat non protegee
-		size = buf.st_size;
-		buffer = (char *) malloc(size * sizeof(int)); // Malloc non protege
-		read(file, buffer, size); // Read non protege
-		write_tab(buffer); // Write non protege
-		close(file); // Close non protege
+	size_buffer = 0;
+	puts("Entrez un nom de fichier : ");
+	s = scanf("%s", &new_filename);
+	if(s == -1) {
+		puts(strerror(errno));
+		return;
 	}
-	else {
+	f = open(new_filename, O_CREAT|O_RDWR|O_TRUNC, 0777);
+	if(!f) {
+		puts(strerror(errno));
+		return;
+	}
+	while(1) {
+		puts("Entrez une ligne : ");
+		line_size = scanf("%s", &str);
+		if(str[0] != '.' && str[0] != 'o') break;
+		w = write(f, str, line_size);
+		if(w == -1) {
+			puts(strerror(errno));
+			return;
+		}
+	}
+	s = stat(new_filename, &buf);
+	if(s == -1) {
+		puts(strerror(errno));
+		return;
+	}
+	size_buffer = buf.st_size;
+	buffer = (char *)malloc(size_buffer);
+	if(!buffer) {
+		puts(strerror(errno));
+		return;
+	}
+	r = read(f, buffer, size_buffer);
+	if(r == -1) {
+		puts(strerror(errno));
+		return;
+	}
+	write_tab(buffer);
+	cl = close(f);
+	free(buffer);
+	if(cl == -1) {
+		puts(strerror(errno));
+		return;
+	}
+}
+
+int main(int argc, char ** argv) {
+	int i, * files, size, s, r, c;
+	char * buffer, * filename;
+	struct stat buf;
+	buffer = NULL;
+	files = malloc(argc * sizeof(int));
+	if(!files) {
+		puts(strerror(errno));
+		return -1;
+	}
+	if(argc == 1) create_file();
+	else{
 		for(i = 1; i < argc; i++) {
-			s = stat(argv[i], &buf);// Stat non protegee
-			size = buf.st_size;
-			files[i] = open(argv[i], O_RDWR); // Eeeeeeh
-			if(!files[i]) { // NOOOO, GOD PLEASE NO
-				puts("Fichier inexistant"); // Bruh, c'est meme pas le meme message que la haut XD
-				break;
+			s = stat(argv[i], &buf);
+			if(s == -1) {
+				puts(strerror(errno));
+				return -1;
 			}
-			buffer = (char *)malloc(size * sizeof(int)); // Malloc non protege.
-			read(files[i], buffer, size); // Read non protege.
-			write_tab(buffer); // Write non protege.
-			close(files[i]); // Close non protege.
+			size = buf.st_size;
+			files[i] = open(argv[i], O_RDWR);
+			if(files[i] == -1) {
+				puts(strerror(errno));
+				return -1;
+			}
+			buffer = (char *)malloc(size);
+			if(!buffer) {
+				puts(strerror(errno));
+				return -1;
+			}
+			r = read(files[i], buffer, size);
+			if(r == -1) {
+				puts(strerror(errno));
+				return -1;
+			}
+			write_tab(buffer);
+			c = close(files[i]);
+			if(c == -1) {
+				puts(strerror(errno));
+				return -1;
+			}
 		}
 	}
-	// Me refais plus ca stp :') my poor poor eyes
 	if(buffer) free(buffer);
 	if(files) free(files);
 }
