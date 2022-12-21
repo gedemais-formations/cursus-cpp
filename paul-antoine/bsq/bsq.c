@@ -2,11 +2,12 @@
 // Created by pad on 12/20/22.
 //
 #include "bsq.h"
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <malloc.h>
+#include <fcntl.h> //open
+#include <unistd.h> //read
+#include <sys/stat.h> // get file stat
+#include <malloc.h> // dyn memory allocation
 #include <stdlib.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include <string.h> // memcpy
 
@@ -28,7 +29,7 @@ int get_field(char* file, t_field **field_ptr) {
     char* buffer = malloc(file_stat.st_size);
 
     if(buffer == NULL) {
-        return ERROR_CANT_ALLOCATE_MEMORY;
+        return ERROR_CANT_ALLOCATE_MEMORY
     }
 
     ssize_t byteRead = read(fileDescriptor, buffer, file_stat.st_size);
