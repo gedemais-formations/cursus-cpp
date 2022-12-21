@@ -72,8 +72,8 @@ void write_tab(char * buffer) {
 }
 
 int main(int argc, char ** argv) {
-	int i, * files, size, s;
-	char * buffer, * filename;
+	int i, * files = NULL, size, s;
+	char * buffer = NULL, * filename;
 	struct stat buf;
 	files = malloc(argc * sizeof(int));
 	//Si on entre pas de nom de fichier
@@ -109,6 +109,6 @@ int main(int argc, char ** argv) {
 			close(files[i]);
 		}
 	}
-	free(buffer);
-	free(files);
+	if(buffer) free(buffer);
+	if(files) free(files);
 }
