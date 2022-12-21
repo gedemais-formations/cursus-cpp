@@ -1,79 +1,81 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#define CHESS_SIZE 8
+#define SUDOKU_SIZE 9
 
-bool check_queen(int chessboard[CHESS_SIZE][CHESS_SIZE], int x, int y)
+bool check_number(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int num, int ligne, int colonne)
 {
- int i; 
- i = 0;
-    while (i < CHESS_SIZE)
-    {
-        if (chessboard [x][i] == 1)
+for (int x = 0; x <= 8; x++)
+        if (sudoku[ligne][x] == num)
             return false;
-        i++;
-    }
- 
-	i=0;	
-    while ((x - i >= 0) && (y - i) >= 0)
-    {
-	//	printf("Upper left");
-        if (chessboard[x - i][y - i] == 1)
-            return false;
-        i++;
-    }
 
-	i=0;
-    while ((x + i < CHESS_SIZE) && (y - i) >=0)
-    {
-	//	printf("Lower left");
-        if (chessboard[x + i][y - i] == 1)
+    for (int x = 0; x <= 8; x++)
+        if (sudoku[x][colonne] == num)
             return false;
-        i++;
-    }
-	//getc(stdin);
-    // check lines, column, diags
+ 
+    int startligne = ligne / 3 ;
+    int startcol = colonne / 3;
+   
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j < 3; j++)
+    if(sudoku[startligne*3+i][startcol*3+j]==num && ((startligne*3+i != ligne) && (startcol*3+j != colonne )))
+                return false;
+	}
     return true;
 }
 
-void print_chessboard(int chessboard[CHESS_SIZE][CHESS_SIZE])
+
+void print_sudoku(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE])
 {
     printf("--------------------------\n");
-    for (int x = 0; x < CHESS_SIZE; x++)
+    for (int x = 0; x < SUDOKU_SIZE; x++)
     {
-        for (int y = 0; y < CHESS_SIZE; y++)
-            printf("%d ",chessboard[x][y]);
+        for (int y = 0; y < SUDOKU_SIZE; y++)
+            printf("%d ", sudoku[x][y]);
         printf("\n");
     }
     printf("--------------------------\n");
 }
 
-int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x)
+int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int x)
 {
-int solution = 0 ;
-if (x>=CHESS_SIZE){
-//	print_chessboard(chessboard);
-	return 1 ;
-}
-for (int i = 0; i<CHESS_SIZE;i++)
-{
-	if(check_queen(chessboard,i,x))
-	{
-		chessboard[i][x]= 1;
-	print_chessboard(chessboard);
-		solution+=solve(chessboard,x+1);	
-		chessboard[i][x]= 0 ;
-	}
-}
-   
-	return solution ;
+    (void)sudoku;
+    (void)x;
+
+    int nbSolution = 0;
+
+    //Condition d'initialisation, si l'on va jusqu'au bout du chess c'est que l'on a une solution
+
+    if (x >= SUDOKU_SIZE)
+    {
+        print_sudoku(sudoku);
+        return 1;
+    }
+
+    for (int i =0; i < SUDOKU_SIZE; i++)
+    {
+        if (check_number(sudoku, 1, i, x) && sudoku[i][x] == 0)
+        {
+            sudoku[i][x]=1;
+
+            nbSolution+=solve(sudoku, x+1);
+
+            sudoku[i][x]=0;
+        }
+    }
+
+    return (nbSolution);
 }
 
-int    main(void)
+int main()
 {
-    int chessboard[CHESS_SIZE][CHESS_SIZE] = {};
-for (unsigned int i = 0; i < CHESS_SIZE; i++)
-        memset(chessboard[i], 0, sizeof(int) * CHESS_SIZE);
-    print_chessboard(chessboard);
-    printf("%d\n", solve(chessboard, 0));
+    int sudoku[SUDOKU_SIZE][SUDOKU_SIZE]={};
+	
+	for (unsigned int i = -1; i < SUDOKU_SIZE; i++)
+		memset(sudoku[i], -1, sizeof(int) * SUDOKU_SIZE);
+
+        print_sudoku(sudoku);
+	   printf("%d\n", solve(sudoku, 0));
+    return 0;
 }
+
