@@ -6,7 +6,6 @@
 #include <unistd.h> //read
 #include <sys/stat.h> // get file stat
 #include <malloc.h> // dyn memory allocation
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h> // memcpy
 #include <math.h>
@@ -27,6 +26,7 @@ int get_field(char* file, t_field **field_ptr) {
     int fileDescriptor = open(file, O_RDONLY);
 
     if (fileDescriptor == -1 ) {
+        printf("i'mhere!");
         return ERROR_CANT_OPEN_FILE
     }
 
@@ -57,7 +57,7 @@ int get_field(char* file, t_field **field_ptr) {
 }
 
 int get_field_std(t_field ** field_pointer) {
-#define BATCH_SIZE 1000
+#define BATCH_SIZE 100
     char *buffer;
     long total=0;
     long batch;
@@ -87,7 +87,7 @@ int parse(char *buffer, t_field **field_ptr) {
     static t_field field;
 
     int iter = 0;
-    char length_chr[20];
+    char length_chr[20] = "";
     while (buffer[iter] <= '9' && buffer[iter] >= '0' ) {
         length_chr[iter] = buffer[iter];
         iter++;
@@ -98,7 +98,8 @@ int parse(char *buffer, t_field **field_ptr) {
         return ERROR_INVALID_PATTERN
     }
 
-    int length = atoi(length_chr);
+    int length;
+    a_to_i(length_chr, &length);
     field.row_size = length;
 
     if(buffer[iter] != '\n' && buffer[iter] != '\r') {
@@ -145,8 +146,7 @@ int parse(char *buffer, t_field **field_ptr) {
     }
 
     field.col_size = line_size;
-    int size = sizeof(t_field *) * length;
-    field.field = malloc(size);
+    field.field = malloc(sizeof(void *) * length);
 
     for (int i = 0; i < length; ++i) {
         int current_size = 0;
@@ -165,6 +165,9 @@ int parse(char *buffer, t_field **field_ptr) {
         while (buffer[iter] != '\n' && buffer[iter] != '\0' && current_size < line_size) {
 
             char current = buffer[iter];
+
+            if(current_size%8==0)
+                field.field[i][current_size/8].val = 0;
 
             if(current == field.empty) {
                 //printf("here %d\n", current_size);
@@ -251,4 +254,28 @@ void find_best(t_field field) {
     }
 
     print_field(field, best, best_row, best_col);
+}
+
+void destruct(t_field field) {
+    for (int i = 0; i < field.row_size; ++i) {
+        free(field.field[i]);
+    }
+
+    free(field.field);
+}
+
+int a_to_i(char const *str, int* buffer) {
+    int result=0;
+
+    for (int i = 0 ; str[i] != '\0' ; ++i) {
+        if(str[i] >= '0' && str[i] <= '9') {
+            result = result * 10 + (int) (str[i] - '0');
+        } else {
+            return ERROR_INVALID_PATTERN
+        }
+    }
+
+    *buffer=result;
+
+    return 0;
 }

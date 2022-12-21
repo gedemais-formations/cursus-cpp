@@ -43,3 +43,7 @@ void print_field(t_field field, int size, int row, int col);
 int square_size(t_field field,int row, int col);
 
 void find_best(t_field field);
+
+void destruct(t_field field);
+
+int a_to_i(char const *str, int* buffer);
