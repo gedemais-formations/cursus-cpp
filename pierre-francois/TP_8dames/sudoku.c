@@ -61,22 +61,34 @@ void print_sudoku(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE])
     printf("--------------------------\n");
 }
 
-int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int x)
+int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int num_case)
 {
-	(void)sudoku;
-    (void)x;
-
 	int nbSolution = 0;
-	int chiffre = 1;
 
 	//Condition d'initialisation, si l'on va jusqu'au bout du chess c'est que l'on a une solution
-while(chiffre<=9)
-{
-	if (x >= SUDOKU_SIZE)
+	if (num_case == SUDOKU_SIZE*SUDOKU_SIZE)
 	{	
-		return 1;
-	}
+		if(sudoku[SUDOKU_SIZE-1][SUDOKU_SIZE-1] != 0)
+		{
+			print_sudoku(sudoku);
+			nbSolution = 1;
+		}
+		
+			else
+			{
+				for(int i=0; i<SUDOKU_SIZE; i++)
+				{
+					if(check_number(sudoku, i, SUDOKU_SIZE-1, SUDOKU_SIZE-1))
+					{
+						nbSolution += 1;
 
+					}
+				}
+			}
+	}
+	return nbSolution;
+}
+/*
 	for (int i =0; i < SUDOKU_SIZE; i++)
 	{
 
@@ -93,20 +105,23 @@ while(chiffre<=9)
 }
 	print_sudoku(sudoku);
     return (nbSolution);
-}
+}*/
 
 int main(void)
 {
-    int sudoku[SUDOKU_SIZE][SUDOKU_SIZE] = {};
-
-	for (unsigned int i = -1; i < SUDOKU_SIZE; i++)
+    int sudoku[SUDOKU_SIZE][SUDOKU_SIZE] =
 	{
-		memset(sudoku[i], -1, sizeof(int) * SUDOKU_SIZE);
-	}
-
-//	for (int j=1; j<=SUDOKU_SIZE; j++)
-//	{
+        {0,0,0,0,0,1,0,7,2},
+        {3,2,0,0,7,0,0,0,4},
+        {6,0,0,0,0,0,0,0,0},
+        {7,4,0,0,1,0,0,0,3},
+        {0,0,8,0,0,0,0,0,0},
+        {0,0,0,5,0,0,9,0,0},
+        {0,0,6,0,2,0,0,0,0},
+        {2,8,0,0,0,9,3,0,0},
+        {0,0,1,0,0,0,0,0,8}
+	};
+	print_sudoku(sudoku);
 	printf("%d\n", solve(sudoku, 0));
-//	}
 	return (0);
 }
