@@ -2,18 +2,26 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#define SUDOKU_SIZE 4
+#define SUDOKU_SIZE 3
 int count_solved;
 int sqr = SUDOKU_SIZE*SUDOKU_SIZE;
 
 int init_sudoku(int sudoku[sqr][sqr]){
+  int grille[9][9] =
+    {
+        {9,0,0,1,0,0,0,0,5},
+        {0,0,5,0,9,0,2,0,1},
+        {8,0,0,0,4,0,0,0,0},
+        {0,0,0,0,8,0,0,0,0},
+        {0,0,0,7,0,0,0,0,0},
+        {0,0,0,0,2,6,0,0,9},
+        {2,0,0,3,0,0,0,0,6},
+        {0,0,0,2,0,0,9,0,0},
+        {0,0,1,9,0,4,5,7,0}
+    };
   for(int i=0; i<sqr; i++){
     for(int j = 0; j < sqr; j++){
-      if (i == 0){
-        sudoku[i][j] = j+1;
-      } else {
-        sudoku[i][j] = 0;
-      }
+      sudoku[i][j] = grille[i][j];
       //sudoku[i][j] = 0;
     }
   }
@@ -86,14 +94,17 @@ void print_sudoku(int sudoku[sqr][sqr]){
     }
 }
 
-// Solve the problem
+/*// Solve the problem Doesn't Work
 int solve(int sudoku[sqr][sqr], int x, int value) {
 	int i;
+  getc(stdin);
   if(value == sqr+1){
+    printf("IF VALUE");
     print_sudoku(sudoku);
 		count_solved++; //global variable
   }
   else if(x == sqr) {
+    printf("IF VALUE");
 		//print_sudoku(sudoku);
     solve(sudoku, 1, value + 1);
 	} else {
@@ -102,19 +113,62 @@ int solve(int sudoku[sqr][sqr], int x, int value) {
 	for(i = 0; i < sqr; i++) {
 		if(check_value(sudoku, x, i, value) && sudoku[x][i]==0) {
 			sudoku[x][i] = value;
-      //printf("%d ", x+1);
+      printf("%d %d \n", x, i);
+      print_sudoku(sudoku);
 			solve(sudoku, x + 1, value);
 		}
 	}
 	return count_solved;
+}*/
+
+int solve(int sudoku[sqr][sqr], int indice){
+  int count = 0;
+  //Check if it's end, if end, print solution
+  if(indice == sqr*sqr){
+    //print_sudoku(sudoku);
+    //Check the last cell of sudoku
+    if(sudoku[sqr - 1][sqr - 1] != 0) {
+        print_sudoku(sudoku);
+        count = 1;
+    } else {
+        for (int i = 0; i < sqr; ++i) {
+            //Try all values in each cell
+            if(check_value(sudoku, sqr - 1, sqr - 1, i)) {
+                count ++;
+                sudoku[sqr - 1][sqr - 1] = i;
+                print_sudoku(sudoku);
+                sudoku[sqr - 1][sqr - 1] = 0;
+            }
+        }
+    }
+  } else {
+    int x = indice / sqr; //get x with indice
+    int y = indice % sqr; //get y with indice
+
+    //Recursivity call
+    if(sudoku[x][y] != 0){
+      count = solve(sudoku, indice+1);
+    } else {
+      for(int i = 1; i < sqr+1; i++){
+        if(check_value(sudoku, x, y, i)) {
+            sudoku[x][y] = i;
+            count += solve(sudoku, indice+1);
+            sudoku[x][y] = 0;
+        }
+      }
+    }
+  }
+  return count;
 }
+
 
 int main(void) {
   //Initialization of sudoku
   int sudoku[sqr][sqr];
   init_sudoku(sudoku);
   print_sudoku(sudoku);
-  getc(stdin);
-  printf("%d\n", solve(sudoku, 1, 1));
+  //getc(stdin);
+  //printf("%d\n", solve(sudoku, 1, 1)); //OLD SOLUTION (WORK only for 1 value)
+  printf("%d\n", solve(sudoku, 0));
   return 0;
 }
