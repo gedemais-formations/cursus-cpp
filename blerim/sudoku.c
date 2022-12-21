@@ -73,7 +73,7 @@ int solveSudoku(int gridSudoku[SIZE][SIZE], int row, int column) {
                 return 1;
         }
 
-        //If our assumption it was wrong to assign number we will remove our assigned number after  we try for next assupmtion with different values
+        //If our assumption it was wrong to assign number we will remove our assigned number after  we can try  for next assupmtion with different values
         gridSudoku[row][column] = 0;
 
     }
