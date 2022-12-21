@@ -48,6 +48,7 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int x)
     (void)x;
 
 	int nbSolution = 0;
+	int auHasard;
 
 	//Condition d'initialisation, si l'on va jusqu'au bout du chess c'est que l'on a une solution
 
