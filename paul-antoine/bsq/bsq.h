@@ -6,7 +6,7 @@
 #define BSQ_BSQ_H
 
 #endif //BSQ_BSQ_H
-
+#include <stdbool.h>
 
 #define ERROR_CANT_OPEN_FILE (-1);
 #define ERROR_CANT_READ_FILE (-2);
@@ -19,7 +19,7 @@
 
 
 typedef struct {
-    unsigned char t_case : 1;
+    unsigned char val;
 }t_case;
 
 
@@ -29,6 +29,9 @@ typedef struct {
     char empty, obstacle, full;
     t_case** field;
 } t_field;
+
+bool get_case(t_case u_case, int i);
+void set_case(t_case *u_case, int i, bool value);
 
 int get_field(char* file, t_field **field_ptr);
 int get_field_std(t_field **field_ptr);

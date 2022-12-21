@@ -8,9 +8,20 @@
 #include <malloc.h> // dyn memory allocation
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
 #include <string.h> // memcpy
+#include <math.h>
 
+bool get_case(t_case u_case, int i) {
+    return (u_case.val & (int) pow(2,i)) / pow(2,i) == true;
+}
+
+void set_case(t_case *u_case, int i, bool value){
+    if(value && !(get_case(*u_case, i))) {
+        u_case->val = u_case->val + (int) pow(2, i);
+    } else if(!value && get_case(*u_case, i)) {
+        u_case->val = u_case->val - (int) pow(2, i);
+    }
+}
 
 int get_field(char* file, t_field **field_ptr) {
     int fileDescriptor = open(file, O_RDONLY);
@@ -39,6 +50,8 @@ int get_field(char* file, t_field **field_ptr) {
         return ERROR_CANT_READ_FILE
     }
 
+    close(fileDescriptor);
+
     return parse(buffer, field_ptr);
 
 }
@@ -46,7 +59,8 @@ int get_field(char* file, t_field **field_ptr) {
 int get_field_std(t_field ** field_pointer) {
 #define BATCH_SIZE 1000
     char *buffer;
-    int total=0, batch;
+    long total=0;
+    long batch;
     do {
         char* tmp_buff = malloc(sizeof(char) * BATCH_SIZE);
         batch = read(0, tmp_buff, BATCH_SIZE);
@@ -131,12 +145,13 @@ int parse(char *buffer, t_field **field_ptr) {
     }
 
     field.col_size = line_size;
-    field.field = malloc(sizeof (t_case *) * length);
+    int size = sizeof(t_field *) * length;
+    field.field = malloc(size);
 
     for (int i = 0; i < length; ++i) {
         int current_size = 0;
         //allocate the smallest multiple of 8 superior to line_size
-        field.field[i] = malloc(line_size/8 + (7 + line_size%8)/8);
+        field.field[i] = malloc(line_size/8 + (7+line_size%8)/8);
 
         if (field.field[i] == NULL) {
             for (int j = 0; j < i; ++j) {
@@ -152,9 +167,11 @@ int parse(char *buffer, t_field **field_ptr) {
             char current = buffer[iter];
 
             if(current == field.empty) {
-                field.field[i][current_size].t_case = false;
+                //printf("here %d\n", current_size);
+                //fflush(stdout);
+                set_case(&field.field[i][current_size/8], current_size%8, false);
             } else if(current == field.obstacle) {
-                field.field[i][current_size].t_case = true;
+                set_case(&field.field[i][current_size/8], current_size%8, true);
             } else {
                 for (int j = 0; j < i; ++j) {
                     free(field.field[j]);
@@ -193,7 +210,7 @@ void print_field(t_field field, int size, int row, int col) {
         for (int j = 0; j < field.col_size; ++j) {
             if(i>=row && i < (row + size) && j >= col && j < (col + size)) {
                 printf("%c", field.full);
-            }else if(field.field[i][j].t_case) {
+            }else if(get_case(field.field[i][j/8],j%8)) {
                 printf("%c", field.obstacle);
             } else {
                 printf("%c", field.empty);
@@ -208,7 +225,8 @@ int square_size(t_field field,int row, int col) {
     int i;
     for (i = 1; i + row < field.row_size && i + col < field.col_size ; ++i) {
         for (int j = 0; j < i*i; ++j) {
-            if(field.field[j/i+row][j%i+col].t_case){
+            int byte_col = j%i+col;
+            if(get_case(field.field[j/i+row][byte_col/8], byte_col%8) ){
                 return i-1;
             }
         }
