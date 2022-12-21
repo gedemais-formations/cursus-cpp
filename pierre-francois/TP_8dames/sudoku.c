@@ -34,14 +34,11 @@ bool check_number(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int number, int ligne, i
 	//On parcours toutes les cases du carré 
 	for(int i=0; i<taille_carre; i++)
 	{
-		for (int j=0; i<taille_carre; i++)
+		for (int j=0; j<taille_carre; j++)
 		{
 			// On met une condition pour que pas que la case visée soit prise en compte
-			while((ligne_carre*taille_carre+i != ligne) && (colonne_carre*taille_carre+j != colonne))
-			{ 
-				if(sudoku[ligne_carre*taille_carre+i][colonne_carre*taille_carre+j] == number)
+				if((sudoku[ligne_carre*taille_carre+i][colonne_carre*taille_carre+j] == number)&&((ligne_carre*taille_carre+i != ligne) && (colonne_carre*taille_carre+j != colonne)))
 					return false;
-			}
 		}
 	}
 
@@ -69,7 +66,7 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int x)
 	(void)sudoku;
     (void)x;
 
-/*	int nbSolution = 0;
+	int nbSolution = 0;
 
 	//Condition d'initialisation, si l'on va jusqu'au bout du chess c'est que l'on a une solution
 
@@ -79,9 +76,11 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int x)
 		return 1;
 	}
 
+	//for (int j=1; j<=9; i++)
+	//{
 	for (int i =0; i < SUDOKU_SIZE; i++)
 	{
-		if (check_number(sudoku, i, x))
+		if (check_number(sudoku, 1, i, x) && sudoku[i][x] == 0)
 		{
 			sudoku[i][x]=1;
 
@@ -90,8 +89,8 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int x)
 			sudoku[i][x]=0;
 		}
 	}
-*/
-    return (0);
+
+    return (nbSolution);
 }
 
 int main(void)
