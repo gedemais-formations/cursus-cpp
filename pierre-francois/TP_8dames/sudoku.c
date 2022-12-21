@@ -23,20 +23,24 @@ bool check_number(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int number, int ligne, i
 	//Check sur le 3*3
 
 	//On commence par regarder dans quel carré se trouve la case
-	int ligne_carre = ligne/sqrt(SUDOKU_SIZE);
-	int colonne_carre = carre/sqrt(SUDOKU_SIZE);
+	
+	//On converti le double renvoyé par sqrt en int
+	int taille_carre = (int) sqrt(SUDOKU_SIZE);
+
+	int ligne_carre = ligne/taille_carre;
+	int colonne_carre = colonne/taille_carre;
 
 
 	//On parcours toutes les cases du carré 
-	for(int i=0; i<sqrt(SUDOKU_SIZE); i++)
+	for(int i=0; i<taille_carre; i++)
 	{
-		for (int j=0; i<sqrt(SUDOKU_SIZE); i++)
+		for (int j=0; i<taille_carre; i++)
 		{
 			// On met une condition pour que pas que la case visée soit prise en compte
-			while((ligne_carre*sqrt(SUDOKU_SIZE)+i != ligne) && (colonne_carre*sqrt(SUDOKU_SIZE)+j != colonne))
+			while((ligne_carre*taille_carre+i != ligne) && (colonne_carre*taille_carre+j != colonne))
 			{ 
-				if(sudoku[ligne_carre*sqrt(SUDOKU_SIZE)+i][colonne_carre*sqrt(SUDOKU_SIZE)] == number)
-					return false
+				if(sudoku[ligne_carre*taille_carre+i][colonne_carre*taille_carre+j] == number)
+					return false;
 			}
 		}
 	}
@@ -45,7 +49,6 @@ bool check_number(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int number, int ligne, i
 // rencontré de dame, on revoie alors false
 
 	return true;
-
 }
 
 
