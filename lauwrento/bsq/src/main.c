@@ -18,6 +18,7 @@ int start(int argc, char **argv) {
   int size;
   int fd;
 
+  //If there is no argument read stdin else read argv
   fd = argc == 1 ? 0 : open(argv[1], O_RDONLY);
 
   ptr = (char *)malloc(BUFFER_SIZE);
