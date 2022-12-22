@@ -66,13 +66,13 @@ bool check_number(int sudoku_grid[9][9], int x, int y, int number){
 int solve(int sudoku_grid[9][9], int indice) {
     int res = 0;
 
-    if(indice == 81) {
+    if(indice == 80) {
         //print_sudoku(sudoku_grid);
         if(sudoku_grid[8][8] != 0) {
             print_sudoku(sudoku_grid);
             res = 1;
         } else {
-            for (int i = 0; i < 9; ++i) {
+            for (int i = 1; i < 10; ++i) {
                 if(check_number(sudoku_grid, 8, 8, i)) {
                     res += 1;
                     sudoku_grid[8][8] = i;
