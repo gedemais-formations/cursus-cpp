@@ -12,23 +12,23 @@
 
 // fonction qui construite la grille du sudoku rempli de 0
 
-void print_grille(int grille([s_size][s_size]){
-	print("-----------\n");
+void print_grille(int grille[s_size][s_size]){
+	printf("-----------\n");
 
 	for (int r=0; r<s_size; r++){
 		for (int c=0; c<s_size; c++){
-			print("%d", grille[c][r]);
+			printf("%d", grille[c][r]);
 		}
-		print("\n");
+		printf("\n");
 	}
-	print("----------\n");
+	printf("----------\n");
 }
 
 // fonction vérifiant que le chiffre n n'est pas sur la colonne, la ligne ou le carre 3x3
 
-bool check_num(int grille[s_size][s_size], int c, int r){
+bool check_case(int grille[s_size][s_size], int c, int r){
 	int c_s = c/3;
-	int r_s = s/3;
+	int r_s = r/3;
 
 	fflush(stdout);
 
@@ -69,19 +69,21 @@ bool check_num(int grille[s_size][s_size], int c, int r){
 
 
 
-int solve (int grille[s_size][s_size]; int n){
+int solve (int grille[s_size][s_size], int n){
 	int count =0;
 	int s_return;
 	n = 1;
+	int c = 0;
+	int r = 0;
 
-	if (c == s_size && r==s_size){
+	if (c == s_size && r == s_size){
 		print_grille(grille);
-		return(1)
+		return(1);
 	}
 	
 	for (int r=0; r<s_size; r++){
 		for (int c=0; c<s_size; c++){
-			if (n<10 && check_num(grille, c, r)==true){
+			if (n<10 && check_case(grille, c, r)==true){
 			grille[c][r]=n;
 			s_return = solve(grille, n+1);
 			count += s_return;
@@ -92,3 +94,13 @@ int solve (int grille[s_size][s_size]; int n){
 	return(count);
 }
 
+int main(void){
+	int count = 0;
+	int grille[s_size][s_size] = {};
+	for (unsigned int i = 0; i < s_size; i++){
+		memset(grille[i], 0, sizeof(int) * s_size);
+	}
+	print_grille(grille);
+	count = solve(grille, 1);
+	printf("Number of solution for this Sudoku is : %d\n", count);
+}
