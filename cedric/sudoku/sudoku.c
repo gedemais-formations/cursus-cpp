@@ -130,16 +130,6 @@ int solve(int sudoku[sqr][sqr], int indice){
     if(sudoku[sqr - 1][sqr - 1] != 0) {
         print_sudoku(sudoku);
         count = 1;
-    } else {
-        for (int i = 0; i < sqr; ++i) {
-            //Try all values in each cell
-            if(check_value(sudoku, sqr - 1, sqr - 1, i)) {
-                count ++;
-                sudoku[sqr - 1][sqr - 1] = i;
-                print_sudoku(sudoku);
-                sudoku[sqr - 1][sqr - 1] = 0;
-            }
-        }
     }
   } else {
     int x = indice / sqr; //get x with indice
