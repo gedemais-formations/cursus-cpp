@@ -10,7 +10,8 @@ SRC_NAME=main.c\
 SRC=$(addprefix $(SRC_PATH), $(SRC_NAME))
 
 INC_PATH=src/include/
-INC_NAME=error.h
+INC_NAME=error.h\
+		 main.h
 
 INC=$(addprefix $(INC_PATH), $(INC_NAME))
 
@@ -27,4 +28,4 @@ $(BIN_PATH)%.o: $(SRC_PATH)%.c $(INC)
 	@$(CC) $(FLAGS) -I$(INC_PATH) -o $@ -c $<
 
 clean:
-	rm -rf *.o
+	rm -rf bin/*.o

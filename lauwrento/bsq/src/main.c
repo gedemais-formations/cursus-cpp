@@ -1,14 +1,5 @@
-#include <error.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#include <main.h>
 //#define malloc(x) NULL
-#define BUFFER_SIZE 128
-
-void parser(char str);
-void error_handler(unsigned char code);
 
 int start(int argc, char **argv) {
   (void)argv;
