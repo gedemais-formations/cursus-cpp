@@ -1,39 +1,25 @@
 #include <main.h>
-//#define malloc(x) NULL
 
 int start(int argc, char **argv) {
-  (void)argv;
+  int fd, code;
+  char **board;
+  char *str;
+  // If there is no argument read stdin else read argv
+  if (argc == 1) {
+    fd = 0;
+  } else {
+    fd = open(argv[1], O_RDONLY);
+  }
 
-  char buf[BUFFER_SIZE];
-  char *ptr;
-  int size;
-  int fd;
+  str = (char *)malloc(BUFFER_SIZE);
+  if (str == NULL) return (ERROR_MEM);
 
-  //If there is no argument read stdin else read argv
-  fd = argc == 1 ? 0 : open(argv[1], O_RDONLY);
+  if ((code = analyse(fd, str) != ERROR_NONE)) {
+    return code;
+  }
 
-  ptr = (char *)malloc(BUFFER_SIZE);
-  if (ptr == NULL)
-    return (ERROR_MEM);
-  int i = 0;
-  // Get the content of FD
-  do {
-    size = read(fd, buf, BUFFER_SIZE);
-
-    if (size > 0) {
-      ptr = (char *)realloc(ptr, BUFFER_SIZE * (i + 1));
-
-      if (ptr == NULL)
-        return (ERROR_MEM);
-
-      memcpy(&ptr[BUFFER_SIZE * i], buf, size);
-    }
-    i++;
-
-  } while (size == BUFFER_SIZE);
-
-  write(1, ptr, strlen(ptr));
-
+  board = parser(fd, str);
+  (void)board;
   return (0);
 }
 
@@ -42,6 +28,6 @@ int main(int argc, char **argv) {
 
   if ((code = start(argc, argv)) != ERROR_NONE) {
     error_handler(code);
-    return (code); // errors defined in error.h
+    return (code);  // errors defined in error.h
   }
 }
