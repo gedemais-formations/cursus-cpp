@@ -77,9 +77,9 @@ int solve (int grille[s_size][s_size], int case_grille){
 	}
 	// Sinon on fait la récursvité sur la case suivante en testant les n = s_size numéros possible
 	else {
-		int c = ((case_grille - 1) % s_size); 
-		int r = ((case_grille - 1) / s_size);
-	
+		int c = (case_grille % s_size); 
+		int r = (case_grille / s_size);
+		// !! case_grille commence à 0, donc quand une ligne est complétée, case_grille est à 8 et non pas à 9 > ok
 		if (grille[c][r] != 0) {
 		count = solve(grille, case_grille + 1);
 		}
