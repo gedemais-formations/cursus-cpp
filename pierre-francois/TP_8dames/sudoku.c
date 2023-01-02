@@ -23,7 +23,7 @@ bool check_number(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int number, int ligne, i
 	//Check sur le 3*3
 
 	//On commence par regarder dans quel carré se trouve la case
-	
+
 	//On converti le double renvoyé par sqrt en int
 	int taille_carre = (int) sqrt(SUDOKU_SIZE);
 
@@ -31,7 +31,7 @@ bool check_number(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int number, int ligne, i
 	int colonne_carre = colonne/taille_carre;
 
 
-	//On parcours toutes les cases du carré 
+	//On parcours toutes les cases du carré
 	for(int i=0; i<taille_carre; i++)
 	{
 		for (int j=0; j<taille_carre; j++)
@@ -66,17 +66,17 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int num_case)
 	int nbSolution = 0;
 
 	//Condition d'initialisation, si l'on va jusqu'au bout du chess c'est que l'on a une solution
-	if (num_case == SUDOKU_SIZE*SUDOKU_SIZE)
-	{	
+	if (num_case == SUDOKU_SIZE*SUDOKU_SIZE-1)
+	{
 		if(sudoku[SUDOKU_SIZE-1][SUDOKU_SIZE-1] != 0)
 		{
 			print_sudoku(sudoku);
 			nbSolution = 1;
 		}
-		
+
 			else
 			{
-				for(int i=0; i<SUDOKU_SIZE; i++)
+				for(int i=1; i<=SUDOKU_SIZE; i++)
 				{
 					if(check_number(sudoku, i, SUDOKU_SIZE-1, SUDOKU_SIZE-1))
 					{
@@ -85,19 +85,32 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int num_case)
 					}
 				}
 			}
-	}
+	} else {
+        int x = num_case / SUDOKU_SIZE;
+        int y = num_case % SUDOKU_SIZE;
+
+        if(sudoku[x][y] != 0 ) {
+            nbSolution = solve(sudoku, num_case+1);
+        } else {
+            for (int i = 1; i < 10; ++i) {
+                if(check_number(sudoku, i, x, y)) {
+                    sudoku[x][y] = i;
+                    nbSolution += solve(sudoku, num_case+1);
+                    sudoku[x][y] = 0;
+                }
+            }
+        }
+    }
 	return nbSolution;
 }
 /*
 	for (int i =0; i < SUDOKU_SIZE; i++)
 	{
-
 		if (check_number(sudoku, chiffre, i, x) && sudoku[i][x] == 0)
 			{
 				sudoku[i][x]=chiffre;
-
 				nbSolution+=solve(sudoku, x+1);
-			
+
 				sudoku[i][x]=0;
 			}
 	}
@@ -111,15 +124,15 @@ int main(void)
 {
     int sudoku[SUDOKU_SIZE][SUDOKU_SIZE] =
 	{
-        {0,0,0,0,0,1,0,7,2},
-        {3,2,0,0,7,0,0,0,4},
-        {6,0,0,0,0,0,0,0,0},
-        {7,4,0,0,1,0,0,0,3},
-        {0,0,8,0,0,0,0,0,0},
-        {0,0,0,5,0,0,9,0,0},
-        {0,0,6,0,2,0,0,0,0},
-        {2,8,0,0,0,9,3,0,0},
-        {0,0,1,0,0,0,0,0,8}
+        {0,0,0,7,0,0,4,0,6},
+        {0,0,9,0,0,0,0,0,0},
+        {6,0,8,0,4,0,0,0,1},
+        {3,0,6,2,0,0,0,8,0},
+        {0,9,0,0,6,0,0,0,0},
+        {0,7,0,0,0,0,0,0,3},
+        {0,0,0,0,0,5,0,2,0},
+        {0,3,0,0,0,0,0,0,0},
+        {1,0,4,0,7,0,0,0,8}
 	};
 	print_sudoku(sudoku);
 	printf("%d\n", solve(sudoku, 0));
