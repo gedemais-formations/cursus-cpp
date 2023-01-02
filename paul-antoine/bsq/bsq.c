@@ -294,7 +294,17 @@ void find_best(t_field field) {
                 best_row = i;
                 best_col = j;
             }
-            //j+=n_best; ne fonctionne pas dans le cas ou l'obstacle est sur la ligne du bas
+            int skip = n_best;
+            int last_line = i+n_best+2;
+            if(last_line < field.row_size) {
+                for (int k = j; k < (j+n_best) && k < field.col_size; k++) {
+                    if(get_case(field.field[last_line], k)) {
+                        skip = k - j;
+                        break;
+                    }
+                }
+                j += skip;
+            }
         }
     }
 
