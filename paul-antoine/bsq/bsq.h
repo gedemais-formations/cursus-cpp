@@ -62,10 +62,10 @@ int get_field_std(t_field **field_ptr);
 /**
  * Parse a string buffer and put its data inside a new t_field
  * @param buffer The string buffer containing raw data
- * @param field_pointer a pointer to the pointer who'll hold the result
+ * @param field_ptr a pointer to the pointer who'll hold the result
  * @return 0 on success, errcode otherwise
  */
-int parse(char* buffer, t_field **field_pointer);
+int parse_field_buffer(char* buffer, t_field **field_ptr);
 /**
  * Print a field on stdout
  * @param field the field to print
