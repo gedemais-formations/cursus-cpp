@@ -2,6 +2,7 @@
 
 // appel des librairies
 
+#include<assert.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
@@ -19,7 +20,7 @@ void print_grille(int grille[s_size][s_size]){
 
 	for (int r=0; r<s_size; r++){
 		for (int c=0; c<s_size; c++){
-			printf("%d", grille[c][r]);
+			printf("%d", grille[r][c]);
 			if(c%(r_sqr) == r_sqr-1 && c != s_size -1){
           			printf("|");
         		}
@@ -39,7 +40,7 @@ void print_grille(int grille[s_size][s_size]){
 
 // fonction vérifiant que le chiffre n n'est pas sur la colonne, la ligne ou le carre 3x3
 
-/*
+/* 
 // pour tester le code avec une grille déjà préremplie
 int init_grille(int sudoku[s_size][s_size]){
   int grille[s_size][s_size] =
@@ -65,26 +66,29 @@ int init_grille(int sudoku[s_size][s_size]){
 
 
 bool check_case(int grille[s_size][s_size], int c, int r, int n){
-	int c_s = c/3;
-	int r_s = r/3;
+	float f_s_size = (float)s_size;
+	int r_sqr = (int)sqrt(f_s_size);
+	int c_s = c/r_sqr;
+	int r_s = r/r_sqr;
+	printf("-----------\n");
 
 	fflush(stdout);
 
 	// vérification si la case est vide
-	if (grille[c][r] != 0){
+	if (grille[r][c] != 0){
 		return(false);
 	}
 	for(int i=0; i<s_size; i++){
 		// check horizontal droite et gauche
 		// if (r-i > -1 && r+i < s_size && grille[c][r-i]==n && grille[c][r+i]==n){
 		//check chaque ligne en commençant à l'indice 0
-		if (grille[i][r]==n){
+		if (grille[i][c]==n){
 			return(false);
 		}
 		//check vertical haute et basse
 		//else if (c-i > -1 && c+i < s_size && grille[c-i][r]==n && grille[c+i][r]==n){
 		//check chaque colonne en commençant à l'indice 0
-		else if (grille[c][i]==n){
+		else if (grille[r][i]==n){
 		return(false);
 		}
 	}
@@ -93,7 +97,7 @@ bool check_case(int grille[s_size][s_size], int c, int r, int n){
 		// prise en compte que les index des lignes et col comme à 0
 	for (int j=0; j<(s_size/3); j++){
 		for (int k=0; k<(s_size/3); k++){
-			if(grille[(c_s*3)+j][(r_s*3)+k]==n){
+			if(grille[(r_s*3)+j][(c_s*3)+k]==n){
 			return(false);
 			}
 		}
@@ -107,27 +111,38 @@ bool check_case(int grille[s_size][s_size], int c, int r, int n){
 int solve (int grille[s_size][s_size], int case_grille){
 	int count =0;
 	int s_return;
-
-	// Check si on a pus placer un n à la dernière case du sudoku
+	
+	
+		// Check si on a pus placer un n à la dernière case du sudoku
 	if (case_grille == ((s_size*s_size)-1) && grille[s_size -1][s_size-1] != 0){
 		print_grille(grille);
 		return(1);
 	}
 	// Sinon on fait la récursvité sur la case suivante en testant les n = s_size numéros possible
 	else {
-		int c = (case_grille / s_size); 
-		int r = (case_grille % s_size);
-		// !! case_grille commence à 0, donc quand une ligne est complétée, case_grille est à 8 et non pas à 9 > ok
-		if (grille[c][r] != 0) {
+		int r = (case_grille / s_size); 
+		int c = (case_grille % s_size);
+		assert(r>=0);
+		printf("r >= 0 le programme peut se poursuivre normalement \n");
+		assert(r<s_size);
+		printf("r <= s_size le programme peut se poursuivre normalement \n");
+		assert(c>=0);
+		printf("c >= 0 le programme peut se poursuivre normalement \n");
+		assert(c<s_size);
+		printf("c <= s_size le programme peut se poursuivre normalement \n");
+
+		// printf("%d\n", grille[c][r]);
+		// !! indice de case_grille commence à 0, donc quand une ligne est complétée, case_grille est à 8 et non pas à 9 > ok
+		if (grille[r][c] != 0) {
 		count = solve(grille, case_grille + 1);
 		}
 		else {
 			for (int n = 1; n < s_size + 1; n++){
 				if (check_case(grille, c, r, n) == true){
-				grille[c][r] = n;
-				s_return = solve(grille, n+1);
+				grille[r][c] = n;
+				s_return = solve(grille, case_grille+1);
 				count += s_return;
-				grille[c][r]=0;
+				grille[r][c]=0;
 				}	
 			}
 		}
