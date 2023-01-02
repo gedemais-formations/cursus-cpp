@@ -65,15 +65,16 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int num_case)
 {
 	int nbSolution = 0;
 
-	//Condition d'initialisation, si l'on va jusqu'au bout du chess c'est que l'on a une solution
+	//Condition de solution : on se trouve sur la dernière case de la grille (case numéro 80 comme on commence à 0)
 	if (num_case == SUDOKU_SIZE*SUDOKU_SIZE-1)
 	{
+		//Si la case est différente de 0 c'est que l'on a placé un chiffre qui fonctionne et donc notre sudoku est terminé
 		if(sudoku[SUDOKU_SIZE-1][SUDOKU_SIZE-1] != 0)
 		{
 			print_sudoku(sudoku);
 			nbSolution = 1;
 		}
-
+		//Sinon on check tous les chiffres pour trouver celui qui correspond
 			else
 			{
 				for(int i=1; i<=SUDOKU_SIZE; i++)
@@ -86,11 +87,16 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int num_case)
 				}
 			}
 	} else {
+		//A partir du numéro de la case, on identifie sa localisation
+		//La division va nous permettre de connaître la ligne (en effet pour chaque "lot" de 9 dépassé on change de ligne)
         int x = num_case / SUDOKU_SIZE;
+		//Le modulo quant à lui nous permet de connaître sa colonne (pour chaque "lot" de 9 dépassé, le reste de la division repart donc à 0 et correspond au numéro de sa colonne) 
         int y = num_case % SUDOKU_SIZE;
 
+		//On regarde dans un premier temps si la case ne comporte pas déjà un chiffre, si c'est le cas, on passe à la case suivante
         if(sudoku[x][y] != 0 ) {
             nbSolution = solve(sudoku, num_case+1);
+		//Sinon on fait un check sur tous les chiffres et si un correspond on passe à la case suivante en résolvant par backtracking	
         } else {
             for (int i = 1; i <= SUDOKU_SIZE; ++i) {
                 if(check_number(sudoku, i, x, y)) {
