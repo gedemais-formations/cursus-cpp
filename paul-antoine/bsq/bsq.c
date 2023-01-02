@@ -12,6 +12,8 @@
 #include <errno.h>    // errno
 
 
+int skip_cases(t_field *field, int i, int j, int n_best);
+
 bool get_case(t_case* u_case, int global_index) {
     t_case curr_case = u_case[global_index/8];
     int position = global_index % 8;
@@ -294,21 +296,26 @@ void find_best(t_field field) {
                 best_row = i;
                 best_col = j;
             }
-            int skip = n_best;
-            int last_line = i+n_best+2;
-            if(last_line < field.row_size) {
-                for (int k = j; k < (j+n_best) && k < field.col_size; k++) {
-                    if(get_case(field.field[last_line], k)) {
-                        skip = k - j;
-                        break;
-                    }
-                }
-                j += skip;
-            }
+            j = skip_cases(&field, i, j, n_best);
         }
     }
 
     print_field(field, best, best_row, best_col);
+}
+
+int skip_cases(t_field *field, int i, int j, int n_best) {
+    int skip = n_best;
+    int last_line = i+n_best+2;
+    if(last_line < (*field).row_size) {
+        for (int k = j; k < (j+n_best) && k < (*field).col_size; k++) {
+            if(get_case((*field).field[last_line], k)) {
+                skip = k - j;
+                break;
+            }
+        }
+        j += skip;
+    }
+    return j;
 }
 
 void destruct(t_field field) {
