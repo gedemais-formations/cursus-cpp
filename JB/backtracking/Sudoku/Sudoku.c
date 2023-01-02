@@ -71,17 +71,17 @@ int solve (int grille[s_size][s_size], int case_grille){
 	int s_return;
 
 	// Check si on a pus placer un n à la dernière case du sudoku
-	if (case_grille == s_size*s_size && grille[s_size -1][s_size-1] != 0){
+	if (case_grille == ((s_size*s_size)-1) && grille[s_size -1][s_size-1] != 0){
 		print_grille(grille);
 		return(1);
 	}
 	// Sinon on fait la récursvité sur la case suivante en testant les n = s_size numéros possible
 	else {
-		int c = ((case_grille % s_size) -1); 
-		int r = case_grille / s_size;
+		int c = ((case_grille - 1) % s_size); 
+		int r = ((case_grille - 1) / s_size);
 	
 		if (grille[c][r] != 0) {
-		count = solve(grille, case_grille +1);
+		count = solve(grille, case_grille + 1);
 		}
 		else {
 			for (int n = 1; n < s_size + 1; n++){
