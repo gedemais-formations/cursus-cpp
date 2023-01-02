@@ -41,29 +41,50 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int x)
 {
     (void)sudoku;
     (void)x;
-
+    int ligne = x/SUDOKU_SIZE ;
+	int colonne = x % SUDOKU_SIZE ;
     int nbSolution = 0;
 
     //Condition d'initialisation, si l'on va jusqu'au bout du chess c'est que l'on a une solution
 
-    if (x >= SUDOKU_SIZE)
+    if (x == SUDOKU_SIZE*SUDOKU_SIZE -1)
     {
+		if(sudoku[SUDOKU_SIZE-1][SUDOKU_SIZE-1]!=0)
+		{
         print_sudoku(sudoku);
-        return 1;
-    }
-
-    for (int i =0; i < SUDOKU_SIZE; i++)
-    {
-        if (check_number(sudoku, 1, i, x) && sudoku[i][x] == 0)
-        {
-            sudoku[i][x]=1;
-
-            nbSolution+=solve(sudoku, x+1);
-
-            sudoku[i][x]=0;
-        }
-    }
-
+       return 1;
+		}
+		else
+		{
+			for (int i=1 ; i<=9;i++)
+			{
+				if check_number(sudoku,i,SUDOKU_SIZE-1,SUDOKU_SIZE-1)
+				{
+				nbSolution = nbSolution +1 ;
+				
+			     }
+				
+			}
+		}
+	else 
+	{
+		if(sudoku[ligne][colonne]!=0)
+		{
+		 nbSolution = solve(sudoku,x+1);
+		}
+			else
+			{   for (int i = 1;i<=9;i++)
+				{
+					 if (check_number(sudoku,i,ligne,colonne)
+					 {
+					sudoku[ligne][colonne]=i ;
+					nbSolution = nbSolution+solve(sudoku,x+1);
+					sudoku[ligne][colonne]=0 ;
+		           }
+				}
+			}
+		}
+	}	
     return (nbSolution);
 }
 
