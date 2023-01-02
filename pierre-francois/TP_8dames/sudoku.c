@@ -92,7 +92,7 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int num_case)
         if(sudoku[x][y] != 0 ) {
             nbSolution = solve(sudoku, num_case+1);
         } else {
-            for (int i = 1; i < 10; ++i) {
+            for (int i = 1; i <= SUDOKU_SIZE; ++i) {
                 if(check_number(sudoku, i, x, y)) {
                     sudoku[x][y] = i;
                     nbSolution += solve(sudoku, num_case+1);
