@@ -110,4 +110,7 @@ int a_to_i(char const *str, int* buffer);
  */
 void print_error(int errcode, const char* context);
 
+
+int skip_cases(t_field *field, int i, int j, int n_best);
+
 #endif //BSQ_BSQ_H

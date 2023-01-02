@@ -12,12 +12,12 @@
 #include <errno.h>    // errno
 
 
-int skip_cases(t_field *field, int i, int j, int n_best);
+
 
 bool get_case(t_case* u_case, int global_index) {
     t_case curr_case = u_case[global_index/8];
     int position = global_index % 8;
-    return (curr_case.val & (int) pow(2, position)) / pow(2, position) == true;
+    return (curr_case.val & (1 << position)) / (1 << position) == true;
 }
 
 void set_case(t_case *u_case, int global_index, bool value){
@@ -25,9 +25,9 @@ void set_case(t_case *u_case, int global_index, bool value){
     int position = global_index%8;
     bool old_value = get_case(u_case, global_index);
     if(value && !old_value ) {
-        curr_case->val = curr_case->val + (char) pow(2, position);
+        curr_case->val = curr_case->val + (1 << position) ;
     } else if(!value && old_value) {
-        curr_case->val = curr_case->val - (char) pow(2, position);
+        curr_case->val = curr_case->val - (1 << position);
     }
 }
 
@@ -276,21 +276,25 @@ int square_size(t_field field,int row, int col, int min_square) {
         for (int j = 0; j < i*i; ++j) {
             int byte_col = j%i+col;
             if(get_case(field.field[j/i+row], byte_col) ){
-                return i-1;
+                return byte_col - col;
             }
         }
     }
 
     return i-1;
 }
-
+//#include <stdlib.h> //system
 void find_best(t_field field) {
     int best = 0;
     int best_col=0, best_row=0;
 
     for (int i = 0; i < field.row_size; i++) {
         for (int j = 0; j < field.col_size; j++) {
-            int n_best = square_size(field,i,j, best);
+            int n_best = square_size(field, i, j, best-1);
+            
+            //system("clear");
+            //print_field(field,n_best, i, j);
+            //sleep(1);
             if(n_best > best) {
                 best = n_best;
                 best_row = i;
@@ -304,8 +308,8 @@ void find_best(t_field field) {
 }
 
 int skip_cases(t_field *field, int i, int j, int n_best) {
-    int skip = n_best;
-    int last_line = i+n_best+2;
+    int skip = !n_best?0:n_best - 1;
+    int last_line = i + n_best;
     if(last_line < (*field).row_size) {
         for (int k = j; k < (j+n_best) && k < (*field).col_size; k++) {
             if(get_case((*field).field[last_line], k)) {
