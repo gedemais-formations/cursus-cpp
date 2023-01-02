@@ -92,7 +92,7 @@ void write_tab(char * buffer) {
 }
 
 //Cas où aucun argument n'est passé, création d'un nouveau fichier
-void create_file() {
+/*void create_file() {
 	int line_size, size_buffer, s, f, w, cl, r;
 	char str[100], new_filename[100], * buffer;
 	struct stat buf;
@@ -142,6 +142,33 @@ void create_file() {
 		puts(strerror(errno));
 		return;
 	}
+}*/
+
+//cat example
+void command(int argc, char ** argv) {
+	FILE * f;
+	char * c, ch, * buffer, * str;
+	str = (char *)malloc(256);
+	if(!str) {
+		puts(strerror(errno));
+		return;
+	}
+	buffer = (char *)malloc(256);
+	if(!buffer) {
+		puts(strerror(errno));
+		return;
+	}
+	puts("Entrez une commande :");
+	fgets(buffer, 256, stdin);
+	f = popen(buffer, "r");
+	if(!f) {
+		puts(strerror(errno));
+		return;
+	}
+	while((ch = fgetc(f)) != EOF) strcat(str, &ch);
+	write_tab(str);
+	if(buffer) free(buffer);
+	if(str) free(str);
 }
 
 int main(int argc, char ** argv) {
@@ -154,7 +181,8 @@ int main(int argc, char ** argv) {
 		puts(strerror(errno));
 		return -1;
 	}
-	if(argc == 1) create_file();
+	//if(argc == 1) create_file();
+	if(argc == 1) command(argc, argv);
 	else{
 		for(i = 1; i < argc; i++) {
 			s = stat(argv[i], &buf);
