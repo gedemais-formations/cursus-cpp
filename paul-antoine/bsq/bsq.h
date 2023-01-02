@@ -81,7 +81,7 @@ void print_field(t_field field, int size, int row, int col);
  * @param col starting column
  * @return Max square size without an obstacle
  */
-int square_size(t_field field,int row, int col);
+int square_size(t_field field,int row, int col, int min_square);
 
 /**
  * Find the biggest square possible in a field and print the result on stdout
