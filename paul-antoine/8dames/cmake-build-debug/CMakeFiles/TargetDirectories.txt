@@ -1,0 +1,3 @@
+/home/pad/cursus-cpp/paul-antoine/8dames/cmake-build-debug/CMakeFiles/8dames.dir
+/home/pad/cursus-cpp/paul-antoine/8dames/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/pad/cursus-cpp/paul-antoine/8dames/cmake-build-debug/CMakeFiles/rebuild_cache.dir
