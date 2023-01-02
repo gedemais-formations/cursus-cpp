@@ -88,21 +88,28 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int num_case)
 			}
 	} else {
 		//A partir du numéro de la case, on identifie sa localisation
-		//La division va nous permettre de connaître la ligne (en effet pour chaque "lot" de 9 dépassé on change de ligne)
-        int x = num_case / SUDOKU_SIZE;
-		//Le modulo quant à lui nous permet de connaître sa colonne (pour chaque "lot" de 9 dépassé, le reste de la division repart donc à 0 et correspond au numéro de sa colonne) 
-        int y = num_case % SUDOKU_SIZE;
 
-		//On regarde dans un premier temps si la case ne comporte pas déjà un chiffre, si c'est le cas, on passe à la case suivante
-        if(sudoku[x][y] != 0 ) {
+		//La division va nous permettre de connaître la ligne
+		//(en effet pour chaque "lot" de 9 dépassé on change de ligne)
+        int ligne = num_case / SUDOKU_SIZE;
+
+		//Le modulo quant à lui nous permet de connaître sa colonne 
+		//(pour chaque "lot" de 9 dépassé, le reste de la division repart donc à 0 et correspond au numéro de sa colonne) 
+        int colonne = num_case % SUDOKU_SIZE;
+
+		//On regarde dans un premier temps si la case ne comporte pas déjà un chiffre, 
+		//si c'est le cas, on passe à la case suivante
+        if(sudoku[ligne][colonne] != 0 ) {
             nbSolution = solve(sudoku, num_case+1);
-		//Sinon on fait un check sur tous les chiffres et si un correspond on passe à la case suivante en résolvant par backtracking	
+
+		//Sinon on fait un check sur tous les chiffres
+		//et si un correspond, on passe à la case suivante en résolvant par backtracking	
         } else {
             for (int i = 1; i <= SUDOKU_SIZE; ++i) {
-                if(check_number(sudoku, i, x, y)) {
-                    sudoku[x][y] = i;
+                if(check_number(sudoku, i, ligne, colonne)) {
+                    sudoku[ligne][colonne] = i;
                     nbSolution += solve(sudoku, num_case+1);
-                    sudoku[x][y] = 0;
+                    sudoku[ligne][colonne] = 0;
                 }
             }
         }
