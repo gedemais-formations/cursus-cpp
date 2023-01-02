@@ -9,16 +9,23 @@
 #include <stdio.h>
 #include <string.h> // memcpy
 #include <math.h>
+#include <errno.h>
 
-bool get_case(t_case u_case, int i) {
-    return (u_case.val & (int) pow(2,i)) / pow(2,i) == true;
+
+bool get_case(t_case* u_case, int global_index) {
+    t_case curr_case = u_case[global_index/8];
+    int position = global_index % 8;
+    return (curr_case.val & (int) pow(2, position)) / pow(2, position) == true;
 }
 
-void set_case(t_case *u_case, int i, bool value){
-    if(value && !(get_case(*u_case, i))) {
-        u_case->val = u_case->val + (int) pow(2, i);
-    } else if(!value && get_case(*u_case, i)) {
-        u_case->val = u_case->val - (int) pow(2, i);
+void set_case(t_case *u_case, int global_index, bool value){
+    t_case* curr_case = &u_case[global_index / 8];
+    int position = global_index%8;
+    bool old_value = get_case(u_case, global_index);
+    if(value && !old_value ) {
+        curr_case->val = curr_case->val + (char) pow(2, position);
+    } else if(!value && old_value) {
+        curr_case->val = curr_case->val - (char) pow(2, position);
     }
 }
 
@@ -26,28 +33,31 @@ int get_field(char* file, t_field **field_ptr) {
     int fileDescriptor = open(file, O_RDONLY);
 
     if (fileDescriptor == -1 ) {
-        printf("i'mhere!");
-        return ERROR_CANT_OPEN_FILE
+        print_error(ERROR_CANT_OPEN_FILE, file);
+        return ERROR_CANT_OPEN_FILE;
     }
 
     struct stat file_stat;
     int err = stat(file, &file_stat);
 
     if(err != 0) {
-        return ERROR_CANT_READ_FILE
+        print_error(ERROR_CANT_READ_FILE, file);
+        return ERROR_CANT_READ_FILE;
     }
 
     char* buffer = malloc(file_stat.st_size);
 
     if(buffer == NULL) {
-        return ERROR_CANT_ALLOCATE_MEMORY
+        print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
+        return ERROR_CANT_ALLOCATE_MEMORY;
     }
 
     ssize_t byteRead = read(fileDescriptor, buffer, file_stat.st_size);
 
     if(byteRead == -1 ){
         free(buffer);
-        return ERROR_CANT_READ_FILE
+        print_error(ERROR_CANT_READ_FILE, file);
+        return ERROR_CANT_READ_FILE;
     }
 
     close(fileDescriptor);
@@ -75,12 +85,11 @@ int get_field_std(t_field ** field_pointer) {
             memcpy(&new_buff[total], tmp_buff, batch);
             free(tmp_buff);
             buffer = new_buff;
+            total += batch;
         }
     } while (batch >= BATCH_SIZE);
 
-    parse(buffer, field_pointer);
-
-    return 0;
+    return parse(buffer, field_pointer);
 }
 
 int parse(char *buffer, t_field **field_ptr) {
@@ -95,7 +104,8 @@ int parse(char *buffer, t_field **field_ptr) {
 
     if(iter==0) {
         free(buffer);
-        return ERROR_INVALID_PATTERN
+        print_error(ERROR_INVALID_PATTERN, "");
+        return ERROR_INVALID_PATTERN;
     }
 
     int length;
@@ -107,7 +117,8 @@ int parse(char *buffer, t_field **field_ptr) {
         iter++;
     } else {
         free(buffer);
-        return ERROR_INVALID_PATTERN
+        print_error(ERROR_INVALID_PATTERN, "");
+        return ERROR_INVALID_PATTERN;
     }
 
     if(buffer[iter] != '\n' && buffer[iter] != '\r') {
@@ -115,7 +126,8 @@ int parse(char *buffer, t_field **field_ptr) {
         iter++;
     } else {
         free(buffer);
-        return ERROR_INVALID_PATTERN
+        print_error(ERROR_INVALID_PATTERN, "");
+        return ERROR_INVALID_PATTERN;
     }
 
     if(buffer[iter] != '\n' && buffer[iter] != '\r') {
@@ -123,14 +135,16 @@ int parse(char *buffer, t_field **field_ptr) {
         iter++;
     } else {
         free(buffer);
-        return ERROR_INVALID_PATTERN
+        print_error(ERROR_INVALID_PATTERN, "");
+        return ERROR_INVALID_PATTERN;
     }
 
     if(buffer[iter] == '\n' || buffer[iter] == '\r') {
         iter++;
     } else {
         free(buffer);
-        return ERROR_INVALID_PATTERN
+        print_error(ERROR_INVALID_PATTERN, "");
+        return ERROR_INVALID_PATTERN;
     }
 
     int line_size = 0;
@@ -142,7 +156,8 @@ int parse(char *buffer, t_field **field_ptr) {
 
     if(line_size == 0) {
         free(buffer);
-        return ERROR_INVALID_PATTERN
+        print_error(ERROR_INVALID_PATTERN, "");
+        return ERROR_INVALID_PATTERN;
     }
 
     field.col_size = line_size;
@@ -159,7 +174,8 @@ int parse(char *buffer, t_field **field_ptr) {
             }
             free(field.field);
             free(buffer);
-            return ERROR_CANT_ALLOCATE_MEMORY
+            print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
+            return ERROR_CANT_ALLOCATE_MEMORY;
         }
 
         while (buffer[iter] != '\n' && buffer[iter] != '\0' && current_size < line_size) {
@@ -167,21 +183,22 @@ int parse(char *buffer, t_field **field_ptr) {
             char current = buffer[iter];
 
             if(current_size%8==0)
-                field.field[i][current_size/8].val = 0;
+                field.field[i][current_size/8].val = 254;
 
             if(current == field.empty) {
                 //printf("here %d\n", current_size);
                 //fflush(stdout);
-                set_case(&field.field[i][current_size/8], current_size%8, false);
+                set_case(field.field[i], current_size, false);
             } else if(current == field.obstacle) {
-                set_case(&field.field[i][current_size/8], current_size%8, true);
+                set_case(field.field[i], current_size, true);
             } else {
                 for (int j = 0; j < i; ++j) {
                     free(field.field[j]);
                 }
                 free(field.field);
                 free(buffer);
-                return ERROR_INVALID_PATTERN
+                print_error(ERROR_INVALID_PATTERN, "");
+                return ERROR_INVALID_PATTERN;
             }
 
             // buffer[iter];
@@ -195,7 +212,8 @@ int parse(char *buffer, t_field **field_ptr) {
             }
             free(field.field);
             free(buffer);
-            return ERROR_INVALID_PATTERN
+            print_error(ERROR_INVALID_PATTERN, "");
+            return ERROR_INVALID_PATTERN;
         }
 
         if(buffer[iter] != '\0')
@@ -213,7 +231,7 @@ void print_field(t_field field, int size, int row, int col) {
         for (int j = 0; j < field.col_size; ++j) {
             if(i>=row && i < (row + size) && j >= col && j < (col + size)) {
                 printf("%c", field.full);
-            }else if(get_case(field.field[i][j/8],j%8)) {
+            }else if(get_case(field.field[i],j)) {
                 printf("%c", field.obstacle);
             } else {
                 printf("%c", field.empty);
@@ -229,7 +247,7 @@ int square_size(t_field field,int row, int col) {
     for (i = 1; i + row < field.row_size && i + col < field.col_size ; ++i) {
         for (int j = 0; j < i*i; ++j) {
             int byte_col = j%i+col;
-            if(get_case(field.field[j/i+row][byte_col/8], byte_col%8) ){
+            if(get_case(field.field[j/i+row], byte_col) ){
                 return i-1;
             }
         }
@@ -250,6 +268,7 @@ void find_best(t_field field) {
                 best_row = i;
                 best_col = j;
             }
+            j+=n_best;
         }
     }
 
@@ -271,11 +290,50 @@ int a_to_i(char const *str, int* buffer) {
         if(str[i] >= '0' && str[i] <= '9') {
             result = result * 10 + (int) (str[i] - '0');
         } else {
-            return ERROR_INVALID_PATTERN
+            return ERROR_INVALID_PATTERN;
         }
     }
 
     *buffer=result;
 
     return 0;
+}
+
+void print_error(int errcode, const char* context) {
+    const char* ERRORS_MESSAGES[5] = {
+            "SUCCESS\n",
+            "Error : Can't open % \n",
+            "Error : Can't read % \n",
+            "Error : invalid pattern \n",
+            "Error : not enough memory \n"
+    };
+    char result[100];
+    const char* err_msg = ERRORS_MESSAGES[errcode];
+    int iter_err = 0;
+    int iter_context = 0;
+    int iter_res = 0;
+    for (; iter_res < 99; ++iter_res) {
+        if(err_msg[iter_err] != '%' && err_msg[iter_err] != '\0') {
+            result[iter_res] = err_msg[iter_err];
+            iter_err++;
+        } else if (err_msg[iter_err] == '%') {
+            if(context[iter_context] != '\0') {
+                result[iter_res] = context[iter_context];
+                iter_context++;
+            } else {
+                iter_err++;
+                iter_res--;
+            }
+        } else {
+            break;
+        }
+    }
+
+
+    result[iter_res] = '\0';
+
+    if(errno != 0)
+        perror(result);
+    else
+        write(2, result, iter_res);
 }
