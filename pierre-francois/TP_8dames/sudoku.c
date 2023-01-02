@@ -105,7 +105,7 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int num_case)
 		//Sinon on fait un check sur tous les chiffres
 		//et si un correspond, on passe à la case suivante en résolvant par backtracking	
         } else {
-            for (int i = 1; i <= SUDOKU_SIZE; ++i) {
+            for (int i = 1; i <= SUDOKU_SIZE; i++) {
                 if(check_number(sudoku, i, ligne, colonne)) {
                     sudoku[ligne][colonne] = i;
                     nbSolution += solve(sudoku, num_case+1);
@@ -116,22 +116,6 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int num_case)
     }
 	return nbSolution;
 }
-/*
-	for (int i =0; i < SUDOKU_SIZE; i++)
-	{
-		if (check_number(sudoku, chiffre, i, x) && sudoku[i][x] == 0)
-			{
-				sudoku[i][x]=chiffre;
-				nbSolution+=solve(sudoku, x+1);
-
-				sudoku[i][x]=0;
-			}
-	}
-	chiffre++;
-}
-	print_sudoku(sudoku);
-    return (nbSolution);
-}*/
 
 int main(void)
 {
@@ -141,7 +125,7 @@ int main(void)
         {0,0,9,0,0,0,0,0,0},
         {6,0,8,0,4,0,0,0,1},
         {3,0,6,2,0,0,0,8,0},
-        {0,9,0,0,6,0,0,0,0},
+        {0,9,0,0,0,0,0,0,0},
         {0,7,0,0,0,0,0,0,3},
         {0,0,0,0,0,5,0,2,0},
         {0,3,0,0,0,0,0,0,0},
