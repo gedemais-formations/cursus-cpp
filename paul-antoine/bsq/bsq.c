@@ -88,6 +88,10 @@ int get_field_std(t_field ** field_pointer) {
         /*if(batch < BATCH_SIZE ) {
             printf("%ld %d\n", batch, count);
         }*/
+        if(batch == -1 ) {
+            print_error(ERROR_CANT_READ_FILE, "stdin");
+            return ERROR_CANT_READ_FILE;
+        }
 
         if(total==0) {
             buffer = tmp_buff;
@@ -250,10 +254,10 @@ void print_field(t_field field, int size, int row, int col) {
 
     for (int i = 0; i < field.row_size; ++i) {
         for (int j = 0; j < field.col_size; ++j) {
-            if(i>=row && i < (row + size) && j >= col && j < (col + size)) {
-                printf("%c", field.full);
-            }else if(get_case(field.field[i],j)) {
+            if(get_case(field.field[i],j)) {
                 printf("%c", field.obstacle);
+            }else if(i>=row && i < (row + size) && j >= col && j < (col + size)) {
+                printf("%c", field.full);
             } else {
                 printf("%c", field.empty);
             }
@@ -265,7 +269,8 @@ void print_field(t_field field, int size, int row, int col) {
 
 int square_size(t_field field,int row, int col) {
     int i;
-    for (i = 1; i + row < field.row_size && i + col < field.col_size ; ++i) {
+
+    for (i = 1; i + row < field.row_size +1 && i + col < field.col_size +1 ; ++i) {
         for (int j = 0; j < i*i; ++j) {
             int byte_col = j%i+col;
             if(get_case(field.field[j/i+row], byte_col) ){
