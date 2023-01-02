@@ -13,18 +13,56 @@
 // fonction qui construite la grille du sudoku rempli de 0
 
 void print_grille(int grille[s_size][s_size]){
+	float f_s_size = (float)s_size;
+	int r_sqr = (int)sqrt(f_s_size);
 	printf("-----------\n");
 
 	for (int r=0; r<s_size; r++){
 		for (int c=0; c<s_size; c++){
 			printf("%d", grille[c][r]);
-		}
-		printf("\n");
+			if(c%(r_sqr) == r_sqr-1 && c != s_size -1){
+          			printf("|");
+        		}
+      		}
+      		printf("\n");
+      		if(r%r_sqr == r_sqr-1){
+        		printf("-");
+        		for(int i = 0; i < s_size; i++){
+          			printf("-");
+        	}
+        		printf("-\n");
+      		}
 	}
+	printf("\n");
 	printf("----------\n");
 }
 
 // fonction vérifiant que le chiffre n n'est pas sur la colonne, la ligne ou le carre 3x3
+
+/*
+// pour tester le code avec une grille déjà préremplie
+int init_grille(int sudoku[s_size][s_size]){
+  int grille[s_size][s_size] =
+    {
+        {9,0,0,1,0,0,0,0,5},
+        {0,0,5,0,9,0,2,0,1},
+        {8,0,0,0,4,0,0,0,0},
+        {0,0,0,0,8,0,0,0,0},
+        {0,0,0,7,0,0,0,0,0},
+        {0,0,0,0,2,6,0,0,9},
+        {2,0,0,3,0,0,0,0,6},
+        {0,0,0,2,0,0,9,0,0},
+        {0,0,1,9,0,4,5,7,0}
+    };
+  for(int i=0; i<s_size; i++){
+    for(int j = 0; j < s_size; j++){
+      sudoku[i][j] = grille[i][j];
+    }
+  }
+  return (0);
+}
+*/
+
 
 bool check_case(int grille[s_size][s_size], int c, int r, int n){
 	int c_s = c/3;
@@ -34,7 +72,7 @@ bool check_case(int grille[s_size][s_size], int c, int r, int n){
 
 	// vérification si la case est vide
 	if (grille[c][r] != 0){
-	return(false);
+		return(false);
 	}
 	for(int i=0; i<s_size; i++){
 		// check horizontal droite et gauche
@@ -77,8 +115,8 @@ int solve (int grille[s_size][s_size], int case_grille){
 	}
 	// Sinon on fait la récursvité sur la case suivante en testant les n = s_size numéros possible
 	else {
-		int c = (case_grille % s_size); 
-		int r = (case_grille / s_size);
+		int c = (case_grille / s_size); 
+		int r = (case_grille % s_size);
 		// !! case_grille commence à 0, donc quand une ligne est complétée, case_grille est à 8 et non pas à 9 > ok
 		if (grille[c][r] != 0) {
 		count = solve(grille, case_grille + 1);
@@ -100,11 +138,16 @@ int solve (int grille[s_size][s_size], int case_grille){
 int main(void){
 	// initialisation de la grille
 	int grille[s_size][s_size] = {};
+	// pour tester avec une grille déjà pré-remplie
+	// init_grille(grille);
+	/*
 	for (unsigned int i = 0; i < s_size; i++){
 		memset(grille[i], 0, sizeof(int) * s_size);
 	}
+	*/
 	print_grille(grille);
 	int nb_solution = solve(grille, 0);
 	printf("Number of solution for this Sudoku is : %d\n", nb_solution);
-	return 0;
+	return (0);
 }
+// il y a toujours une erreur, il y a un 0 en grille[1][0]
