@@ -10,8 +10,9 @@
 
 #define BUFFER_SIZE 128
 
-char **parser(int fd, char *str);
-int analyse(int fd, char *str);
+char **parser(char *str, int *error_code);
+int analyse(char **board);
+int read_fd(int fd, char *str);
 void error_handler(unsigned char code);
 void min(int a, int b);
 void max(int a, int b);

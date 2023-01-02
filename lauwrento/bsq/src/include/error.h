@@ -7,6 +7,7 @@ enum e_error_id
 {
 	ERROR_NONE,
 	ERROR_MEM,
+	ERROR_POINTER,
 	ERROR_MAX
 };
 
@@ -17,6 +18,7 @@ typedef struct s_error
 
 static const t_error errors[ERROR_MAX] = {
 		[ERROR_MEM] = {"Memory allocation failed\n"},
+		[ERROR_POINTER] = {"NULL Pointer\n"},
 };
 
 #endif

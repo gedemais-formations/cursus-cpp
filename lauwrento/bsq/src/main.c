@@ -13,12 +13,17 @@ int start(int argc, char **argv) {
 
   str = (char *)malloc(BUFFER_SIZE);
   if (str == NULL) return (ERROR_MEM);
+  read_fd(fd, str);
 
-  if ((code = analyse(fd, str) != ERROR_NONE)) {
+  board = parser(str, &code);
+  if (board == NULL){
+    code = ERROR_POINTER;
+  }
+
+  if ((code = analyse(board) != ERROR_NONE)) {
     return code;
   }
 
-  board = parser(fd, str);
   (void)board;
   return (0);
 }
