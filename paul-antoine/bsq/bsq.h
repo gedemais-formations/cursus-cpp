@@ -107,8 +107,9 @@ int a_to_i(char const *str, int* buffer);
  * Print a message linked to "errcode" and add content of "context" in it
  * @param errcode The error code as defined in bsq.h
  * @param context Some context to add to the error (eg. filename)
+ * @return errcode
  */
-void print_error(int errcode, const char* context);
+int print_error(int errcode, const char* context);
 
 
 int skip_cases(t_field *field, int i, int j, int n_best);

@@ -35,25 +35,22 @@ int get_field(char* file, t_field **field_ptr) {
     int fileDescriptor = open(file, O_RDONLY);
 
     if (fileDescriptor == -1 ) {
-        print_error(ERROR_CANT_OPEN_FILE, file);
-        return ERROR_CANT_OPEN_FILE;
+        return print_error(ERROR_CANT_OPEN_FILE, file);
     }
 
     struct stat file_stat;
     int err = stat(file, &file_stat);
 
     if(err != 0) {
-        print_error(ERROR_CANT_READ_FILE, file);
         close(fileDescriptor);
-        return ERROR_CANT_READ_FILE;
+        return print_error(ERROR_CANT_READ_FILE, file);
     }
 
     char* buffer = malloc(file_stat.st_size);
 
     if(buffer == NULL) {
-        print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
         close(fileDescriptor);
-        return ERROR_CANT_ALLOCATE_MEMORY;
+        return print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
     }
 
     ssize_t byteRead = read(fileDescriptor, buffer, file_stat.st_size);
@@ -61,8 +58,7 @@ int get_field(char* file, t_field **field_ptr) {
     if(byteRead == -1 ){
         free(buffer);
         close(fileDescriptor);
-        print_error(ERROR_CANT_READ_FILE, file);
-        return ERROR_CANT_READ_FILE;
+        return print_error(ERROR_CANT_READ_FILE, file);
     }
 
     close(fileDescriptor);
@@ -75,15 +71,14 @@ int get_field_std(t_field ** field_pointer) {
 #define BATCH_SIZE 8192
     char *buffer = "";
     long total=0;
-    long batch = 0;
+    long batch;
     int count = 0;
     do {
         count++;
         char* tmp_buff = malloc(sizeof(char) * BATCH_SIZE);
         if(tmp_buff == NULL) {
-            if(buffer != NULL) free(buffer);
-            print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
-            return ERROR_CANT_ALLOCATE_MEMORY;
+            if(count > 1) free(buffer);
+            return print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
         }
         fflush(stdin);
         batch = read(0, tmp_buff, BATCH_SIZE);
@@ -91,8 +86,8 @@ int get_field_std(t_field ** field_pointer) {
             printf("%ld %d\n", batch, count);
         }*/
         if(batch == -1 ) {
-            print_error(ERROR_CANT_READ_FILE, "stdin");
-            return ERROR_CANT_READ_FILE;
+            if(count > 1) free(buffer);
+            return print_error(ERROR_CANT_READ_FILE, "stdin");
         }
 
         if(total==0) {
@@ -103,8 +98,7 @@ int get_field_std(t_field ** field_pointer) {
             if(new_buff == NULL) {
                 free(buffer);
                 free(tmp_buff);
-                print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
-                return ERROR_CANT_ALLOCATE_MEMORY;
+                return print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
             }
             memcpy(new_buff, buffer, total);
             free(buffer);
@@ -131,8 +125,7 @@ int parse_field_buffer(char *buffer, t_field **field_ptr) {
 
     if(iter==0) {
         free(buffer);
-        print_error(ERROR_INVALID_PATTERN, "");
-        return ERROR_INVALID_PATTERN;
+        return print_error(ERROR_INVALID_PATTERN, "");
     }
 
     int length;
@@ -144,8 +137,7 @@ int parse_field_buffer(char *buffer, t_field **field_ptr) {
         iter++;
     } else {
         free(buffer);
-        print_error(ERROR_INVALID_PATTERN, "");
-        return ERROR_INVALID_PATTERN;
+        return print_error(ERROR_INVALID_PATTERN, "");
     }
 
     if(buffer[iter] != '\n' && buffer[iter] != '\r') {
@@ -153,8 +145,7 @@ int parse_field_buffer(char *buffer, t_field **field_ptr) {
         iter++;
     } else {
         free(buffer);
-        print_error(ERROR_INVALID_PATTERN, "");
-        return ERROR_INVALID_PATTERN;
+        return print_error(ERROR_INVALID_PATTERN, "");
     }
 
     if(buffer[iter] != '\n' && buffer[iter] != '\r') {
@@ -162,16 +153,14 @@ int parse_field_buffer(char *buffer, t_field **field_ptr) {
         iter++;
     } else {
         free(buffer);
-        print_error(ERROR_INVALID_PATTERN, "");
-        return ERROR_INVALID_PATTERN;
+        return print_error(ERROR_INVALID_PATTERN, "");
     }
 
     if(buffer[iter] == '\n' || buffer[iter] == '\r') {
         iter++;
     } else {
         free(buffer);
-        print_error(ERROR_INVALID_PATTERN, "");
-        return ERROR_INVALID_PATTERN;
+        return print_error(ERROR_INVALID_PATTERN, "");
     }
 
     int line_size = 0;
@@ -183,8 +172,7 @@ int parse_field_buffer(char *buffer, t_field **field_ptr) {
 
     if(line_size == 0) {
         free(buffer);
-        print_error(ERROR_INVALID_PATTERN, "");
-        return ERROR_INVALID_PATTERN;
+        return print_error(ERROR_INVALID_PATTERN, "");
     }
 
     field.col_size = line_size;
@@ -224,8 +212,7 @@ int parse_field_buffer(char *buffer, t_field **field_ptr) {
                 }
                 free(field.field);
                 free(buffer);
-                print_error(ERROR_INVALID_PATTERN, "");
-                return ERROR_INVALID_PATTERN;
+                return print_error(ERROR_INVALID_PATTERN, "");
             }
 
             // buffer[iter];
@@ -239,8 +226,7 @@ int parse_field_buffer(char *buffer, t_field **field_ptr) {
             }
             free(field.field);
             free(buffer);
-            print_error(ERROR_INVALID_PATTERN, "");
-            return ERROR_INVALID_PATTERN;
+            return print_error(ERROR_INVALID_PATTERN, "");
         }
 
         if(buffer[iter] != '\0')
@@ -337,7 +323,7 @@ int a_to_i(char const *str, int* buffer) {
         if(str[i] >= '0' && str[i] <= '9') {
             result = result * 10 + (int) (str[i] - '0');
         } else {
-            return ERROR_INVALID_PATTERN;
+            return print_error(ERROR_INVALID_PATTERN, "");
         }
     }
 
@@ -346,7 +332,7 @@ int a_to_i(char const *str, int* buffer) {
     return 0;
 }
 
-void print_error(int errcode, const char* context) {
+int print_error(int errcode, const char* context) {
     const char* ERRORS_MESSAGES[5] = {
             "SUCCESS\n",
             "Error : Can't open % \n",
@@ -383,4 +369,6 @@ void print_error(int errcode, const char* context) {
         perror(result);
     else
         write(2, result, iter_res);
+
+    return errcode;
 }
