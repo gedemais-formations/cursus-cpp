@@ -9,15 +9,60 @@
 
 void write_x(int ** coord, int size, char ** tab, int max_x, int max_y) {
 	int i, j, maxX, maxY, minX, minY;
-	maxX = maxY = 0;
-	minX = max_x; minY = max_y;
+	char ok;
+	ok = 1;
+	maxX = maxY = -1;
+	minX = max_x + 1; minY = max_y + 1;
 	//On sélectionne l'intervalle
 	for(i = 0; i < size; i++) {
 		if(maxX < coord[i][1]) maxX = coord[i][1];
-		else if(minX > coord[i][1]) minX = coord[i][1];
+		else if(minX > coord[i][1]) minX = coord[i][1] + 1;
 		if(maxY < coord[i][0]) maxY = coord[i][0];
-		else if(minY > coord[i][0]) minY = coord[i][0];
+		else if(minY > coord[i][0]) minY = coord[i][0] + 1;
 	}
+	//Prolonge potentiellement le carré par le haut (ssi pas d'obstacle)
+	for(i = minY; i > 0; i--) {
+		for(j = minX; j < maxX; j++) {
+			if(tab[i][j] == 'o') {
+				minY = i + 1;
+				ok = 0;
+			}
+		}
+	}
+	if(ok) minY = 0;
+	ok = 1;
+	//Prolonge potentiellement le carré par le bas (ssi pas d'obstacle)
+	for(i = maxY; i < max_y; i++) {
+		for(j = minX; j < maxX; j++) {
+			if(tab[i][j] == 'o') {
+				maxY = i - 1;
+				ok = 0;
+			}
+		}
+	}
+	if(ok) maxY = max_y;
+	ok = 1;
+	//Prolonge potentiellement le carré par la gauche (ssi pas d'obstacle)
+	for(i = minY; i < maxY; i++) {
+		for(j = minX; j > 0; j--) {
+			if(tab[i][j] == 'o') {
+				minX = j + 1;
+				ok = 0;
+			}
+		}
+	}
+	if(ok) minX = 0;
+	ok = 1;
+	//Prolonge potentiellement le carré par la droite (ssi pas d'obstacle)
+	for(i = minY; i < maxY; i++) {
+		for(j = maxX; j < max_x; j++) {
+			if(tab[i][j] == 'o') {
+				maxX = j;
+				ok = 0;
+			}
+		}
+	}
+	if(ok) maxX = max_x;
 	//Le carré est situé entre ces coordonnées
 	for(i = minY; i < maxY; i++) for(j = minX; j < maxX; j++) tab[i][j] = 'x';
 	for(i = 0; i < max_y; i++) printf("\n%s", tab[i]);
@@ -100,59 +145,6 @@ void write_tab(char * buffer) {
 	free(tab);
 }
 
-//Cas où aucun argument n'est passé, création d'un nouveau fichier
-/*void create_file() {
-	int line_size, size_buffer, s, f, w, cl, r;
-	char str[100], new_filename[100], * buffer;
-	struct stat buf;
-	size_buffer = 0;
-	puts("Entrez un nom de fichier : ");
-	s = scanf("%s", &new_filename);
-	if(s == -1) {
-		puts(strerror(errno));
-		return;
-	}
-	f = open(new_filename, O_CREAT|O_RDWR|O_TRUNC, 0777);
-	if(!f) {
-		puts(strerror(errno));
-		return;
-	}
-	while(1) {
-		puts("Entrez une ligne : ");
-		scanf("%s", &str);
-		if(str[0] != '.' && str[0] != 'o') break;
-		strcat(str, "\n");
-		w = write(f, str, strlen(str));
-		if(w == -1) {
-			puts(strerror(errno));
-			return;
-		}
-	}
-	s = stat(new_filename, &buf);
-	if(s == -1) {
-		puts(strerror(errno));
-		return;
-	}
-	size_buffer = buf.st_size;
-	buffer = (char *)malloc(size_buffer);
-	if(!buffer) {
-		puts(strerror(errno));
-		return;
-	}
-	r = read(f, buffer, size_buffer);
-	if(r == -1) {
-		puts(strerror(errno));
-		return;
-	}
-	write_tab(buffer);
-	cl = close(f);
-	free(buffer);
-	if(cl == -1) {
-		puts(strerror(errno));
-		return;
-	}
-}*/
-
 //cat example
 void command() {
 	FILE * f;
@@ -190,7 +182,6 @@ int main(int argc, char ** argv) {
 		puts(strerror(errno));
 		return -1;
 	}
-	//if(argc == 1) create_file();
 	if(argc == 1) command();
 	else{
 		for(i = 1; i < argc; i++) {
