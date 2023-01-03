@@ -25,8 +25,9 @@ typedef struct {
 typedef struct {
     int row_size;
     int col_size;
+    int col_size_byte;
     char empty, obstacle, full;
-    t_case** field;
+    t_case* field;
 } t_field;
 
 /**
@@ -69,11 +70,11 @@ int parse_field_buffer(char* buffer, t_field **field_ptr);
 /**
  * Print a field on stdout
  * @param field the field to print
- * @param size size of the "full" square
- * @param row starting row of "full" square (upper left corner)
- * @param col starting column of "full" square (upper left corner)
+ * @param found_size found_size of the "full" square
+ * @param found_row starting found_row of "full" square (upper left corner)
+ * @param found_col starting column of "full" square (upper left corner)
  */
-void print_field(t_field field, int size, int row, int col);
+void print_field(t_field field, int found_size, int found_row, int found_col);
 /**
  * Return the maximal square size starting from "row, col" inside of "field"
  * @param field The t_field to test
