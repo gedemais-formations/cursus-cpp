@@ -87,11 +87,17 @@ void print_chessboard(int chessboard[CHESS_SIZE][CHESS_SIZE])
 int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x)
 {
     int possibilites = 0;
-    if(x < 8){
-        possibilites += solve(chessboard, x+1);
+    for(int y = 0; y < CHESS_SIZE; y++){
+        if(check_queen(chessboard, x, y){
+            if(x+1 == CHESS_SIZE){
+            	return(1);
+            }
+            else{
+                possibilites += solve(chessboard, x+1);
+            }
+        }
     }
-    //(void)chessboard;
-    //(void)x;
+    //todo: ajouter les reines quand elles sont valides et remettre le tableau à son état précédent quand on atteint une impasse.
     return (possibilites);
 }
 
