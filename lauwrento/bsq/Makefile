@@ -1,8 +1,12 @@
 CC=gcc
-FLAGS=-Wall -Werror -Wextra
+FLAGS=-Wall\
+  -Werror\
+  -Wextra\
+  -g3
+ # -fsanitize=address
 
 SRC_PATH=src/
-SRC_NAME=main.c\
+SRC_NAME=bsq.c\
 		 error.c\
 		 parser.c
 

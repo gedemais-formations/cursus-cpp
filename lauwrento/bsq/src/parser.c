@@ -1,17 +1,32 @@
 #include <main.h>
 
-int read_fd(int fd, char *str) {
+char *read_fd(int fd, int *code_error) {
   char buf[BUFFER_SIZE];
   int size;
   int i = 0;
+  char *str;
+
+  str = (char *)calloc(BUFFER_SIZE, sizeof(char));
+  if (str == NULL) {
+    *code_error = ERROR_MEM;
+    return (NULL);
+  }
   // Get the content of the file directory
   do {
     size = read(fd, buf, BUFFER_SIZE);
 
     if (size > 0) {
-      str = (char *)realloc(str, BUFFER_SIZE * (i + 1));
+      // printf("%d\nsize=%d\n", i, size);
 
-      if (str == NULL) return (ERROR_MEM);
+      if (i > 0) {
+        // printf("realloc size = %d\n", BUFFER_SIZE * (i + 1));
+        str = (char *)realloc(str, BUFFER_SIZE * (i + 1) + 1);
+
+        if (str == NULL) {
+          *code_error = ERROR_MEM;
+          return (NULL);
+        }
+      }
 
       memcpy(&str[BUFFER_SIZE * i], buf, size);
     }
@@ -19,54 +34,115 @@ int read_fd(int fd, char *str) {
 
   } while (size == BUFFER_SIZE);
 
-  return (0);
+  str[BUFFER_SIZE * i - size + 1] = '\0';
+  return (str);
 }
 
-char *get_line(char *str, int workingLine, int *code_error) {
-  char *line;
-  int i, j, lineCount;
-  i = 0;
-  j = 0;
-  lineCount = 0;
-
-  line = (char *)malloc(1);
-  if (line == NULL) {
-    *code_error = ERROR_MEM;
-    return (NULL);
+unsigned int str_len(const char *s) {
+  unsigned int count = 0;
+  while (*s != '\0') {
+    count++;
+    s++;
   }
+  return count;
+}
 
+int analyse(char *str, int *boardLength, int *boardHeigth) {
+  int i;
+  i = 0;
+  while (i != 10) {
+    if (str[i] == '\n') break;
+    i++;
+  }
+  i++;
+  int length = 0;
+  int heigth = 0;
   while (str[i] != '\0') {
-    if (lineCount == workingLine) {
-      line[j] = str[i];
-      line = realloc(line, (i + 1) + 1);
-      if (line == NULL) {
-        *code_error = ERROR_MEM;
-        return (NULL);
-      }
-      j++;
-      if (str[i + 1] == '\n') break;
+    if (str[i] == '\n') {
+      if (heigth != 0 && *boardLength != length) return (ERROR_BOARD);
+
+      *boardLength = length;
+      length = 0;
+
+      heigth++;
+      i++;
     }
-    if (str[i] == '\n') lineCount++;
+    length++;
     i++;
   }
 
-  return (line);
-}
-
-int analyse(char **board) {
-  (void)board;
-
+  *boardHeigth = heigth;
   // Check if str respect all condition
   return (0);
 }
 
 char **parser(char *str, int *code_error) {
   char **board;
-  char *fileDetails;
-  // Get the first line
-  fileDetails = get_line(str, 0, code_error);
-  printf("%s", fileDetails);
-  (void)board;
+  char fileDetails[10];
+  int i;
+  int boardStart;
 
-  return (0);
+  int y = 0;
+
+  // get the fileDetails
+  i = 0;
+  while (i == 9) {
+    if (str[i] == '\n') break;
+    fileDetails[i] = str[i];
+
+    i++;
+  }
+  fileDetails[i + 1] = '\0';
+
+  boardStart = i + 1;
+
+  char tmp[10];
+  memcpy(tmp, fileDetails, 10);
+  tmp[str_len(tmp) - 3] = '\0';
+  // String to int
+  for (int i = 0; tmp[i] != '\0'; ++i) y = y * 10 + tmp[i] - '0';
+
+  int row, col;
+  row = 0;
+  col = 0;
+
+  board = malloc(y);
+  if (board == NULL) {
+    *code_error = ERROR_MEM;
+    return NULL;
+  }
+
+  // Get the length of line
+  int length = 0;
+  i = boardStart;
+  while (str[i] != '\n') {
+    length++;
+    i++;
+  }
+
+  i = boardStart;
+  while (str[i] != '\0') {
+    printf("Row : %d\n", row);
+    if (str[i] == '\n') {
+      printf("str = %c", str[i]);
+      row++;
+      col = 0;
+    }
+
+    if (col == 0) {
+      board[row] = (char *)malloc(length + 1);
+      if (board == NULL) {
+        *code_error = ERROR_MEM;
+        return NULL;
+      }
+    }
+
+    board[row][col] = str[i];
+    i++;
+    col++;
+  }
+  (void)col;
+  (void)row;
+
+  return (board);
 }
