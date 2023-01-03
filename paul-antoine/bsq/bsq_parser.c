@@ -177,7 +177,7 @@ int get_symbols(const char *buffer, t_field *field_ptr, int *iter_ptr) {
 }
 
 int get_row_number(const char *buffer, int *length_ptr, int *iter_ptr) {
-
+    *iter_ptr=0;
     char *length_chr = malloc(sizeof(char));
     while (buffer[*iter_ptr] <= '9' && buffer[*iter_ptr] >= '0' ) {
         length_chr[*iter_ptr] = buffer[*iter_ptr];
@@ -187,7 +187,16 @@ int get_row_number(const char *buffer, int *length_ptr, int *iter_ptr) {
             return print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
         }
     }
-    length_chr[*iter_ptr] = '\0';
+    if(buffer[*iter_ptr] != '\n' && buffer[*iter_ptr] != '\r') {
+        length_chr[*iter_ptr] = '\0';
+    } else if(*iter_ptr >= 4) {
+        *iter_ptr -= 3;
+        length_chr[*iter_ptr] = '\0';
+    } else {
+        free(length_chr);
+        return print_error(ERROR_INVALID_PATTERN, "1st line is too short");
+    }
+
 
     if(*iter_ptr==0) {
         free(length_chr);
