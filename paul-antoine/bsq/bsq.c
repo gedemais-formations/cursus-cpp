@@ -8,26 +8,31 @@
 #include <malloc.h>   // dyn memory allocation
 #include <stdio.h>    // printf
 #include <string.h>   // memcpy
-#include <math.h>     // pow
 #include <errno.h>    // errno
 
 
 
 
 bool get_case(t_case* u_case, int global_index) {
+    //global index is the bit position inside the t_case array
+    //therefore we have to divide by 8 to get the byte index, and then modulo 8 to get the position inside the byte
     t_case curr_case = u_case[global_index/8];
-    int position = global_index % 8;
-    return (curr_case.val & (1 << position)) / (1 << position) == true;
+    //position is equivalent to the power of 2 corresponding to the case bit.
+    int position = 1 << (global_index % 8);
+    return (curr_case.val & position) / position == true;
 }
 
 void set_case(t_case *u_case, int global_index, bool value){
+    //global index is the bit position inside the t_case array
+    //therefore we have to divide by 8 to get the byte index, and then modulo 8 to get the position inside the byte
     t_case* curr_case = &u_case[global_index / 8];
-    int position = global_index%8;
+    //position is equivalent to the power of 2 corresponding to the case bit.
+    int position = 1 << (global_index%8);
     bool old_value = get_case(u_case, global_index);
     if(value && !old_value ) {
-        curr_case->val = curr_case->val + (1 << position) ;
+        curr_case->val = curr_case->val + position;
     } else if(!value && old_value) {
-        curr_case->val = curr_case->val - (1 << position);
+        curr_case->val = curr_case->val - position;
     }
 }
 
