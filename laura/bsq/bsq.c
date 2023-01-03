@@ -18,20 +18,23 @@ void write_x(int ** coord, int size, char ** tab, int max_x, int max_y) {
 		if(maxY < coord[i][0]) maxY = coord[i][0];
 		else if(minY > coord[i][0]) minY = coord[i][0];
 	}
+	//Le carré est situé entre ces coordonnées
 	for(i = minY; i < maxY; i++) for(j = minX; j < maxX; j++) tab[i][j] = 'x';
 	for(i = 0; i < max_y; i++) printf("\n%s", tab[i]);
 }
 
-//Retourne un tableau de coordonnées de o
+//Création d'un tableau de coordonnées de o
 void check_o(char ** tab, int max_x, int max_y) {
 	int i, j, size, ** coord, k;
 	k = 0;
 	size = 0;
+	//Calcul du nombre de o
 	for(i = 0; i < max_y; i++) {
 		for(j = 0; j < max_x; j++) {
 			if(tab[i][j] == 'o') size++;
 		}
 	}
+	//Création du tableau de coordonnées y,x de o
 	coord = (int **)malloc(sizeof(int *) * size);
 	if(!coord) {
 		puts(strerror(errno));
@@ -49,7 +52,7 @@ void check_o(char ** tab, int max_x, int max_y) {
 			if(tab[i][j] == 'o') {
 				coord[k][0] = i;
 				coord[k][1] = j;
-				k++;
+				k++; //On incrémente après chaque coordonnée posée
 			}
 		}
 	}
@@ -62,12 +65,14 @@ void write_tab(char * buffer) {
 	char ** tab;
 	len = strlen(buffer);
 	k = 0;
+	//Calcul de la largeur du board
 	for(i = 0; i < len; i++) {
 		if(buffer[i] == '\n') {
 			width = i;
 			break;
 		}
 	}
+	//Calcul de la hauteur du board
 	for(i = 0; i < len; i++) if(buffer[i] == '\n') height++;
 	tab = (char **)malloc(sizeof(char *) * height);
 	if(!tab) {
