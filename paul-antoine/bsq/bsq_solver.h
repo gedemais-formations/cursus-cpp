@@ -3,48 +3,7 @@
 //
 #ifndef BSQ_BSQ_SOLVER_H
 #define BSQ_BSQ_SOLVER_H
-
-#include <stdbool.h>
-
-#define ERROR_CANT_OPEN_FILE 1
-#define ERROR_CANT_READ_FILE 2
-#define ERROR_INVALID_PATTERN 3
-#define ERROR_CANT_ALLOCATE_MEMORY 4
-
-
-/**
- * save case value as a 1bit boolean (see get_case and set_case for data retrieval)
- */
-typedef struct {
-    unsigned char val;
-} t_case;
-
-/**
- * Save all information regarding a field (size, characters, values)
- */
-typedef struct {
-    int row_size;
-    int col_size;
-    int col_size_byte;
-    char empty, obstacle, full;
-    t_case* field;
-} t_field;
-
-/**
- * Return the boolean value of a case
- * @param u_case an array of t_case
- * @param global_index index in bit inside the array
- * @return Value of u_case at "global_index"
- */
-bool get_case(t_case* u_case, int global_index);
-
-/**
- * Set the boolean value of a case inside an array of cases
- * @param u_case an array of t_case
- * @param global_index index in bit inside the array
- * @param value the new value
- */
-void set_case(t_case *u_case, int global_index, bool value);
+#include "bsq_parser.h"
 
 /**
  * Get field from a file
@@ -60,13 +19,6 @@ int get_field(char* file, t_field **field_ptr);
  */
 int get_field_std(t_field **field_ptr);
 
-/**
- * Parse a string buffer and put its data inside a new t_field
- * @param buffer The string buffer containing raw data
- * @param field_ptr a pointer to the pointer who'll hold the result
- * @return 0 on success, errcode otherwise
- */
-int parse_field_buffer(char* buffer, t_field **field_ptr);
 /**
  * Print a field on stdout
  * @param field the field to print
@@ -91,28 +43,22 @@ int square_size(t_field field,int row, int col, int min_square);
 void find_best(t_field field);
 
 /**
+ * Get the last tested square.
+ * if it failed because of right side it will advance of "seek_size" to pass the obstacle.
+ * if it failed because of an obstacle at the bottom advance of enough cases to pass the obstacle.
+ * @param field The field tested
+ * @param seek_row origin row of the square to test
+ * @param seek_col origin column of the square to test
+ * @param seek_size size of the maximum square at (seek_row, seek_col)
+ * @return The seeking index updated to avoid the obstacle.
+ */
+int skip_cases(t_field *field, int seek_row, int seek_col, int seek_size);
+
+/**
  * Destruct a field properly by freeing allocated memory
  * @param field The t_field to destruct
  */
 void destruct(t_field field);
 
-/**
- * Simple array to int conversion
- * @param str The array to convert
- * @param buffer The buffer who'll hold the result
- * @return 0 on success, errcode otherwise
- */
-int a_to_i(char const *str, int* buffer);
-
-/**
- * Print a message linked to "errcode" and add content of "context" in it
- * @param errcode The error code as defined in bsq.h
- * @param context Some context to add to the error (eg. filename)
- * @return errcode
- */
-int print_error(int errcode, const char* context);
-
-
-int skip_cases(t_field *field, int i, int j, int n_best);
 
 #endif //BSQ_BSQ_SOLVER_H
