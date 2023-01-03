@@ -37,33 +37,55 @@ int solve(int grille[9][9], int x)
     {
         for(int y = 0; y < 9; y++)
         {
-            for(int z = 1; z <= 9; z++)
+            if(grille[x][y] != 0)
             {
-                if(check_sudoku(grille, x, y, z))
+                if(check_sudoku(grille, x, y, grille[x][y]))
                 {
-                    grille[x][y] = 1;
                     printf("solution trouvée\n");
                     print_sudoku(grille);
                     soluce++;
-                    grille[x][y] = 0;
+                }
+            }
+            else{
+                for(int z = 1; z <= 9; z++)
+                {
+                    if(check_sudoku(grille, x, y, z))
+                    {
+                        grille[x][y] = z;
+                        printf("solution trouvée\n");
+                        print_sudoku(grille);
+                        soluce++;
+                        grille[x][y] = 0;
+                    }
                 }
             }
         }
     }
     else
     {
-        for(int y = 0; y < 9; y++){
-            for(int z = 1; z <= 9; z++)
+        for(int y = 0; y < 9; y++)
+        {
+            if(grille[x][y] !=0)
             {
-                if(check_sudoku(grille, x, y, z)){
-                    grille[x][y] = 1;
+                if(check_sudoku(grille, x, y, grille[x][y]))
+                {
                     soluce += solve(grille, x+1);
-                    grille[x][y] = 0;
+                }
+            }
+            else
+            {
+                for(int z = 1; z <= 9; z++)
+                {
+                    if(check_sudoku(grille, x, y, z))
+                    {
+                        grille[x][y] = z;
+                        soluce += solve(grille, x+1);
+                        grille[x][y] = 0;
+                    }
                 }
             }
         }
     }
-    //todo: ajouter les reines quand elles sont valides et remettre le tableau à son état précédent quand on atteint une impasse.
     return (soluce);
 }
 
