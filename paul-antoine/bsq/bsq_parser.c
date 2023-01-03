@@ -166,6 +166,13 @@ int get_symbols(const char *buffer, t_field *field_ptr, int *iter_ptr) {
     } else {
         return print_error(ERROR_INVALID_PATTERN, "First line too long");
     }
+
+    if(field_ptr->obstacle == field_ptr->empty
+    || field_ptr->obstacle == field_ptr->full
+    || field_ptr->full == field_ptr->empty) {
+        return print_error(ERROR_INVALID_PATTERN, "Two symbol are identical");
+    }
+
     return 0;
 }
 
