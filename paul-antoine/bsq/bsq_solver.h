@@ -1,8 +1,8 @@
 //
 // Created by pad on 12/20/22.
 //
-#ifndef BSQ_BSQ_H
-#define BSQ_BSQ_H
+#ifndef BSQ_BSQ_SOLVER_H
+#define BSQ_BSQ_SOLVER_H
 
 #include <stdbool.h>
 
@@ -115,4 +115,4 @@ int print_error(int errcode, const char* context);
 
 int skip_cases(t_field *field, int i, int j, int n_best);
 
-#endif //BSQ_BSQ_H
+#endif //BSQ_BSQ_SOLVER_H
