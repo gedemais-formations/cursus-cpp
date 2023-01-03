@@ -27,6 +27,33 @@ void print_sudoku(int grille[9][9])
 
 bool check_sudoku(int grille[9][9], int x, int y, int z)
 {
+    //vérification sur la ligne
+    for(int i = 0; i < 9 i++)
+    {
+        if((grille[x][i] != z) && (i != y))
+        {
+            return false;
+        }
+    }
+    //vérification sur la colonne
+    for(int i = 0; i < 9 i++)
+    {
+        if((grille[i][y] != z) && (i != x))
+        {
+            return false;
+        }
+    }
+    //vérification sur le bloc 3x3 qui contient la case
+    for(int i = (x/3)*3; i/3 <= x/3; i++)
+    {
+        for(int j = (y/3)*3; j/3 <= j/3; j++)
+        {
+            if(grille[i][j] == z && !(i == x && j == y))
+            {
+                return false;
+            }
+        }
+    }
     return true;
 }
 
@@ -41,10 +68,10 @@ bool grille_correcte(int grille[9][9])
         while(j < 9 && sortie)
         {
             //vérification que la case est déjà préremplie 
-            if(grille[i][j] != 0 && sortie )
+            if(grille[i][j] != 0)
             {
                 //vérification que la case est remplie de façon appropriée
-                if(!check_sudoku(grille, i, j, grille[i][j]) || grille[i][j] < 0)
+                if(!check_sudoku(grille, i, j, grille[i][j]) || grille[i][j] < 0 || grille[i][j] > 9)
                 {
                     printf("La grille n'est pas remplie correctement!!!");
                     sortie = false;
@@ -70,6 +97,7 @@ int solve(int grille[9][9], int x)
                 //vérifier si la case est correcte
                 if(check_sudoku(grille, x, y, grille[x][y]))
                 {
+                    //vérifier si c'est la dernière case
                     if(y==8)
                     {
                         printf("solution trouvée\n");
@@ -81,6 +109,7 @@ int solve(int grille[9][9], int x)
             else{
                 for(int z = 1; z <= 9; z++)
                 {
+                    //vérifier quel nombre pourrait rentrer dans cette case
                     if(check_sudoku(grille, x, y, z))
                     {
                         grille[x][y] = z;
@@ -93,7 +122,7 @@ int solve(int grille[9][9], int x)
             }
         }
     }
-    else
+    /*else
     {
         for(int y = 0; y < 9; y++)
         {
@@ -118,7 +147,7 @@ int solve(int grille[9][9], int x)
                 }
             }
         }
-    }
+    }*/
     return (soluce);
 }
 
