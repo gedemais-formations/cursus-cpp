@@ -21,6 +21,7 @@ void write_x(int ** coord, int size, char ** tab, int max_x, int max_y) {
 	//Le carré est situé entre ces coordonnées
 	for(i = minY; i < maxY; i++) for(j = minX; j < maxX; j++) tab[i][j] = 'x';
 	for(i = 0; i < max_y; i++) printf("\n%s", tab[i]);
+	puts("\n\n----------");
 }
 
 //Création d'un tableau de coordonnées de o
@@ -57,6 +58,7 @@ void check_o(char ** tab, int max_x, int max_y) {
 		}
 	}
 	write_x(coord, size, tab, max_x, max_y);
+	for(i = 0; i < size; i++) free(coord[i]);
 	free(coord);
 }
 
@@ -80,7 +82,8 @@ void write_tab(char * buffer) {
 		return;
 	}
 	for(i = 0, k = 0; i < height; i++) {
-		tab[i] = (char *)malloc(sizeof(char) * width);
+		tab[i] = (char *)malloc(sizeof(char) * width + 1);
+		tab[i][sizeof(char) * width] = 0;
 		if(!tab[i]) {
 			puts(strerror(errno));
 			return;
@@ -93,6 +96,7 @@ void write_tab(char * buffer) {
 	}
 	printf("\n%s", buffer);
 	check_o(tab, width, height);
+	for(i = 0, k = 0; i < height; i++) free(tab[i]);
 	free(tab);
 }
 
@@ -150,9 +154,9 @@ void write_tab(char * buffer) {
 }*/
 
 //cat example
-void command(int argc, char ** argv) {
+void command() {
 	FILE * f;
-	char * c, ch, * buffer, * str;
+	char ch, * buffer, * str;
 	str = (char *)malloc(256);
 	if(!str) {
 		puts(strerror(errno));
@@ -178,7 +182,7 @@ void command(int argc, char ** argv) {
 
 int main(int argc, char ** argv) {
 	int i, * files, size, s, r, c;
-	char * buffer, * filename;
+	char * buffer;
 	struct stat buf;
 	buffer = NULL;
 	files = malloc(argc * sizeof(int));
@@ -187,7 +191,7 @@ int main(int argc, char ** argv) {
 		return -1;
 	}
 	//if(argc == 1) create_file();
-	if(argc == 1) command(argc, argv);
+	if(argc == 1) command();
 	else{
 		for(i = 1; i < argc; i++) {
 			s = stat(argv[i], &buf);
@@ -201,7 +205,8 @@ int main(int argc, char ** argv) {
 				puts(strerror(errno));
 				return -1;
 			}
-			buffer = (char *)malloc(size);
+			buffer = (char *)malloc(size + 1);
+			buffer[size] = 0;
 			if(!buffer) {
 				puts(strerror(errno));
 				return -1;
