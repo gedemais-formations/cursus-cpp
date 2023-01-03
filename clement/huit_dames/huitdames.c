@@ -86,9 +86,13 @@ void print_chessboard(int chessboard[CHESS_SIZE][CHESS_SIZE])
 
 int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x)
 {
-    (void)chessboard;
-    (void)x;
-    return (0);
+    int possibilites = 0;
+    if(x < 8){
+        possibilites += solve(chessboard, x+1);
+    }
+    //(void)chessboard;
+    //(void)x;
+    return (possibilites);
 }
 
 int    main(void)
