@@ -73,6 +73,7 @@ int get_field(char* file, t_field **field_ptr) {
 }
 
 int get_field_std(t_field ** field_pointer) {
+    //max batch size on vm tty is 8192, higher value might still only read 8192Bytes
 #define BATCH_SIZE 8192
     char *buffer = "";
     long total=0;
@@ -122,19 +123,33 @@ int parse_field_buffer(char *buffer, t_field **field_ptr) {
     static t_field field;
 
     int iter = 0;
-    char length_chr[20] = "";
+    char *length_chr = malloc(sizeof(char));
     while (buffer[iter] <= '9' && buffer[iter] >= '0' ) {
         length_chr[iter] = buffer[iter];
         iter++;
+        length_chr = realloc(length_chr, sizeof(char) * (iter + 1));
+        if(length_chr == NULL) {
+            free(buffer);
+            return print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
+        }
     }
+    length_chr[iter] = '\0';
 
     if(iter==0) {
+        free(length_chr);
         free(buffer);
         return print_error(ERROR_INVALID_PATTERN, "");
     }
 
     int length;
-    a_to_i(length_chr, &length);
+    int err = a_to_i(length_chr, &length);
+
+    free(length_chr);
+    if(err != 0) {
+        free(buffer);
+        return err;
+    }
+
     field.row_size = length;
 
     if(buffer[iter] != '\n' && buffer[iter] != '\r') {
