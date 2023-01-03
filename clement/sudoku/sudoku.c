@@ -30,6 +30,33 @@ bool check_sudoku(int grille[9][9], int x, int y, int z)
     return true;
 }
 
+//cette fonction valide l'état de la grille rentrée comme paramètre. Si elle ne respecte pas les règles du Sudoku, elle renvoie un message d'erreur
+bool grille_correcte(int grille[9][9])
+{
+    int i = 0;
+    int j = 0;
+    bool sortie = true;
+    while(i < 9 && sortie)
+    {
+        while(j < 9 && sortie)
+        {
+            //vérification que la case est déjà préremplie 
+            if(grille[i][j] != 0 && sortie )
+            {
+                //vérification que la case est remplie de façon appropriée
+                if(!check_sudoku(grille, i, j, grille[i][j]) || grille[i][j] < 0)
+                {
+                    printf("La grille n'est pas remplie correctement!!!");
+                    sortie = false;
+                }
+            }
+            j++;
+        }
+        i++;
+    }
+    return sortie;
+}
+
 int solve(int grille[9][9], int x)
 {
     int soluce = 0;
@@ -37,13 +64,18 @@ int solve(int grille[9][9], int x)
     {
         for(int y = 0; y < 9; y++)
         {
-            if(grille[x][y] != 0)
+            //vérifier que la case est vide
+            if(grille[x][y] == 0)
             {
+                //vérifier si la case est correcte
                 if(check_sudoku(grille, x, y, grille[x][y]))
                 {
-                    printf("solution trouvée\n");
-                    print_sudoku(grille);
-                    soluce++;
+                    if(y==8)
+                    {
+                        printf("solution trouvée\n");
+                        print_sudoku(grille);
+                        soluce++;
+                    }
                 }
             }
             else{
@@ -65,6 +97,7 @@ int solve(int grille[9][9], int x)
     {
         for(int y = 0; y < 9; y++)
         {
+            //vérifier si la case contient déja une valeur
             if(grille[x][y] !=0)
             {
                 if(check_sudoku(grille, x, y, grille[x][y]))
@@ -108,5 +141,8 @@ int main(void)
     printf("grille de départ\n");
     print_sudoku(grille);
     
-    //printf("Il y a %d solutions possibles.\n", solve(grille[9][9], 0));
+    /*if (grille_correcte(grille))
+    {
+        printf("Il y a %d solutions possibles.\n", solve(grille[9][9], 0));
+    }*/
 }

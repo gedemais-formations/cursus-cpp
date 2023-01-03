@@ -87,19 +87,22 @@ void print_chessboard(int chessboard[CHESS_SIZE][CHESS_SIZE])
 
 int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x)
 {
-    //print_chessboard(chessboard);
-    //getc(stdin);
+    /*print_chessboard(chessboard);
+    getc(stdin);*/
     int possibilites = 0;
+    //dernière colonne
     if( x+1 == CHESS_SIZE){
         for(int y = 0; y < CHESS_SIZE; y++){
             if(check_queen(chessboard, x, y)){
-                //printf("%d\n", check_queen(chessboard, y, x));
-                //printf("%d ", x);
-                //print_chessboard(chessboard);
+                /*printf("%d\n", check_queen(chessboard, y, x));
+                printf("%d ", x);
+                print_chessboard(chessboard);*/
+                //placement de la reine pour l'affichage de la solution
                 chessboard[x][y] = 1;
                 printf("solution trouvée\n");
                 print_chessboard(chessboard);
                 possibilites++;
+                //suppression de la reine pour pouvoir faire les tests suivants
                 chessboard[x][y] = 0;
             }
         }
@@ -107,11 +110,14 @@ int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x)
     else{
         for(int y = 0; y < CHESS_SIZE; y++){
             if(check_queen(chessboard, x, y)){
+            	//placement de la reine
             	chessboard[x][y] = 1;
-            	//printf("%d ", chessboard[y][x]);
-                //print_chessboard(chessboard);
+            	/*printf("%d ", chessboard[y][x]);
+                print_chessboard(chessboard);*/
+                //récursion
                 possibilites += solve(chessboard, x+1);
-                //printf("poss = %d\n", possibilites);
+                /*printf("poss = %d\n", possibilites);*/
+                //suppression de la reine pour passer à la colonne suivante sans problème
                 chessboard[x][y] = 0;
                 }
             }
