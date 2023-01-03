@@ -94,7 +94,7 @@ int solve(int chessboard[CHESS_SIZE][CHESS_SIZE], int x)
 int    main(void)
 {
     int chessboard[CHESS_SIZE][CHESS_SIZE] = {};
-
+    
     print_chessboard(chessboard);
     printf("%d\n", solve(chessboard, 0));
 }
