@@ -15,6 +15,9 @@ int main(int argc, char **argv) {
         destruct(*map);
     } else {
         for (int i = 1; i < argc ; ++i) {
+            if(i>1) {
+                printf("----------------------------------------------------------\n");
+            }
             err = get_field(argv[i], &map);
 
             if(err != 0) {
@@ -22,7 +25,6 @@ int main(int argc, char **argv) {
             }
 
             find_best(*map);
-            printf("----------------------------------------------------------\n");
             destruct(*map);
         }
     }
