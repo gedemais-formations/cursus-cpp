@@ -49,6 +49,13 @@ void set_case(t_case *u_case, int global_index, bool value);
  */
 int parse_field_buffer(char* buffer, t_field **field_ptr);
 
+/**
+ * Get the number of row from the buffer
+ * @param buffer The buffer to parse
+ * @param length_ptr Ptr to the variable who'll hold the number of row
+ * @param iter_ptr Ptr to the buffer iterator
+ * @return 0 on success, errcode otherwise
+ */
 int get_row_number(const char *buffer, int *length_ptr, int *iter_ptr);
 
 /**
@@ -59,8 +66,24 @@ int get_row_number(const char *buffer, int *length_ptr, int *iter_ptr);
  */
 int a_to_i(char const *str, int* buffer);
 
+/**
+ * Get symbols from the buffer and put them in field_ptr's t_field
+ * @param buffer The buffer to parse
+ * @param field_ptr Pointer to the updated field
+ * @param iter_ptr Buffer iterator !! should point to the first symbol
+ * otherwise the function will fail or have unexpected behavior !!
+ * @return 0 on success, errcode otherwise
+ */
 int get_symbols(const char *buffer, t_field *field_ptr, int *iter_ptr);
 
+/**
+ * Get from the buffer number of column inside field lines
+ * @param buffer The buffer to parse
+ * @param iter Buffer iterator !! should point to the first symbol of a line
+ * otherwise the function will fail or have unexpected behavior !!
+ * @param line_size_ptr Pointer to the variable who'll old line size value
+ * @return 0 on success, errcode otherwise
+ */
 int get_line_size(const char *buffer, int iter, int *line_size_ptr);
 
 #endif //BSQ_BSQ_PARSER_H
