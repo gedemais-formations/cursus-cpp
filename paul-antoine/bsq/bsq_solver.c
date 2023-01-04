@@ -3,97 +3,14 @@
 //
 #include "bsq_solver.h"
 #include "bsq_error.h"
-#include <fcntl.h>    //open
+
 #include <unistd.h>   //read write
-#include <stdio.h>    // fflush
-#include <sys/stat.h> // get file stat
 #include <malloc.h>   // dyn memory allocation
-#include <string.h>   // memcpy
 
 
 
-int get_field(char* file, t_field **field_ptr) {
-    int fileDescriptor = open(file, O_RDONLY);
 
-    if (fileDescriptor == -1 ) {
-        return print_error(ERROR_CANT_OPEN_FILE, file);
-    }
 
-    struct stat file_stat;
-    int err = stat(file, &file_stat);
-
-    if(err != 0) {
-        close(fileDescriptor);
-        return print_error(ERROR_CANT_READ_FILE, file);
-    }
-
-    char* buffer = malloc(file_stat.st_size);
-
-    if(buffer == NULL) {
-        close(fileDescriptor);
-        return print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
-    }
-
-    ssize_t byteRead = read(fileDescriptor, buffer, file_stat.st_size);
-
-    if(byteRead == -1 ){
-        free(buffer);
-        close(fileDescriptor);
-        return print_error(ERROR_CANT_READ_FILE, file);
-    }
-
-    close(fileDescriptor);
-
-    return parse_field_buffer(buffer, field_ptr);
-
-}
-
-int get_field_std(t_field ** field_pointer) {
-    //max batch size on vm tty is 8192, higher value might still only read 8192Bytes
-#define BATCH_SIZE 8192
-    char *buffer = "";
-    long total=0;
-    long batch;
-    int count = 0;
-    do {
-        count++;
-        char* tmp_buff = malloc(sizeof(char) * BATCH_SIZE);
-        if(tmp_buff == NULL) {
-            if(count > 1) free(buffer);
-            return print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
-        }
-        fflush(stdin);
-        batch = read(0, tmp_buff, BATCH_SIZE);
-        /*if(batch < BATCH_SIZE ) {
-            printf("%ld %d\n", batch, count);
-        }*/
-        if(batch == -1 ) {
-            if(count > 1) free(buffer);
-            return print_error(ERROR_CANT_READ_FILE, "stdin");
-        }
-
-        if(total==0) {
-            buffer = tmp_buff;
-            total += batch;
-        } else if(batch != 0) {
-            char* new_buff = malloc(sizeof(char) * (total + batch));
-            if(new_buff == NULL) {
-                free(buffer);
-                free(tmp_buff);
-                return print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
-            }
-            memcpy(new_buff, buffer, total);
-            free(buffer);
-            memcpy(&new_buff[total], tmp_buff, batch);
-            free(tmp_buff);
-            buffer = new_buff;
-            total += batch;
-        }
-    } while (batch >= BATCH_SIZE);
-
-    //printf(buffer);
-    return parse_field_buffer(buffer, field_pointer);
-}
 
 void print_field(t_field field, int found_size, int found_row, int found_col) {
     int buffer_size = field.row_size * (field.col_size + 1) + 1;

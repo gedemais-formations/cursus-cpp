@@ -6,20 +6,6 @@
 #include "bsq_parser.h"
 
 /**
- * Get field from a file
- * @param file the file pathname
- * @param field_ptr a pointer to the pointer who'll hold the result
- * @return 0 on success, errcode otherwise
- */
-int get_field(char* file, t_field **field_ptr);
-/**
- * Get field from stdin
- * @param field_ptr a pointer to the pointer who'll hold the result
- * @return 0 on success, errcode otherwise
- */
-int get_field_std(t_field **field_ptr);
-
-/**
  * Print a field on stdout
  * @param field the field to print
  * @param found_size found_size of the "full" square

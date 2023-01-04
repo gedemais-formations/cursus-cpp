@@ -4,8 +4,87 @@
 
 #include <string.h>   // memcpy
 #include <malloc.h>   // dyn memory allocation
+#include <fcntl.h>    //open
+#include <stdio.h>    // fflush
+#include <sys/stat.h> // get file stat
+#include <unistd.h>   // read write
 #include "bsq_parser.h"
 #include "bsq_error.h"
+
+int get_field(char* file, t_field **field_ptr) {
+    int fileDescriptor = open(file, O_RDONLY);
+
+    if (fileDescriptor == -1 ) {
+        return print_error(ERROR_CANT_OPEN_FILE, file);
+    }
+
+    struct stat file_stat;
+    int err = stat(file, &file_stat);
+
+    if(err != 0) {
+        close(fileDescriptor);
+        return print_error(ERROR_CANT_READ_FILE, file);
+    }
+
+    char* buffer = malloc(file_stat.st_size);
+
+    if(buffer == NULL) {
+        close(fileDescriptor);
+        return print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
+    }
+
+    ssize_t byteRead = read(fileDescriptor, buffer, file_stat.st_size);
+
+    if(byteRead == -1 ){
+        free(buffer);
+        close(fileDescriptor);
+        return print_error(ERROR_CANT_READ_FILE, file);
+    }
+
+    close(fileDescriptor);
+
+    return parse_field_buffer(buffer, field_ptr);
+
+}
+
+int get_field_std(t_field ** field_pointer) {
+    //max batch size on vm tty is 8192, higher value might still only read 8192Bytes
+#define BATCH_SIZE 8192
+    char *buffer;
+    long total=0;
+    long batch;
+    int count = 0;
+    char tmp_buff[BATCH_SIZE] = "";
+    do {
+        count++;
+        fflush(stdin);
+        batch = read(0, tmp_buff, BATCH_SIZE);
+        /*if(batch < BATCH_SIZE ) {
+            printf("%ld %d\n", batch, count);
+        }*/
+        if(batch == -1 ) {
+            if(count > 1) free(buffer);
+            return print_error(ERROR_CANT_READ_FILE, "stdin");
+        }
+
+        if(total==0) {
+            buffer = malloc(sizeof(char) * batch);
+            memcpy(buffer, tmp_buff, batch);
+            total += batch;
+        } else if(batch != 0) {
+            buffer = realloc(buffer, sizeof(char) * (total + batch));
+            if(buffer == NULL) {
+                free(buffer);
+                return print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
+            }
+            memcpy(&buffer[total], tmp_buff, batch);
+            total += batch;
+        }
+    } while (batch >= BATCH_SIZE);
+
+    //printf(buffer);
+    return parse_field_buffer(buffer, field_pointer);
+}
 
 bool get_case(t_case* u_case, int global_index) {
     //global index is the bit position inside the t_case array
