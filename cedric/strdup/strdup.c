@@ -2,12 +2,26 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *ft_strdup(const char *s, char charset){
+int check_char(char c, const char *str){
+	int boolean;
+	int length;
+	boolean = 0;
+	length = 0;
+	while(str[length]!='\0' && boolean == 0){
+		length ++;
+		if(c == str[length]){
+			boolean = 1;
+		}
+	}
+	return (boolean);
+}
+
+char *ft_strdup(const char *s, const char *charset){
 	int length;
 	char *str;
 
 	length = 0;
-	while(s[length]!='\0' && s[length]!=charset){
+	while(s[length]!='\0' && check_char(s[length], charset) == 0){
 		length ++;
 	}
 
@@ -16,7 +30,7 @@ char *ft_strdup(const char *s, char charset){
   	}
 
   	length = 0;
-  	while(s[length]!='\0' && s[length]!=charset){
+  	while(s[length]!='\0' && check_char(s[length], charset) == 0){
 		str[length] = s[length];
 		length++;
 	}
@@ -30,7 +44,7 @@ int main(int argc, char const *argv[]){
 		printf("Error, need only 2 args");
 		return (-1);
 	} else {
-		str = ft_strdup(argv[1], argv[2][0]);
+		str = ft_strdup(argv[1], argv[2]);
 		printf("%s \n", str);
 	}
 	if(str){
