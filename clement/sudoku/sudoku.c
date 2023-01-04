@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <unistd.h>
 
 //énoncé : avec une grille donnée, trouver toutes les solutions possibles
 
@@ -28,17 +29,17 @@ void print_sudoku(int grille[9][9])
 bool check_sudoku(int grille[9][9], int x, int y, int z)
 {
     //vérification sur la ligne
-    for(int i = 0; i < 9 i++)
+    for(int i = 0; i < 9; i++)
     {
-        if((grille[x][i] != z) && (i != y))
+        if((grille[x][i] == z) && (i != y))
         {
             return false;
         }
     }
     //vérification sur la colonne
-    for(int i = 0; i < 9 i++)
+    for(int i = 0; i < 9; i++)
     {
-        if((grille[i][y] != z) && (i != x))
+        if((grille[i][y] == z) && (i != x))
         {
             return false;
         }
@@ -46,7 +47,7 @@ bool check_sudoku(int grille[9][9], int x, int y, int z)
     //vérification sur le bloc 3x3 qui contient la case
     for(int i = (x/3)*3; i/3 <= x/3; i++)
     {
-        for(int j = (y/3)*3; j/3 <= j/3; j++)
+        for(int j = (y/3)*3; j/3 <= y/3; j++)
         {
             if(grille[i][j] == z && !(i == x && j == y))
             {
@@ -87,46 +88,79 @@ bool grille_correcte(int grille[9][9])
 int solve(int grille[9][9], int x, int y)
 {
     int soluce = 0;
+    //boucle récursive sur y en premier pour optimiser
     if(y < 8)
     {
+        //vérification que la case [x][y] est vide
         if(grille[x][y] == 0)
         {
+            //vérification sur chaque chiffre possible
             for(int z = 1; z <= 9; z++)
             {
                 if(check_sudoku(grille, x, y, z))
                 {
+                    //remplissage de la case pour pouvoir continuer
                     grille[x][y] = z;
-                    solve(grille, x, y+1);
+                    soluce += solve(grille, x, y+1);
+                    //réinitialisation de la case
                     grille[x][y] = 0;
                 }
             }
         }
+        //passage immédiat à la case suivante si la case [x][y] est une case préremplie
         else
         {
-            solve(grille, x, y+1);
+            soluce += solve(grille, x, y+1);
         }
     }
     else
     {
+        //boucle récursive sur x
         if(x < 8)
         {
-            //
-        }
-        else
-        {
+            //vérification que la case est vide
             if(grille[x][y] == 0)
             {
+                //vérification sur chaque chiffre possible
                 for(int z = 1; z <= 9; z++)
                 {
                     if(check_sudoku(grille, x, y, z))
                     {
+                        //remplissage de la case pour pouvoir continuer
                         grille[x][y] = z;
-                        soluce++;
-                        print_sudoku(grille);
+                        soluce += solve(grille, x+1, 0);
+                        //réinitialisation de la case
                         grille[x][y] = 0;
                     }
                 }
             }
+            //passage immédiat à la case suivante si las case [x][y] est une case préremplie
+            else
+            {
+                soluce += solve(grille, x+1, 0);
+            }
+        }
+        else
+        {
+            //vérification que la case est vide
+            if(grille[x][y] == 0)
+            {
+                //vérification sur chaque chiffre possible
+                for(int z = 1; z <= 9; z++)
+                {
+                    if(check_sudoku(grille, x, y, z))
+                    {
+                        //remplissage de la case pour l'affichage
+                        grille[x][y] = z;
+                        soluce++;
+                        //affichage de la solution
+                        print_sudoku(grille);
+                        //réinitialisation de la case
+                        grille[x][y] = 0;
+                    }
+                }
+            }
+            //affichage immédiat de la solution si la case [x][y] est préremplie
             else
             {
                 soluce++;
@@ -135,93 +169,30 @@ int solve(int grille[9][9], int x, int y)
         }
     }
     return soluce;
-    
-    /*prototype
-    if( x == 8)
-    {
-        for(int y = 0; y < 9; y++)
-        {
-            //vérifier que la case est vide
-            if(grille[x][y] == 0)
-            {
-                //vérifier si la case est correcte
-                if(check_sudoku(grille, x, y, grille[x][y]))
-                {
-                    //vérifier si c'est la dernière case
-                    if(y==8)
-                    {
-                        printf("solution trouvée\n");
-                        print_sudoku(grille);
-                        soluce++;
-                    }
-                }
-            }
-            else{
-                for(int z = 1; z <= 9; z++)
-                {
-                    //vérifier quel nombre pourrait rentrer dans cette case
-                    if(check_sudoku(grille, x, y, z))
-                    {
-                        grille[x][y] = z;
-                        printf("solution trouvée\n");
-                        print_sudoku(grille);
-                        soluce++;
-                        grille[x][y] = 0;
-                    }
-                }
-            }
-        }
-    }
-    else
-    {
-        for(int y = 0; y < 9; y++)
-        {
-            //vérifier si la case contient déja une valeur
-            if(grille[x][y] !=0)
-            {
-                if(check_sudoku(grille, x, y, grille[x][y]))
-                {
-                    soluce += solve(grille, x+1);
-                }
-            }
-            else
-            {
-                for(int z = 1; z <= 9; z++)
-                {
-                    if(check_sudoku(grille, x, y, z))
-                    {
-                        grille[x][y] = z;
-                        soluce += solve(grille, x+1);
-                        grille[x][y] = 0;
-                    }
-                }
-            }
-        }
-    }
-    return (soluce);*/
 }
 
 int main(void)
 {
+    //initialisez ce tableau avec les valeurs que vous voulez tester
     int grille[9][9] = {
-        {0,0,0, 0,0,0, 0,0,0},
-        {0,0,0, 0,0,0, 0,0,0},
-        {0,0,0, 0,0,0, 0,0,0},
+        {1,0,0, 0,4,7, 3,0,8},
+        {0,9,0, 0,8,0, 0,2,0},
+        {6,0,0, 0,0,0, 0,0,0},
         
-        {0,0,0, 0,0,0, 0,0,0},
-        {0,0,0, 0,0,0, 0,0,0},
-        {0,0,0, 0,0,0, 0,0,0},
+        {9,0,0, 8,0,2, 0,0,0},
+        {2,6,0, 0,0,0, 0,8,4},
+        {0,0,0, 4,0,5, 0,0,3},
         
-        {0,0,0, 0,0,0, 0,0,0},
-        {0,0,0, 0,0,0, 0,0,0},
-        {0,0,0, 0,0,0, 0,0,0}
+        {0,0,0, 0,0,0, 0,0,9},
+        {0,0,0, 0,5,0, 0,0,0},
+        {8,0,3, 6,1,0, 0,0,0}
     };
     
     printf("grille de départ\n");
     print_sudoku(grille);
     
-    /*if (grille_correcte(grille))
+    if (grille_correcte(grille))
     {
-        printf("Il y a %d solutions possibles.\n", solve(grille[9][9], 0, 0));
-    }*/
+        printf("Il y a %d solutions possibles.\n", solve(grille, 0, 0));
+    }
 }
