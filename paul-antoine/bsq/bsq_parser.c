@@ -49,17 +49,17 @@ int get_field(char* file, t_field **field_ptr) {
 
 int get_field_std(t_field ** field_pointer) {
     //max batch size on vm tty is 8192, higher value might still only read 8192Bytes
-#define BATCH_SIZE 8192
+#define STDIN_BATCH_SIZE 8192
     char *buffer;
     long total=0;
     long batch;
     int count = 0;
-    char tmp_buff[BATCH_SIZE] = "";
+    char tmp_buff[STDIN_BATCH_SIZE] = "";
     do {
         count++;
         fflush(stdin);
-        batch = read(0, tmp_buff, BATCH_SIZE);
-        /*if(batch < BATCH_SIZE ) {
+        batch = read(0, tmp_buff, STDIN_BATCH_SIZE);
+        /*if(batch < STDIN_BATCH_SIZE ) {
             printf("%ld %d\n", batch, count);
         }*/
         if(batch == -1 ) {
@@ -80,7 +80,7 @@ int get_field_std(t_field ** field_pointer) {
             memcpy(&buffer[total], tmp_buff, batch);
             total += batch;
         }
-    } while (batch >= BATCH_SIZE);
+    } while (batch >= STDIN_BATCH_SIZE);
 
     //printf(buffer);
     return parse_field_buffer(buffer, field_pointer);
