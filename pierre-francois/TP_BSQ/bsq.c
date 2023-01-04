@@ -9,7 +9,7 @@
 int nb_ligne(char *map)
 {
 	int fd = open(map, O_RONLY);
-	int ligne = read
+	int ligne = read(fd, 
 	return 0;
 }
 

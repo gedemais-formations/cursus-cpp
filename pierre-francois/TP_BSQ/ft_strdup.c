@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+int est_dans(char lettre, char *phrase)
+{
+	int taille_phrase=strlen(phrase);
+
+	for(int i=0; i<taille_phrase; i++)
+	{
+		if(lettre==phrase[i])
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
+
+char *ft_strdup(char *s, char *charset)
+{
+	int i = 0;
+	int compteur_place = 0;
+	char *copie = NULL;
+
+	while(est_dans(s[i],charset)==0)
+		{
+			compteur_place++;
+		}
+
+	copie=malloc(sizeof(char)*compteur_place+1);
+
+	while(est_dans(s[i],charset)==0)
+	{
+		copie[i]=s[i];
+		i++;
+	}
+	copie[i]='\0';
+	return copie;
+}
+
+int main()
+{
+	char *s = "Hello World";
+	char *charset = "e b";
+	ft_strdup(s, charset);
+	return 0;
+}
