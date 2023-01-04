@@ -5,6 +5,7 @@
 #include "bsq_error.h"
 #include <fcntl.h>    //open
 #include <unistd.h>   //read write
+#include <stdio.h>    // fflush
 #include <sys/stat.h> // get file stat
 #include <malloc.h>   // dyn memory allocation
 #include <string.h>   // memcpy
