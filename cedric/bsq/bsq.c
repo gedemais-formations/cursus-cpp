@@ -113,7 +113,7 @@ int print_tab2(char **tab, int count_line, int count_char_per_line){
   return (0);
 }
 
-// Try to find a square
+/*// Try to find a square
 int find_square(char **tab, char size_square){
   int find = 1;
   int i = 0;
@@ -122,12 +122,17 @@ int find_square(char **tab, char size_square){
       find = 0;
       return 0;
     } else {
-      tab[i/size_square][i%size_square]='x';
+      //tab[i/size_square][i%size_square]='x';
     }
     i++;
   }
   //print_tab2(tab, int count_line, int count_char_per_line);
   return (1);
+}*/
+
+//Try to find a square
+int find_square(char **tab, char size_square, int count_line, int count_char_per_line){
+  return (0);
 }
 
 int solve(char *file_content, int count_line, int count_char_per_line){
