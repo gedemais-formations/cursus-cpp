@@ -35,10 +35,33 @@ char *read_fd(int fd, int *code_error) {
   } while (size == BUFFER_SIZE);
 
   str[BUFFER_SIZE * i - size + 1] = '\0';
+  // printf("%s\n", str);
   return (str);
 }
 
-unsigned int str_len(const char *s) {
+/* char **ft_split(char *s, char *charset) {
+  char **res;
+  int i, col, row;
+
+  res = (char *)calloc(1, sizeof(char *));
+
+  i = 0;
+  col = 0;
+  row = 0;
+  while (s[i] != '\0') {
+    if(s[i] == delimiter){
+      res[row][col] = '\0';
+      col = 0;
+      row++;
+    }
+    res[row][col] = str[i];
+
+    i++;
+  }
+  return (res);
+} */
+
+size_t str_len(const char *s) {
   unsigned int count = 0;
   while (*s != '\0') {
     count++;

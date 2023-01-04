@@ -3,12 +3,13 @@ FLAGS=-Wall\
   -Werror\
   -Wextra\
   -g3
- # -fsanitize=address
+  # -fsanitize=address
 
 SRC_PATH=src/
 SRC_NAME=bsq.c\
 		 error.c\
-		 parser.c
+		 parser.c\
+		 utils.c
 
 
 SRC=$(addprefix $(SRC_PATH), $(SRC_NAME))
