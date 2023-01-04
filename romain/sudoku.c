@@ -1,17 +1,18 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 #define SUDOKU_SIZE 9
 
 
 bool check_number(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int num, int ligne, int colonne)
 {
-for (int x = 0; x <= 8; x++)
-        if (sudoku[ligne][x] == num)
+for (int i = 0; i <= 8; i++)
+        if (sudoku[ligne][i] == num)
             return false;
 
-    for (int x = 0; x <= 8; x++)
-        if (sudoku[x][colonne] == num)
+    for (int i = 0; i <= 8; i++)
+        if (sudoku[i][colonne] == num)
             return false;
  
     int startligne = ligne / 3 ;
@@ -46,12 +47,12 @@ int solve(int sudoku[SUDOKU_SIZE][SUDOKU_SIZE], int x)
 
     //Condition d'initialisation, si l'on va jusqu'au bout du chess c'est que l'on a une solution
 
-    if (x == SUDOKU_SIZE*SUDOKU_SIZE -1)
+    if (x == SUDOKU_SIZE*SUDOKU_SIZE-1)
     {
-		if(sudoku[SUDOKU_SIZE-1][SUDOKU_SIZE-1]!=0)
+		if(sudoku[SUDOKU_SIZE-1][SUDOKU_SIZE-1] != 0)
 		{
-        print_sudoku(sudoku);
-		nbSolution = 1 ;
+			print_sudoku(sudoku);
+			nbSolution = 1;
 		}
 		else
 		{
