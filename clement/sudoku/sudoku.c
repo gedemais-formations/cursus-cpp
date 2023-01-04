@@ -84,9 +84,59 @@ bool grille_correcte(int grille[9][9])
     return sortie;
 }
 
-int solve(int grille[9][9], int x)
+int solve(int grille[9][9], int x, int y)
 {
     int soluce = 0;
+    if(y < 8)
+    {
+        if(grille[x][y] == 0)
+        {
+            for(int z = 1; z <= 9; z++)
+            {
+                if(check_sudoku(grille, x, y, z))
+                {
+                    grille[x][y] = z;
+                    solve(grille, x, y+1);
+                    grille[x][y] = 0;
+                }
+            }
+        }
+        else
+        {
+            solve(grille, x, y+1);
+        }
+    }
+    else
+    {
+        if(x < 8)
+        {
+            //
+        }
+        else
+        {
+            if(grille[x][y] == 0)
+            {
+                for(int z = 1; z <= 9; z++)
+                {
+                    if(check_sudoku(grille, x, y, z))
+                    {
+                        grille[x][y] = z;
+                        soluce++;
+                        print_sudoku(grille);
+                        grille[x][y] = 0;
+                    }
+                }
+            }
+            else
+            {
+                soluce++;
+                print_sudoku(grille);
+            }
+        }
+    }
+    return soluce;
+    
+    /*prototype
     if( x == 8)
     {
         for(int y = 0; y < 9; y++)
@@ -122,7 +172,7 @@ int solve(int grille[9][9], int x)
             }
         }
     }
-    /*else
+    else
     {
         for(int y = 0; y < 9; y++)
         {
@@ -147,8 +197,8 @@ int solve(int grille[9][9], int x)
                 }
             }
         }
-    }*/
-    return (soluce);
+    }
+    return (soluce);*/
 }
 
 int main(void)
@@ -172,6 +222,6 @@ int main(void)
     
     /*if (grille_correcte(grille))
     {
-        printf("Il y a %d solutions possibles.\n", solve(grille[9][9], 0));
+        printf("Il y a %d solutions possibles.\n", solve(grille[9][9], 0, 0));
     }*/
 }
