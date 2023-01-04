@@ -7,7 +7,7 @@
 #include <string.h>
 #include <errno.h>
 
-//Prolonge potentiellement le carré par le haut (ssi pas d'obstacle)
+//Prolonge potentiellement le carré par le haut (si pas d'obstacle)
 int up_square(int minY, int minX, int maxX, char ** tab) {
 	int i, j;
 	char ok;
@@ -24,7 +24,7 @@ int up_square(int minY, int minX, int maxX, char ** tab) {
 	return minY;
 }
 
-//Prolonge potentiellement le carré par le bas (ssi pas d'obstacle)
+//Prolonge potentiellement le carré par le bas (si pas d'obstacle)
 int bottom_square(int maxY, int max_y, int minX, int maxX, char ** tab) {
 	int i, j;
 	char ok;
@@ -41,7 +41,7 @@ int bottom_square(int maxY, int max_y, int minX, int maxX, char ** tab) {
 	return maxY;
 }
 
-//Prolonge potentiellement le carré par la gauche (ssi pas d'obstacle)
+//Prolonge potentiellement le carré par la gauche (si pas d'obstacle)
 int left_square(int minY, int maxY, int minX, char ** tab) {
 	int i, j;
 	char ok;
@@ -58,7 +58,7 @@ int left_square(int minY, int maxY, int minX, char ** tab) {
 	return minX;
 }
 
-//Prolonge potentiellement le carré par la droite (ssi pas d'obstacle)
+//Prolonge potentiellement le carré par la droite (si pas d'obstacle)
 int right_square(int minY, int maxY, int maxX, int max_x, char ** tab) {
 	int i, j;
 	char ok;
@@ -77,8 +77,6 @@ int right_square(int minY, int maxY, int maxX, int max_x, char ** tab) {
 
 void write_x(int ** coord, int size, char ** tab, int max_x, int max_y) {
 	int i, j, maxX, maxY, minX, minY;
-	char ok;
-	ok = 1;
 	maxX = maxY = -1;
 	minX = max_x + 1; minY = max_y + 1;
 	//On sélectionne l'intervalle
