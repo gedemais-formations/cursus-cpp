@@ -7,16 +7,20 @@ FLAGS+=-Wextra
 
 DEBUG ?= 0
 ifeq ($(DEBUG), 1)
-	FLAGS += -g3 -fsanitize=address
+  FLAGS += -g3 -fsanitize=address
 endif
 
 SRC_PATH=src/
 SRC_NAME=bsq.c\
   error.c\
-  parser.c\
   ft_split.c\
   ft_strdup.c\
-	ft_strchr.c
+  ft_strchr.c\
+  get_map.c\
+  str_len.c\
+  solver.c\
+  read_fd.c\
+  math.c\
 
 
 SRC=$(addprefix $(SRC_PATH), $(SRC_NAME))

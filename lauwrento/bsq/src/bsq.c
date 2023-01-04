@@ -2,8 +2,7 @@
 
 int start(int argc, char **argv) {
   int fd, code;
-  char **board;
-  char *str;
+
   // If there is no argument read stdin else read argv
   if (argc == 1) {
     fd = 0;
@@ -11,12 +10,8 @@ int start(int argc, char **argv) {
     fd = open(argv[1], O_RDONLY);
   }
 
-  str = read_fd(fd, &code);
-
-  // board = ft_split(str, "\n");
-  board = ft_split("My little poney", NULL);
-  if (board == NULL) {
-    return ERROR_POINTER;
+  if ((code = get_map(fd)) != ERROR_NONE) {
+    return (code);
   }
 
   // if ((code = analyse(str, &boardLength, &boardHeight)) != ERROR_NONE) {
@@ -26,15 +21,12 @@ int start(int argc, char **argv) {
 
   // board = parser(str, &code);
 
-  //  if (board == NULL) {
-  //  code = ERROR_POINTER;
-  //}
-
-  for (int i = 0; board[i] != NULL; i++) {
-    printf("%s\n", board[i]);
-  }
-  free(board);
-  free(str);
+  // for (int i = 0; board[i] != NULL; i++) {
+  //   printf("%s\n", board[i]);
+  //   free(board[i]);
+  // }
+  // (void)board;
+  // free(board);
   return (0);
 }
 
