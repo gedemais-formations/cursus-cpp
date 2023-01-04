@@ -15,35 +15,53 @@
 // pour utilisert ASSERT
 #include<assert.h>
 
-int char_charset(char char_x,char *charset)
+int char_charset(char elt_x,char *charset)
 
-	int charset_size = strlen(charset);	
-	for (int x = 0; x < charset_size; x++){
-		if (char_x == charset[x]){
-			return(1);
+	int charset_size = strlen(charset);
+	if (charset[0] != '\0'){
+		for (int x = 0; x < charset_size; x++){
+			if (elt_x == charset[x]){
+				return(0);
+			}
 		}
+		return(1);
 	}
-	return(0);
+	else {
+		return(2);
+	}
 }
 
+
+// fonction qui va comparer chaque char d'un elt fourni aux éléments de charset
+// et qui va calculer la longueur de la longueur de la fraction depuis le debut de elt
+// jusqu'à ce char
 char *ft_strdup (char *elt, char *charset){
 
-	// initialisation d'un compteur qui va définir la taille du premier élément pour définir l'espace mémoire à allouer
-	int elt_length = 1;
-	// initialisation d'un entier qui permettra de parcourir chaque caractère de la chaine 1 à 1
-
-	for (int i = 0; i < strlen(elt); i++){
+	// initialisation d'un compteur qui va définir la l'espace mémoire à allouer
+	// pour copier la première fraction de elt jusqu'à un charset
+	// doit être au moins de 1
+	int cut_elt_length = 1;
+	
+	int elt_size = strlen(elt);
+	for (int i = 0; i < elt_size; i++){
 		char_x = elt[i];
-		if (char_charset(char_x, charset) == 1){
-		elt_length++;
+		if ((char_charset(elt_x, charset) == 1{
+			printf("No char of charset found in elt \n");
+			return(NULL);
+		}
+		else if	(char_charset(char_x, charset) == 2){
+			printf("There is no char in charset \n");
+			return(NULL);
 		}
 		else if (char_charset(char_x, charset) == 0){
-			printf("No %c found in elt \n", charset);
-			return(false);
+			cut_elt_length += i;
 		}
-		
-	return(elt_length);
 	}
+	if(cut_elt_length == 1){
+		printf("The first char of elt is in charset \n");
+		return(NULL);
+	}	
+	
 
 	// récupération du file descriptor de elt grace à la fct OPEN
 	int fd_elt = open(elt, O_RDONLY);
@@ -56,8 +74,8 @@ char *ft_strdup (char *elt, char *charset){
 	// récupération de l'adresse de cet espace en définissant la variable elt_mem
 	char * elt_mem = (char *) malloc(elt_length);
 	if (elt_mem == NULL){
-	printf("No more memory available");
-	return(false);
+		printf("No more memory available");
+		return(NULL);
 	}
 
 	// copie les elt_length-1 premier char dans l'espace alloué avec read
