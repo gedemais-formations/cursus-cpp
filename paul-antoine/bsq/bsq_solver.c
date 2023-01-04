@@ -8,31 +8,43 @@
 #include <malloc.h>   // dyn memory allocation
 
 
-
-
-
-
 void print_field(t_field field, int found_size, int found_row, int found_col) {
-    int buffer_size = field.row_size * (field.col_size + 1) + 1;
-    char* buffer = malloc(sizeof(char) * buffer_size);
+#define PRINT_BUFFER_SIZE 100000
+    //int maxSize = field.row_size * (field.col_size + 1) + 1;
+    char buffer[PRINT_BUFFER_SIZE] = "";
+    int count = 0;
 
     for (int i = 0; i < field.row_size; ++i) {
         for (int j = 0; j < field.col_size; ++j) {
+            count++;
             if(get_case(&field.field[i * field.col_size_byte],j)) {
-                buffer[i * (field.col_size + 1) + j ] = field.obstacle;
+                buffer[count] = field.obstacle;
             }else if(i >= found_row && i < (found_row + found_size) && j >= found_col && j < (found_col + found_size)) {
-                buffer[i * (field.col_size + 1) + j ] = field.full;
+                buffer[count] = field.full;
             } else {
-                buffer[i * (field.col_size + 1) + j ] = field.empty;
+                buffer[count] = field.empty;
+            }
+            if(count >= PRINT_BUFFER_SIZE - 1) {
+                buffer[count] = '\0';
+                write(1, buffer, count+1 );
+                count = 0;
             }
         }
-        buffer[(i+1) * (field.col_size + 1) -1 ] = '\n';
+        if(count >= PRINT_BUFFER_SIZE - 2) {
+            buffer[count+1] = '\n';
+            buffer[count+2] = '\0';
+            write(1, buffer, count+2 );
+            count = 0;
+        } else {
+            count++;
+            buffer[count] = '\n';
+        }
     }
-    buffer[buffer_size - 1]= '\0';
 
-    write(1,buffer, buffer_size );
-
-    free(buffer);
+    if(count != 0) {
+        buffer[count+1] = '\0';
+        write(1, buffer, count+1 );
+    }
 }
 
 int square_size(t_field field,int row, int col, int min_square) {
