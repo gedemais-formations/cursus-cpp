@@ -101,11 +101,11 @@ int print_tab(char **tab){
 }
 
 // Print tab 2
-int print_tab2(char **tab){
+int print_tab2(char **tab, int count_line, int count_char_per_line){
   int i = 0;
-  while(i != 27*9){
-    printf("%c", tab[i/27][i%27]);
-    if(i%27==26){
+  while(i != count_char_per_line*count_line){
+    printf("%c", tab[i/count_char_per_line][i%count_char_per_line]);
+    if(i%count_char_per_line==count_char_per_line-1){
       printf("\n");
     }
     i++;
@@ -126,7 +126,7 @@ int find_square(char **tab, char size_square){
     }
     i++;
   }
-  print_tab2(tab);
+  //print_tab2(tab, int count_line, int count_char_per_line);
   return (1);
 }
 
@@ -137,7 +137,7 @@ int solve(char *file_content, int count_line, int count_char_per_line){
   tab = (char **) malloc(sizeof(char*) * count_line);
   for(i = 0; i < count_line; i++){
     tab[i] = (char *) malloc(sizeof(char) * count_char_per_line);
-    printf("%d\n", i);
+    //printf("%d\n", i);
   }
   
   //Transform into a tab
@@ -153,13 +153,13 @@ int solve(char *file_content, int count_line, int count_char_per_line){
     j++;
   }
   
-  /*//Find a solution
+  //Find a solution
   i = count_line;
   while(find_square(&tab[0], i) == 0 && i < 1){
     i--;
-  }*/
+  }
 
-  print_tab2(tab);
+  print_tab2(tab, count_line, count_char_per_line);
 
   for(i = 0; i < count_line; i++){
     free(tab[i]);
