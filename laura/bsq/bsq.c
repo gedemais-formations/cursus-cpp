@@ -7,6 +7,74 @@
 #include <string.h>
 #include <errno.h>
 
+//Prolonge potentiellement le carré par le haut (ssi pas d'obstacle)
+int up_square(int minY, int minX, int maxX, char ** tab) {
+	int i, j;
+	char ok;
+	ok = 1;
+	for(i = minY; i > 0; i--) {
+		for(j = minX; j < maxX; j++) {
+			if(tab[i][j] == 'o') {
+				minY = i + 1;
+				ok = 0;
+			}
+		}
+	}
+	if(ok) minY = 0;
+	return minY;
+}
+
+//Prolonge potentiellement le carré par le bas (ssi pas d'obstacle)
+int bottom_square(int maxY, int max_y, int minX, int maxX, char ** tab) {
+	int i, j;
+	char ok;
+	ok = 1;
+	for(i = maxY; i < max_y; i++) {
+		for(j = minX; j < maxX; j++) {
+			if(tab[i][j] == 'o') {
+				maxY = i - 1;
+				ok = 0;
+			}
+		}
+	}
+	if(ok) maxY = max_y;
+	return maxY;
+}
+
+//Prolonge potentiellement le carré par la gauche (ssi pas d'obstacle)
+int left_square(int minY, int maxY, int minX, char ** tab) {
+	int i, j;
+	char ok;
+	ok = 1;
+	for(i = minY; i < maxY; i++) {
+		for(j = minX; j > 0; j--) {
+			if(tab[i][j] == 'o') {
+				minX = j + 1;
+				ok = 0;
+			}
+		}
+	}
+	if(ok) minX = 0;
+	return minX;
+}
+
+//Prolonge potentiellement le carré par la droite (ssi pas d'obstacle)
+int right_square(int minY, int maxY, int maxX, int max_x, char ** tab) {
+	int i, j;
+	char ok;
+	ok = 1;
+	for(i = minY; i < maxY; i++) {
+		for(j = maxX; j < max_x; j++) {
+			if(tab[i][j] == 'o') {
+				maxX = j;
+				ok = 0;
+			}
+		}
+	}
+	if(ok) maxX = max_x;
+	return maxX;
+}
+
 void write_x(int ** coord, int size, char ** tab, int max_x, int max_y) {
 	int i, j, maxX, maxY, minX, minY;
 	char ok;
@@ -20,49 +88,10 @@ void write_x(int ** coord, int size, char ** tab, int max_x, int max_y) {
 		if(maxY < coord[i][0]) maxY = coord[i][0];
 		else if(minY > coord[i][0]) minY = coord[i][0] + 1;
 	}
-	//Prolonge potentiellement le carré par le haut (ssi pas d'obstacle)
-	for(i = minY; i > 0; i--) {
-		for(j = minX; j < maxX; j++) {
-			if(tab[i][j] == 'o') {
-				minY = i + 1;
-				ok = 0;
-			}
-		}
-	}
-	if(ok) minY = 0;
-	ok = 1;
-	//Prolonge potentiellement le carré par le bas (ssi pas d'obstacle)
-	for(i = maxY; i < max_y; i++) {
-		for(j = minX; j < maxX; j++) {
-			if(tab[i][j] == 'o') {
-				maxY = i - 1;
-				ok = 0;
-			}
-		}
-	}
-	if(ok) maxY = max_y;
-	ok = 1;
-	//Prolonge potentiellement le carré par la gauche (ssi pas d'obstacle)
-	for(i = minY; i < maxY; i++) {
-		for(j = minX; j > 0; j--) {
-			if(tab[i][j] == 'o') {
-				minX = j + 1;
-				ok = 0;
-			}
-		}
-	}
-	if(ok) minX = 0;
-	ok = 1;
-	//Prolonge potentiellement le carré par la droite (ssi pas d'obstacle)
-	for(i = minY; i < maxY; i++) {
-		for(j = maxX; j < max_x; j++) {
-			if(tab[i][j] == 'o') {
-				maxX = j;
-				ok = 0;
-			}
-		}
-	}
-	if(ok) maxX = max_x;
+	minY = up_square(minY, minX, maxX, tab);
+	maxY = bottom_square(maxY, max_y, minX, maxX, tab);
+	minX = left_square(minY, maxY, minX, tab);
+	maxX = right_square(minY, maxY, maxX, max_x, tab);
 	//Le carré est situé entre ces coordonnées
 	for(i = minY; i < maxY; i++) for(j = minX; j < maxX; j++) tab[i][j] = 'x';
 	for(i = 0; i < max_y; i++) printf("\n%s", tab[i]);
