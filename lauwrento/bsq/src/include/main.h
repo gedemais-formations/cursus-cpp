@@ -19,5 +19,6 @@ void min(int a, int b);
 void max(int a, int b);
 char *ft_strdup(char *s, char *charset);
 char **ft_split(char *s, char *charset);
+bool ft_strchr(char c, char *charset);
 
 #endif
