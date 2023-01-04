@@ -54,6 +54,8 @@ int count_char_per_line(char *file_content){
   while(file_content[count] != '\n'){
     count ++;
   }
+  //count++; //Take the '\n'
+  printf("count element per line %d\n", count);
   return count;
 }
 
@@ -66,6 +68,8 @@ int count_lines(char *file_content){
     }
     i++;
   }
+  count ++; //The last line doesn't have \n
+  printf("count line : %d\n", count);
   return (count);
 }
 
@@ -81,11 +85,12 @@ int find_an_o(char **tab, int x, int y){
 // Print tab
 int print_tab(char **tab){
   int i = 0;
-  int length = sizeof tab;
-  int row = sizeof(tab) / sizeof(&tab[0]);
-  while(i < length){
-    printf("%c", tab[i/row][i%row]);
-    if(i%length==length-1){
+  int x;
+  x = sizeof(&tab[0]);
+  printf("%d \n", x);
+  while(tab[i/x][i%x] != '\0'){
+    printf("%c", tab[i/x][i%x]);
+    if(i%x==x-1){
       printf("\n");
     }
     i++;
@@ -102,32 +107,44 @@ int find_square(char **tab, char size_square){
       find = 0;
       return 0;
     } else {
-      tab[i/size_square][i/size_square]='x';
+      tab[i/size_square][i%size_square]='x';
     }
+    i++;
   }
   print_tab(tab);
   return (1);
 }
 
-int solve(char *file_content, int count_line, int count_row){
+int solve(char *file_content, int count_line, int count_char_per_line){
   char **tab = NULL;
   int i = 0;
-  tab = (char **) malloc(sizeof(char*) * count_row);
+  int j = 0;
+  tab = (char **) malloc(sizeof(char*) * count_line);
   for(i = 0; i < count_line; i++){
-    tab[i] = (char *) malloc(sizeof(char) * count_line);
+    tab[i] = (char *) malloc(sizeof(char) * count_char_per_line);
+    printf("%d\n", i);
   }
   
   //Transform into a tab
-  while(file_content[i] != '\0'){
-    tab[i/count_row][i%count_row] = file_content[i];
+  i = 0;
+  while(file_content[j] != '\0'){
+    if(file_content[j] == '\n'){
+      j++; //Remove all \n
+    }
+    tab[i/count_char_per_line][i%count_char_per_line] = file_content[j];
+    //printf("%c", file_content[j]);
+    //printf("[%d][%d]\n", i/count_char_per_line, i%count_char_per_line);
     i++;
+    j++;
   }
   
-  //Find a solution
+  /*//Find a solution
   i = count_line;
   while(find_square(&tab[0], i) == 0 && i < 1){
     i--;
-  }
+  }*/
+
+  print_tab(tab);
 
   for(i = 0; i < count_line; i++){
     free(tab[i]);
@@ -158,8 +175,8 @@ int main() {
     return (-1);
   } else {
     //printf("%d\n", count_char_per_line(file_content));
-    printf("Check 1");
-    fflush(stdout);
+    //printf("Check 1\n");
+    //fflush(stdout);
     solve(file_content, count_lines(file_content), 
       count_char_per_line(file_content));
     free(file_content);
