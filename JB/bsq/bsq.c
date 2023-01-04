@@ -29,6 +29,7 @@ char get_map(char *ad_file_map){			// file_map est une variable qui contient l'a
 // utilisation de la fonction read
 // il faut récupérer la première ligne jusqu'au premier \n >> utiliser ft_split()
 
+
 }
 
 
