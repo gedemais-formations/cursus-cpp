@@ -9,6 +9,7 @@ char **ft_split(char *s, char *charset) {
   char **res;
   int row, i;
   if (s == NULL) return (NULL);
+  if (charset == NULL) return (NULL);
 
   //  Get number of row
   row = 0;

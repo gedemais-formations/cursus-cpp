@@ -13,8 +13,11 @@ int start(int argc, char **argv) {
 
   str = read_fd(fd, &code);
 
-  board = ft_split(
-      "Je m'appelle Lorenzo Tringali\nBonjour\nla vie c'est choetos", "\n ");
+  // board = ft_split(str, "\n");
+  board = ft_split("My little poney", NULL);
+  if (board == NULL) {
+    return ERROR_POINTER;
+  }
 
   // if ((code = analyse(str, &boardLength, &boardHeight)) != ERROR_NONE) {
   //   printf("%d", code);

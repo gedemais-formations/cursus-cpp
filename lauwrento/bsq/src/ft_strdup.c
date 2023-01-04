@@ -9,6 +9,7 @@ char *ft_strdup(char *s, char *charset) {
   int len, i;
   char *dup_s;
   if (s == NULL) return (NULL);
+  if (charset == NULL) return (NULL);
 
   len = 0;
   while (s[len] != '\0' && !ft_strchr(s[len], charset)) len++;

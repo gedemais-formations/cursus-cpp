@@ -1,16 +1,13 @@
 NAME=bsq
 
 CC=gcc
-FLAGS=-Wall\
-  -Werror\
-  -Wextra\
-
-DEBUG_FALGS= -g3\
-  -fsanitize=address
+FLAGS=-Wall
+FLAGS+=-Werror
+FLAGS+=-Wextra
 
 DEBUG ?= 0
 ifeq ($(DEBUG), 1)
-	FLAGS += DEBUG_FALGS
+	FLAGS += -g3 -fsanitize=address
 endif
 
 SRC_PATH=src/
