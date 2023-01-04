@@ -87,10 +87,25 @@ int print_tab(char **tab){
   int i = 0;
   int x;
   x = sizeof(&tab[0]);
-  printf("%d \n", x);
-  while(tab[i/x][i%x] != '\0'){
+  size_t size = sizeof(tab) / sizeof(*tab[0]);
+  printf("x : %d \n", x);
+  printf("size : %ld \n", size);
+  /*while(i != x*x){
     printf("%c", tab[i/x][i%x]);
     if(i%x==x-1){
+      printf("\n");
+    }
+    i++;
+  }*/
+  return (i);
+}
+
+// Print tab 2
+int print_tab2(char **tab){
+  int i = 0;
+  while(i != 27*9){
+    printf("%c", tab[i/27][i%27]);
+    if(i%27==26){
       printf("\n");
     }
     i++;
@@ -111,7 +126,7 @@ int find_square(char **tab, char size_square){
     }
     i++;
   }
-  print_tab(tab);
+  print_tab2(tab);
   return (1);
 }
 
@@ -144,7 +159,7 @@ int solve(char *file_content, int count_line, int count_char_per_line){
     i--;
   }*/
 
-  print_tab(tab);
+  print_tab2(tab);
 
   for(i = 0; i < count_line; i++){
     free(tab[i]);
