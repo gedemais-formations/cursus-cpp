@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <assert.h>
 
 int est_dans(char lettre, char *phrase)
 {
@@ -26,10 +27,10 @@ char *ft_strdup(char *s, char *charset)
 	while(est_dans(s[i],charset)==0)
 		{
 			compteur_place++;
+			i++;
 		}
-
-	copie=malloc(sizeof(char)*compteur_place+1);
-
+	i=0;
+	copie=malloc(sizeof(char)*(compteur_place+1));
 	while(est_dans(s[i],charset)==0)
 	{
 		copie[i]=s[i];
@@ -42,7 +43,9 @@ char *ft_strdup(char *s, char *charset)
 int main()
 {
 	char *s = "Hello World";
-	char *charset = "e b";
-	ft_strdup(s, charset);
+	char *charset = "oui oui";
+	char *resultat = ft_strdup(s, charset);
+	printf("%s \n",resultat);
+	free(resultat);
 	return 0;
 }
