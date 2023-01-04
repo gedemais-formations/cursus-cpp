@@ -2,14 +2,14 @@
 // Created by pad on 1/3/23.
 //
 
+#include "bsq_parser.h"
+#include "bsq_error.h"
 #include <string.h>   // memcpy
 #include <malloc.h>   // dyn memory allocation
 #include <fcntl.h>    //open
 #include <stdio.h>    // fflush
 #include <sys/stat.h> // get file stat
 #include <unistd.h>   // read write
-#include "bsq_parser.h"
-#include "bsq_error.h"
 
 int get_field(char* file, t_field **field_ptr) {
     int fileDescriptor = open(file, O_RDONLY);
@@ -290,4 +290,76 @@ int get_row_number(const char *buffer, int *length_ptr, int *iter_ptr) {
     }
 
     return 0;
+}
+
+bool isSplit(const char tested_char, const char* charset) {
+    for (int i = 0; charset[i] != '\0' ; ++i) {
+        if(charset[i] == tested_char) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+char* ft_substr(const char* s, int start, int end) {
+    int size = end - start + 2; //we add 1 for \0
+    char* result = malloc(sizeof(char) * size);
+    memcpy(result, &s[start], size - 2);
+    result[size-1] = '\0';
+    return result;
+}
+
+char** ft_split(const char* s, const char* charset) {
+    int nb = 1;
+    bool last_char_split = true;
+    for (int i = 0 ; s[i] != '\0' ; ++i) {
+        if(isSplit(s[i], charset)) {
+            if(!last_char_split) {
+                last_char_split = true;
+                nb++;
+            }
+        } else {
+            last_char_split = false;
+        }
+    }
+
+    char **result = malloc(sizeof(char*) * ++nb);
+    if(result == NULL) {
+        return  result;
+    }
+
+    last_char_split = true;
+    int curr_substring = 0, start = 0;
+    int i;
+    for (i = 0 ; s[i] != '\0' ; ++i) {
+        if(isSplit(s[i], charset)) {
+            if(!last_char_split) {
+                last_char_split = true;
+                result[curr_substring] = ft_substr(s, start, i);
+                if(result[curr_substring] == NULL) {
+                    for (int j = 0; j < curr_substring; ++j) {
+                        free(result[curr_substring]);
+                    }
+                    free(result);
+                    return NULL;
+                }
+                curr_substring++;
+            }
+            start = i+1;
+        } else {
+            last_char_split = false;
+        }
+    }
+    result[curr_substring] = ft_substr(s, start, i);
+    if(result[curr_substring] == NULL) {
+        for (int j = 0; j < curr_substring; ++j) {
+            free(result[curr_substring]);
+        }
+        free(result);
+        return NULL;
+    }
+    result[curr_substring+1] = "";
+
+    return result;
 }

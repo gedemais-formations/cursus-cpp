@@ -100,4 +100,28 @@ int get_symbols(const char *buffer, t_field *field_ptr, int *iter_ptr);
  */
 int get_line_size(const char *buffer, int iter, int *line_size_ptr);
 
+/**
+ * @param tested_char the character to test
+ * @param charset Set of characters to test it with
+ * @return Return true if tested_char is in charset
+ */
+bool isSplit(char tested_char, const char* charset);
+
+/**
+ * extract a string from s starting at start index and ending at end index
+ * @param s String to cut
+ * @param start start index (included)
+ * @param end end index (excluded)
+ * @return The extracted substring
+ */
+char* ft_substr(const char* s, int start, int end);
+
+/**
+ * Split a string into an array of string using charset as a list of separators
+ * @param s String to split
+ * @param charset List of separators
+ * @return An array of strings with an empty string at its last index.
+ */
+char** ft_split(const char* s, const char* charset);
+
 #endif //BSQ_BSQ_PARSER_H
