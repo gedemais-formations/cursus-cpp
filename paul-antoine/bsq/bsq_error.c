@@ -8,19 +8,23 @@
 #include "bsq_error.h"
 
 int print_error(int errcode, const char* context) {
-    const char* ERRORS_MESSAGES[5] = {
-            "SUCCESS\n",
+    const char* ERRORS_MESSAGES[6] = {
+            "",
             "Error : Can't open % \n",
             "Error : Can't read % \n",
             "Error : invalid pattern % \n",
-            "Error : not enough memory \n"
+            "Error : not enough memory \n",
+            "Error : Invalid error code \n"
     };
     char result[100];
+    if(errcode > 4 || errcode < 1) {
+        errcode = 5;
+    }
     const char* err_msg = ERRORS_MESSAGES[errcode];
     int iter_err = 0;
     int iter_context = 0;
     int iter_res = 0;
-    for (; iter_res < 99; ++iter_res) {
+    for (; iter_res < 99 ; ++iter_res) {
         if(err_msg[iter_err] != '%' && err_msg[iter_err] != '\0') {
             result[iter_res] = err_msg[iter_err];
             iter_err++;
