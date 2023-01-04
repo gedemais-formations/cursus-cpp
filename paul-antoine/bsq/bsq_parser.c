@@ -68,11 +68,11 @@ int get_field_std(t_field ** field_pointer) {
         }
 
         if(total==0) {
-            buffer = malloc(sizeof(char) * batch);
+            buffer = malloc(sizeof(char) * batch * 4);
             memcpy(buffer, tmp_buff, batch);
             total += batch;
         } else if(batch != 0) {
-            buffer = realloc(buffer, sizeof(char) * (total + batch));
+            if(count%4 == 1) buffer = realloc(buffer, sizeof(char) * (total + batch*4));
             if(buffer == NULL) {
                 free(buffer);
                 return print_error(ERROR_CANT_ALLOCATE_MEMORY, "");
@@ -303,28 +303,33 @@ bool isSplit(const char tested_char, const char* charset) {
 
 
 char* ft_substr(const char* s, int start, int end) {
-    int size = end - start + 2; //we add 1 for \0
+    if(s == NULL) return NULL;
+    int size = end - (start - 1) + 1; //we add 1 for \0
     char* result = malloc(sizeof(char) * size);
+    if(result== NULL) return NULL;
     memcpy(result, &s[start], size - 2);
     result[size-1] = '\0';
     return result;
 }
 
 char** ft_split(const char* s, const char* charset) {
-    int nb = 1;
+    if(s == NULL || charset == NULL) return NULL;
+
+    int nb_of_split = 1;
     bool last_char_split = true;
+
     for (int i = 0 ; s[i] != '\0' ; ++i) {
         if(isSplit(s[i], charset)) {
             if(!last_char_split) {
                 last_char_split = true;
-                nb++;
+                nb_of_split++;
             }
         } else {
             last_char_split = false;
         }
     }
 
-    char **result = malloc(sizeof(char*) * ++nb);
+    char **result = malloc(sizeof(char*) * ++nb_of_split);
     if(result == NULL) {
         return  result;
     }

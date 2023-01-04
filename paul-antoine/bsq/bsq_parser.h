@@ -112,7 +112,7 @@ bool isSplit(char tested_char, const char* charset);
  * @param s String to cut
  * @param start start index (included)
  * @param end end index (excluded)
- * @return The extracted substring
+ * @return The extracted substring, NULL pointer in case of error
  */
 char* ft_substr(const char* s, int start, int end);
 
@@ -120,7 +120,7 @@ char* ft_substr(const char* s, int start, int end);
  * Split a string into an array of string using charset as a list of separators
  * @param s String to split
  * @param charset List of separators
- * @return An array of strings with an empty string at its last index.
+ * @return An array of strings with an empty string at its last index. NULL pointer in case of error
  */
 char** ft_split(const char* s, const char* charset);
 
