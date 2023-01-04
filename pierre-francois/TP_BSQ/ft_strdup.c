@@ -21,17 +21,18 @@ int est_dans(char lettre, char *phrase)
 char *ft_strdup(char *s, char *charset)
 {
 	int i = 0;
+	int taille_s = strlen(s);
 	int compteur_place = 0;
 	char *copie = NULL;
 
-	while(est_dans(s[i],charset)==0)
+	while(est_dans(s[i],charset)==0 && i<taille_s)
 		{
 			compteur_place++;
 			i++;
 		}
 	i=0;
 	copie=malloc(sizeof(char)*(compteur_place+1));
-	while(est_dans(s[i],charset)==0)
+	while(est_dans(s[i],charset)==0 && i<taille_s)
 	{
 		copie[i]=s[i];
 		i++;
@@ -43,7 +44,7 @@ char *ft_strdup(char *s, char *charset)
 int main()
 {
 	char *s = "Hello World";
-	char *charset = "oui oui";
+	char *charset = "i";
 	char *resultat = ft_strdup(s, charset);
 	printf("%s \n",resultat);
 	free(resultat);
