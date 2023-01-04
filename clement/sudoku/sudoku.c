@@ -1,6 +1,5 @@
 #include <stdbool.h>
 #include <stdio.h>
-#include <unistd.h>
 
 //énoncé : avec une grille donnée, trouver toutes les solutions possibles
 
