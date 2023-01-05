@@ -132,7 +132,9 @@ int find_square(char **tab, char size_square){
 
 //Try to find a square
 int find_square(char **tab, char size_square, int count_line, int count_char_per_line){
-  return (0);
+  char i = tab[count_char_per_line/count_char_per_line][count_line/count_line];
+  printf("%d\n", i);
+  return (size_square);
 }
 
 int solve(char *file_content, int count_line, int count_char_per_line){
@@ -140,11 +142,11 @@ int solve(char *file_content, int count_line, int count_char_per_line){
   int i = 0;
   int j = 0;
   if (! (tab = (char **) malloc(sizeof(char*) * count_line))){
-    return(NULL);
+    return(1);
   }
   for(i = 0; i < count_line; i++){
     if(! (tab[i] = (char *) malloc(sizeof(char) * count_char_per_line))){
-      return(NULL);
+      return(1);
     }
     //printf("%d\n", i);
   }
@@ -164,7 +166,7 @@ int solve(char *file_content, int count_line, int count_char_per_line){
   
   //Find a solution
   i = count_line;
-  while(find_square(&tab[0], i) == 0 && i < 1){
+  while(find_square(&tab[0], i, count_line, count_char_per_line) == 0 && i < 1){
     i--;
   }
 
