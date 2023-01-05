@@ -3,15 +3,13 @@
 #include <string.h>
 
 int check_char(char c, const char *charset){
-	int boolean;
 	int length;
-	boolean = 0;
-	for(length = 0; charset[length]!='\0' && boolean == 0; length ++){
+	for(length = 0; charset[length]!='\0'; length ++){
 		if(c == charset[length]){
-			boolean = 1;
+			return(1);
 		}
 	}
-	return (boolean);
+	return (0);
 }
 
 int count_substring(const char *str, const char *charset){
@@ -26,26 +24,9 @@ int count_substring(const char *str, const char *charset){
 }
 
 int count_length(const char *str, const char *charset, int index){
-	int length;
-	for(length = index; str[length] != '\0' && check_char(str[length], charset) == 0; length ++){}
-	return (length - index + 1);
-}
-
-int max_length(const char *str, const char *charset){
-	int max_length;
-	int length;
-	max_length = 0;
-	length = 0;
-	for(int i = 0; str[i] != '\0'; i++){
-		if(check_char(str[i], charset) == 0){
-			if(max_length < length){
-				max_length = length;
-				printf("max_length = %d", max_length);
-			}
-			length = 0;
-		}
-	}
-	return(max_length);
+	int length;	for(length = index; (str[length] != '\0') 
+		&& (check_char(str[length], charset) == 0); length ++){}
+	return (length - index);
 }
 
 
@@ -56,34 +37,30 @@ char **ft_split(const char *s, const char *charset){
 	int index;
 	char **str = NULL;
 	nb_substring = count_substring(s, charset);
-	printf("nb_substring value : %d\n", nb_substring);
 	if(!(str = (char**) malloc(sizeof(char*) * (nb_substring + 1)))){
     	return(NULL);
   	}
 
-  	if(!(str[nb_substring] = (char*) malloc(sizeof(char) * 1))){
-  		return(NULL);
-  	}
-  	str[nb_substring][0] = '\0';
+  	str[nb_substring] = NULL;
 
   	index = 0;
   	for(int j = 0; j < nb_substring; j++){
-  		printf("j value : %d\n", j);
-  		fflush(stdout);
-  		//length = count_length(str[j], charset, index);
-  		length = 1;
-  		index = index + length + 1;
-  		if(!(str[j] = (char*) malloc(sizeof(char) * length + 1))){
+  		if(index < nb_substring){
+  			length = count_length(s, charset, index);
+  		}
+
+  		if(!(str[j] = (char*) malloc(sizeof(char) * (length + 1)))){
   			return(NULL);
   		}
+
   		str[j][length] = '\0';
 
   		k = 0;
   		for(int i = 0; i < length; i++){
-  			str[j][k] = s[i];
+  			str[j][k] = s[index+k];
   			k++;
   		}
-  		//printf("%d\n", j);
+  		index = index + length + 1;
   	}
   	return (str);
 }
@@ -97,16 +74,15 @@ int main(int argc, char const *argv[]){
 	} else {
 		str = ft_split(argv[1], argv[2]);
 	}
-	for(row = 0; str[row][0] != '\0'; row++){}
+	for(row = 0; str[row]; row++){}
 	row ++; //Count the last row
 
 	if(str){
 		for(int i = 0; i < row; i++){
-			if(i != row){
-				printf("%s \n", str[i]);
+			if(i != row-1){
+				printf("Itération %d : %s \n", i, str[i]);
 			}
 			free(str[i]);
-			//printf("Free aray str[%d]\n", i);
 		}
 		free(str);
 	}
