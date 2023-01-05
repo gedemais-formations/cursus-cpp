@@ -28,6 +28,12 @@ char *ft_strdup(char *s, char *charset)
     }
 
    test = malloc(sizeof(char)*(longueur+1));
+   if( test == NULL){
+	printf("ERROR : OUT OF MEMORY");
+}
+	else
+{
+
   while (recherche(s[i],charset)==0)
     {
         test[i] = s[i];
@@ -35,14 +41,34 @@ char *ft_strdup(char *s, char *charset)
     }
 
     test[i] = '\0';
-
+}
     return test;
 }
 
+char **ft_split(char *s,char *charset)
+{ 
+	int compteur ;
+	int i = 0 ;
+	int longueur = strlen(s) ;
+	while (recherche(s[i],charset) && (i+1 < longueur) == 0 )
+			{i++ ;
+			
+
+		 if (recherche(s[i], charset) == 1 && recherche(s[i + 1], charset) == 0)
+
+					{ compteur ++ ;
+					}
+			}
+		printf("%d",compteur);
+}
+  
+   
+
+
 int main ()
 {
-	char *resultat = ft_strdup("Bonjour tout le monde","o");
-	printf("%s",resultat);
+	char *resultat = ft_strdup("Bonjour tout le monde","B");
+	printf("%s \n",resultat);
 	free(resultat);
 	return 0 ;
 }
