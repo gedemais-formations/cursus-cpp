@@ -48,8 +48,11 @@ char **ft_split (char *string_char, char *charset){
 	return(elts_string);
 }
 
-	char **elt_word;
+int main(){
+	// char *result_elt_mem = ft_strdup("Time_to_test thy code", " y");
+	// printf("%s \n", result_elt_mem);
 
+	return(0);
 }
 
-
+// pour la compilation il me faudra ajouter ft_strdup.c dans le gcc avec le ft_split.c
