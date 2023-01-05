@@ -32,6 +32,11 @@ char *ft_strdup(char *s, char *charset)
 		}
 	i=0;
 	copie=malloc(sizeof(char)*(compteur_place+1));
+
+	if(copie == NULL)
+	{
+		return ("MEMORY NOT ALLOCATED");
+	}
 	while(est_dans(s[i],charset)==0 && i<taille_s)
 	{
 		copie[i]=s[i];
@@ -41,10 +46,16 @@ char *ft_strdup(char *s, char *charset)
 	return copie;
 }
 
+char **ft_split(char *s, char *charset)
+{
+	int longueur_s = strlen(s);
+}
+
+
 int main()
 {
 	char *s = "Hello World";
-	char *charset = "i";
+	char *charset = "p";
 	char *resultat = ft_strdup(s, charset);
 	printf("%s \n",resultat);
 	free(resultat);
