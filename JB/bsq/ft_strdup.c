@@ -17,17 +17,12 @@
 
 int char_charset(char elt_x,char *charset){
 	int charset_size = strlen(charset);
-	if (charset[0] != '\0'){
-		for (int x = 0; x < charset_size; x++){
-			if (elt_x == charset[x]){
-				return(0);
-			}
+	for (int x = 0; x < charset_size; x++){
+		if (elt_x == charset[x]){
+			return(0);
 		}
-		return(1);
 	}
-	else {
-		return(2);
-	}
+	return(1);
 }
 
 
@@ -35,59 +30,73 @@ int char_charset(char elt_x,char *charset){
 // et qui va calculer la longueur de la longueur de la fraction depuis le debut de elt
 // jusqu'à ce char
 char *ft_strdup (char *elt, char *charset){
+	
+	int elt_size = strlen(elt);
+	int charset_size = strlen(charset);
+
+	if (elt_size == 0){
+		printf("No char in elt \n");
+		return(NULL);
+	}
+	else if (charset_size == 0){
+		printf("No char in charset \n");
+		return(NULL);
+	}
 
 	// initialisation d'un compteur qui va définir la l'espace mémoire à allouer
 	// pour copier la première fraction de elt jusqu'à un charset
 	// doit être au moins de 1
 	int cut_elt_length = 1;
-	
-	int elt_size = strlen(elt);
+
 	for (int i = 0; i < elt_size; i++){
 		char elt_x = elt[i];
-		if (char_charset(elt_x, charset) == 1){
-			printf("No char of charset found in elt \n");
-			return(NULL);
+		if (char_charset(elt_x, charset) == 0){
+			break;
 		}
-		else if	(char_charset(elt_x, charset) == 2){
-			printf("There is no char in charset \n");
-			return(NULL);
-		}
-		else if (char_charset(elt_x, charset) == 0){
-			cut_elt_length += i;
+		else {
+			cut_elt_length++;
 		}
 	}
-	if(cut_elt_length == 1){
-		printf("The first char of elt is in charset \n");
-		return(NULL);
-	}	
 	
-
-	// récupération du file descriptor de elt grace à la fct OPEN
+	if (cut_elt_length == elt_size){
+		printf("No char of charset found in elt \n");
+		return(NULL);	
+	}
+	
+	/*
+	 * // récupération du file descriptor de elt grace à la fct OPEN
 	int fd_elt = open(elt, O_RDONLY);
-		if (fd_elt == -1){
+	if (fd_elt == -1){
 		printf("No file descriptor for elt \n");
-		return(false);
-		}
+		return(NULL);
+	}
+	*/
 
 	// allocation d'un espace mémoire de taille elt_length avec malloc
 	// récupération de l'adresse de cet espace en définissant la variable elt_mem
 	char * elt_mem = (char *) malloc(cut_elt_length);
+	
+	if(cut_elt_length == 1){
+		elt_mem[0] = '\0';
+		printf("The first char of elt is in charset \n");
+		return(NULL);
+	}	
+	
 	if (elt_mem == NULL){
 		printf("No more memory available");
 		return(NULL);
 	}
 
-	for (int j = 0; j < cut_elt_length; j++){
+	for (int j = 0; j < cut_elt_length - 1; j++){
 		elt_mem[j] = elt[j];
 	}
-	elt_mem[cut_elt_length] = '\0';
+	elt_mem[cut_elt_length - 1] = '\0';
 	
-	printf("%s\n", elt_mem);
+	// printf("%s\n", elt_mem);
 
 	return(elt_mem);
 
-	free(elt_mem);
-
+	
 	/*
 	// copie les cut_elt_length-1 premier char dans l'espace alloué avec read
 	// et stocké dans rd_elt_mem le nombre d'octet lus
@@ -115,9 +124,8 @@ char *ft_strdup (char *elt, char *charset){
 	(void)argv;
 	*/
 int main(){
-	char *elt = "Time_to_test this function";
-	char *charset = " ";
-	char *result_elt_mem = ft_strdup(elt, charset);
+	char *result_elt_mem = ft_strdup("Time_to_test thy code", " y");
 	printf("%s \n", result_elt_mem);
+
 	return(0);
 }
