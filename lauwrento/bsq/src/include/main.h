@@ -11,14 +11,22 @@
 
 #define BUFFER_SIZE 128
 
-struct MaxSq {
+typedef struct s_maxsq {
   int len;
   int x;
   int y;
-};
+} MaxSq;
 
-char **parser(char *str, int *error_code);
-int analyse(char *str);
+typedef struct s_env {
+  MaxSq maxsq;
+  char *str;
+  char **board;
+  char freeSpace;
+  char obstacle;
+  char square;
+  int err_code;
+} Env;
+
 char *read_fd(int fd, int *error_code);
 size_t str_len(const char *s);
 void error_handler(unsigned char code);
@@ -27,7 +35,8 @@ int max(int a, int b);
 char *ft_strdup(char *s, char *charset);
 char **ft_split(char *s, char *charset);
 bool ft_strchr(char c, char *charset);
-int get_map(int fd);
-struct MaxSq solver(char **board, int *err_code);
+int get_map(int fd, Env *env);
+int solver(Env *env);
+void free_env(Env *env);
 
 #endif

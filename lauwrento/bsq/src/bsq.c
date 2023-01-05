@@ -1,6 +1,6 @@
-#include <main.h>
+#include "main.h"
 
-int start(int argc, char **argv) {
+int start(int argc, char **argv, Env *env) {
   int fd, code;
 
   // If there is no argument read stdin else read argv
@@ -10,7 +10,7 @@ int start(int argc, char **argv) {
     fd = open(argv[1], O_RDONLY);
   }
 
-  if ((code = get_map(fd)) != ERROR_NONE) {
+  if ((code = get_map(fd, env)) != ERROR_NONE) {
     return (code);
   }
 
@@ -31,11 +31,14 @@ int start(int argc, char **argv) {
 }
 
 int main(int argc, char **argv) {
+  Env env;
   int code;
   // fflush(stdin);
-
-  if ((code = start(argc, argv)) != ERROR_NONE) {
+  memset(&env, 0, sizeof(Env));
+  if ((code = start (argc, argv, &env)) != ERROR_NONE) {
     error_handler(code);
     return (code);  // errors defined in error.h
   }
+
+  free_env(&env);
 }

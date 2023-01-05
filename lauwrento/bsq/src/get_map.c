@@ -1,23 +1,21 @@
 #include "main.h"
 
-int get_map(int fd) {
-  char **board;
-  char *str;
+int get_map(int fd, Env *env) {
   int err_code;
 
-  str = read_fd(fd, &err_code);
-  if (str == NULL) {
-    return (ERROR_POINTER);
-  }
-  board = ft_split(str, "\n");
-  if (board == NULL) {
+  env->str = read_fd(fd, &err_code);
+  if (env->str == NULL) {
     return (ERROR_POINTER);
   }
 
-  solver(board, &err_code);
+  env->board = ft_split(env->str, "\n");
+  if (env->board == NULL) {
+    return (ERROR_POINTER);
+  }
 
-  free(str);
-  for (int i = 0; board[i] != NULL; i++) free(board[i]);
-  free(board);
+  if ((env->err_code = solver(env)) != ERROR_NONE) {
+    return (env->err_code);
+  }
+
   return (0);
 }

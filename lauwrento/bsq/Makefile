@@ -21,6 +21,7 @@ SRC_NAME=bsq.c\
   solver.c\
   read_fd.c\
   math.c\
+  free.c
 
 
 SRC=$(addprefix $(SRC_PATH), $(SRC_NAME))
