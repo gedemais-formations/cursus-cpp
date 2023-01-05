@@ -30,6 +30,8 @@ int main(int argc, char **argv) {
         return err;
     }
 
+    print_square(pWindow, 0x11F11100, 20, 20, 80, 120);
+
     while (1) SDL_Delay(3000);
 
     SDL_DestroyWindow(pWindow);

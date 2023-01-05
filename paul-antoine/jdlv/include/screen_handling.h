@@ -26,4 +26,6 @@ int background(SDL_Window* pWindow, int color);
  */
 void put_pixel(char* buffer, int x, int y, int color);
 
+int print_square(SDL_Window* pWindow, int color, int x, int y, int w, int h);
+
 #endif //JDLV_SCREEN_HANDLING_H

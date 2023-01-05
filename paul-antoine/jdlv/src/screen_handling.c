@@ -37,19 +37,19 @@ void put_pixel(char* buffer, int x, int y, int color) {
 }
 
 int background(SDL_Window* pWindow, int color) {
+    return print_square(pWindow, color, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+
+int print_square(SDL_Window* pWindow, int color, int x, int y, int w, int h) {
     SDL_Surface* surface = SDL_GetWindowSurface(pWindow);
     if(surface == NULL) return print_error(ERROR_SDL_NO_SURFACE);
     char* pixelBuffer = surface->pixels;
-    /*int h = surface->h;
-    int w = surface->w;*/
 
-    for (int i = 0; i < SCREEN_HEIGHT; ++i) {
-        for (int j = 0; j < SCREEN_WIDTH; ++j) {
+    for (int i = x; i < x+w; ++i) {
+        for (int j = y; j < y+h; ++j) {
             put_pixel(pixelBuffer, i, j, color);
         }
     }
 
     if(SDL_UpdateWindowSurface(pWindow)) return print_error(ERROR_SDL_WINDOW_UPDATE);
-
-    return 0;
 }
