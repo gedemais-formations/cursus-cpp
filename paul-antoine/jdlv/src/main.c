@@ -44,7 +44,13 @@ int main(int argc, char **argv) {
 
     //print_square(pWindow, 0x11F11100, 20, 20, 80, 120);
 
-    while (1) SDL_Delay(3000);
+
+
+    while (1) {
+
+
+        SDL_Delay(3000);
+    }
 
     SDL_DestroyWindow(pWindow);
 

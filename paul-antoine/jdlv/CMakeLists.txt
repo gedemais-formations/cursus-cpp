@@ -3,5 +3,5 @@ project(jdlv C)
 
 set(CMAKE_C_STANDARD 23)
 
-add_executable(jdlv src/main.c src/error.c include/error.h src/screen_handling.c src/util.c include/util.h)
+add_executable(jdlv src/main.c src/error.c include/error.h src/screen_handling.c src/util.c include/util.h src/jdlv.c include/jdlv.h)
 target_link_libraries(jdlv SDL2)
