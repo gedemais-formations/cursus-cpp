@@ -70,7 +70,8 @@ char **ft_split(const char *s, const char *charset){
   	for(int j = 0; j < nb_substring; j++){
   		printf("j value : %d\n", j);
   		fflush(stdout);
-  		length = count_length(str[j], charset, index);
+  		//length = count_length(str[j], charset, index);
+  		length = 1;
   		index = index + length + 1;
   		if(!(str[j] = (char*) malloc(sizeof(char) * length + 1))){
   			return(NULL);
