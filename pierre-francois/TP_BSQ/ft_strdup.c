@@ -45,12 +45,13 @@ char *ft_strdup(char *s, char *charset)
 	copie[i]='\0';
 	return copie;
 }
-
+/*
 char **ft_split(char *s, char *charset)
 {
 	int longueur_s = strlen(s);
+	char **resultat = NULL;
 }
-
+*/
 
 int main()
 {
