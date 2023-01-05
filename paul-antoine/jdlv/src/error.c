@@ -9,11 +9,12 @@
 #include <unistd.h>   //read write
 
 int print_error(int errcode, const char* err_msg, const char* context) {
-    char result[100];
+#define MAX_BUFF 250
+    char result[MAX_BUFF];
     int iter_err = 0;
     int iter_context = 0;
     int iter_res = 0;
-    for (; iter_res < 99 ; ++iter_res) {
+    for (; iter_res < MAX_BUFF-1 ; ++iter_res) {
         if(err_msg[iter_err] != '%' && err_msg[iter_err] != '\0') {
             result[iter_res] = err_msg[iter_err];
             iter_err++;

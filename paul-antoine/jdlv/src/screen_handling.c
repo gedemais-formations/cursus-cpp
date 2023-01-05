@@ -13,7 +13,7 @@ bool isLittleEndian() {
     return *(char*)&n == 1; //if the first byte of n is equal to 1 then the system is littleEndian
 }
 
-void put_pixel(char* buffer, int x, int y, int color) {
+void put_pixel(char* buffer, int x, int y, int color, int w) {
     char r, g, b, a;
     if (isLittleEndian()) {
         r = ((char *) &color)[3];
@@ -28,7 +28,7 @@ void put_pixel(char* buffer, int x, int y, int color) {
         a = ((char *) &color)[3];
     }
 
-    int start = (y * SCREEN_WIDTH * 4) + x * 4;
+    int start = (y * w * 4) + x * 4;
 
     buffer[start] = b;
     buffer[start+1] = g;
@@ -37,7 +37,12 @@ void put_pixel(char* buffer, int x, int y, int color) {
 }
 
 int background(SDL_Window* pWindow, int color) {
-    return print_square(pWindow, color, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    SDL_Surface* surface = SDL_GetWindowSurface(pWindow);
+    if(surface == NULL) return print_error(ERROR_SDL_NO_SURFACE);
+    int h = surface->h;
+    int w = surface->w;
+
+    return print_square(pWindow, color, 0, 0, w, h);
 }
 
 int print_square(SDL_Window* pWindow, int color, int x, int y, int w, int h) {
@@ -47,7 +52,7 @@ int print_square(SDL_Window* pWindow, int color, int x, int y, int w, int h) {
 
     for (int i = x; i < x+w; ++i) {
         for (int j = y; j < y+h; ++j) {
-            put_pixel(pixelBuffer, i, j, color);
+            put_pixel(pixelBuffer, i, j, color, surface->w);
         }
     }
 

@@ -5,10 +5,6 @@
 #ifndef JDLV_SCREEN_HANDLING_H
 #define JDLV_SCREEN_HANDLING_H
 
-#define SCREEN_HEIGHT 600
-#define SCREEN_WIDTH 600
-#define SCREEN_SIZE (SCREEN_WIDTH * SCREEN_HEIGHT)
-
 /**
  * Change background color of a window
  * @param pWindow The window to change
@@ -23,8 +19,9 @@ int background(SDL_Window* pWindow, int color);
  * @param x The column where to write
  * @param y The row where to write
  * @param color The color to put in buffer in form 0xRRGGBBAA
+ * @param width Width of one buffer row
  */
-void put_pixel(char* buffer, int x, int y, int color);
+void put_pixel(char* buffer, int x, int y, int color, int width);
 
 int print_square(SDL_Window* pWindow, int color, int x, int y, int w, int h);
 
