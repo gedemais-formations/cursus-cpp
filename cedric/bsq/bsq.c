@@ -204,7 +204,7 @@ int main() {
     //printf("Check 1\n");
     //fflush(stdout);
     solve(file_content, count_lines(file_content), 
-      count_char_per_line(file_content));
+    count_char_per_line(file_content));
     free(file_content);
     return 0;
   }
