@@ -15,8 +15,7 @@
 // pour utilisert ASSERT
 #include<assert.h>
 
-int char_charset(char elt_x,char *charset)
-
+int char_charset(char elt_x,char *charset){
 	int charset_size = strlen(charset);
 	if (charset[0] != '\0'){
 		for (int x = 0; x < charset_size; x++){
@@ -44,16 +43,16 @@ char *ft_strdup (char *elt, char *charset){
 	
 	int elt_size = strlen(elt);
 	for (int i = 0; i < elt_size; i++){
-		char_x = elt[i];
-		if ((char_charset(elt_x, charset) == 1{
+		char elt_x = elt[i];
+		if (char_charset(elt_x, charset) == 1){
 			printf("No char of charset found in elt \n");
 			return(NULL);
 		}
-		else if	(char_charset(char_x, charset) == 2){
+		else if	(char_charset(elt_x, charset) == 2){
 			printf("There is no char in charset \n");
 			return(NULL);
 		}
-		else if (char_charset(char_x, charset) == 0){
+		else if (char_charset(elt_x, charset) == 0){
 			cut_elt_length += i;
 		}
 	}
@@ -72,15 +71,27 @@ char *ft_strdup (char *elt, char *charset){
 
 	// allocation d'un espace mémoire de taille elt_length avec malloc
 	// récupération de l'adresse de cet espace en définissant la variable elt_mem
-	char * elt_mem = (char *) malloc(elt_length);
+	char * elt_mem = (char *) malloc(cut_elt_length);
 	if (elt_mem == NULL){
 		printf("No more memory available");
 		return(NULL);
 	}
 
-	// copie les elt_length-1 premier char dans l'espace alloué avec read
+	for (int j = 0; j < cut_elt_length; j++){
+		elt_mem[j] = elt[j];
+	}
+	elt_mem[cut_elt_length] = '\0';
+	
+	printf("%s\n", elt_mem);
+
+	return(elt_mem);
+
+	free(elt_mem);
+
+	/*
+	// copie les cut_elt_length-1 premier char dans l'espace alloué avec read
 	// et stocké dans rd_elt_mem le nombre d'octet lus
-	rd_elt_mem = read(fd_elt, elt_mem, (elt_length - 1));
+	rd_elt_mem = read(fd_elt, elt_mem, (cut_elt_length - 1));
 	
 	// ajout de \O en position rd_elt_mem (fin de chaine) soit elt_length
 	// normalement
@@ -93,10 +104,20 @@ char *ft_strdup (char *elt, char *charset){
 
 	// libération de l'espace mémoire
 	free(elt_mem);
+
+*/
+
 }
 
-int main(int argc, char **argv){
+
+/* int main(int argc, char **argv){
 	(void)argc;
 	(void)argv;
+	*/
+int main(){
+	char *elt = "Time_to_test this function";
+	char *charset = " ";
+	char *result_elt_mem = ft_strdup(elt, charset);
+	printf("%s \n", result_elt_mem);
 	return(0);
 }
