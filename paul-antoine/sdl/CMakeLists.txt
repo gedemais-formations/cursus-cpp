@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.24)
 project(sdl)
 
 # includes cmake/FindSDL2.cmake
@@ -11,4 +11,4 @@ include_directories(${SDL2_INCLUDE_DIR})
 set(SOURCE_FILES src/main.c)
 
 add_executable(sdl ${SOURCE_FILES})
-target_link_libraries(sdl ${SDL2_LIBRARY} ${CMAKE_SOURCE_DIR}/lib/libSDL2main.a)
+target_link_libraries(sdl ${SDL2_LIBRARY} ${CMAKE_SOURCE_DIR}/lib/libSDL2main.a SDL2)
