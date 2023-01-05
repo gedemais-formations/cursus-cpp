@@ -139,9 +139,13 @@ int solve(char *file_content, int count_line, int count_char_per_line){
   char **tab = NULL;
   int i = 0;
   int j = 0;
-  tab = (char **) malloc(sizeof(char*) * count_line);
+  if (! (tab = (char **) malloc(sizeof(char*) * count_line))){
+    return(NULL);
+  }
   for(i = 0; i < count_line; i++){
-    tab[i] = (char *) malloc(sizeof(char) * count_char_per_line);
+    if(! (tab[i] = (char *) malloc(sizeof(char) * count_char_per_line))){
+      return(NULL);
+    }
     //printf("%d\n", i);
   }
   
