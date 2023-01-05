@@ -17,5 +17,7 @@ int get_map(int fd, Env *env) {
     return (env->err_code);
   }
 
+  print_solution(env);
+
   return (0);
 }

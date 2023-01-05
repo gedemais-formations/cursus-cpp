@@ -38,5 +38,6 @@ bool ft_strchr(char c, char *charset);
 int get_map(int fd, Env *env);
 int solver(Env *env);
 void free_env(Env *env);
+void print_solution(Env *env);
 
 #endif

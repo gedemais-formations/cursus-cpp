@@ -51,13 +51,6 @@ int solver(Env *env) {
   }
   printf("maxsqlen = %d\n", env->maxsq.len);
 
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < cols; j++) {
-      printf("%d", dp[i * cols + j]);
-    }
-    printf("\n");
-  }
-
   free(dp);
 
   return (0);
