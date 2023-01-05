@@ -13,10 +13,10 @@ char *read_fd(int fd, int *code_error) {
   }
   // Get the content of the file directory
   do {
+    fflush(stdin);
     size = read(fd, buf, BUFFER_SIZE);
 
     if (size > 0) {
-
       if (i > 0) {
         str = (char *)realloc(str, BUFFER_SIZE * (i + 1) + 1);
 
@@ -32,6 +32,6 @@ char *read_fd(int fd, int *code_error) {
 
   } while (size == BUFFER_SIZE);
 
-  str[BUFFER_SIZE * (i-1) + size] = '\0';
+  str[BUFFER_SIZE * (i - 1) + size] = '\0';
   return (str);
 }

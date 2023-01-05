@@ -11,5 +11,6 @@ void free_board(char **board) {
 
 void free_env(Env *env) {
   free_board(env->board);
+  free(env->dp);
   free(env->str);
 }

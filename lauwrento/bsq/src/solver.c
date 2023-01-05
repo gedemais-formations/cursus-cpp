@@ -41,9 +41,10 @@ int solver(Env *env) {
         int min_left_up = min(dp[i * cols + (j - 1)], dp[(i - 1) * cols + j]);
         dp[i * cols + j] = min(min_left_up, dp[(i - 1) * cols + (j - 1)]) + 1;
 
-        env->maxsq.len = max(env->maxsq.len, dp[i * cols + j]);
-        if (env->maxsq.len == dp[i * cols + j]) {
-          env->maxsq.y = i;
+        int maxsqlen = max(env->maxsq.len, dp[i * cols + j]);
+        if (maxsqlen > env->maxsq.len) {
+          env->maxsq.len = maxsqlen;
+          env->maxsq.y = i + 1;
           env->maxsq.x = j;
         }
       }
@@ -51,7 +52,8 @@ int solver(Env *env) {
   }
   printf("maxsqlen = %d\n", env->maxsq.len);
 
-  free(dp);
+  env->dp = dp;
+  env->cols = cols;
 
   return (0);
 }

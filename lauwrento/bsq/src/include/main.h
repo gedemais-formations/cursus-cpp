@@ -9,7 +9,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#define BUFFER_SIZE 128
+#define BUFFER_SIZE 65536
 
 typedef struct s_maxsq {
   int len;
@@ -21,6 +21,8 @@ typedef struct s_env {
   MaxSq maxsq;
   char *str;
   char **board;
+  int *dp;
+  int cols;
   char freeSpace;
   char obstacle;
   char square;
