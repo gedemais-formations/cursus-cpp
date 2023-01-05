@@ -45,13 +45,28 @@ char *ft_strdup(char *s, char *charset)
 	copie[i]='\0';
 	return copie;
 }
-/*
+
 char **ft_split(char *s, char *charset)
 {
-	int longueur_s = strlen(s);
 	char **resultat = NULL;
+	int allocation_place = 0;
+	int taille_s = strlen(s);
+	for (int i = 0; i<taille_s-1; i++)
+	{
+		if(est_dans(s[i],charset) && !(est_dans(s[i+1],charset)))
+				{
+					allocation_place++;
+				}
+	}
+	resultat=malloc(sizeof(char)*allocation_place);
+	if(resultat == NULL)
+	{
+		return ("MEMORY NOT ALLOCATED");
+	}
+	int j=0;
+	for(int i = 0; i<taille_s; i++)
 }
-*/
+
 
 int main()
 {
