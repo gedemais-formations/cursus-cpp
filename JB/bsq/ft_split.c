@@ -19,12 +19,12 @@ int char_charset(char string_char_x,char *charset);
 char *ft_strdup (char *string_char, char *charset);
 
 
-char **ft_split (char *string_char, char *charset){
+int recup_nb_elts(char *string_char, char *charset){
 	
 	// récupération du nombre d'éléments dans la suite de caractères
 	
 	int string_char_size = strlen(string_char);
-	int nb_elts = 0;
+	int nb_elts = 1;
 
 	for (int i = 0; i < string_char_size; i++){
 		// char string_char_x = string_char[i];
@@ -32,33 +32,61 @@ char **ft_split (char *string_char, char *charset){
 			nb_elts++;
 		}
 	}
+	return(nb_elts);
 	
-	char **elts_string = (char**) malloc((sizeof(char*) * nb_elts));
+}
+
+char **ft_split (char *string_char, char *charset){
 	
+	int nb_elts = recup_nb_elts(string_char, charset);
+
+	int string_char_size = strlen(string_char);
+
+	char **elts_string = (char**) malloc((sizeof(char*) * nb_elts + 1));
+	if (elts_string == NULL){
+		
+		return(NULL);
+	}	
+
 	int j = 0;
 	for (int k = 0; k < string_char_size; k++){
 		if (char_charset(string_char[0], charset) == 0){
 			elts_string[j] = ft_strdup(string_char,charset);
+			if(ft_strdup(string_char, charset)==NULL){
+				printf("Memory allocation trouble");
+				return(NULL);
+			}
 			j++;
+
 		}
 		else if (k < (string_char_size - 1) && (char_charset(string_char[k], charset) == 1) && (char_charset(string_char[k + 1], charset) == 0)){
-			if (j < nb_elts){
+			if (j < nb_elts-1){
 				elts_string[j] = ft_strdup(&string_char[k+1], charset);
-				j++;
+					if(ft_strdup(string_char, charset)==NULL){
+						printf("Memory allocation trouble");
+						return(NULL);
+					}
+					j++;
 			}
 			else {
 				printf("There is more elts found than previously calculated");
 				return(NULL);
 			}
 		}
-	}	
+	}
+	elts_string[j+1]=NULL;
 	return(elts_string);
 }
 
 int main(){
+	
 	char **result_elts_string = ft_split("Time_to_test thy code", " y");
-	printf("%s \n", *result_elts_string);
 
+	for (int l = 0; result_elts_string[l] != NULL; l++){ 
+		printf("%s \n", result_elts_string[l]);
+		free(result_elts_string[l]);
+	}
+	free(result_elts_string);
 	return(0);
 }
 
