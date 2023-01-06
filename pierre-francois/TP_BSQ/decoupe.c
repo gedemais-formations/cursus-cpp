@@ -13,10 +13,10 @@ char *decoupe_phrase(int i,int j, char *phrase)
 	}
 	else
 	{
-		phrase_decoupee=malloc(sizeof(char)*((j-i)+1));
+		phrase_decoupee=malloc(sizeof(char)*(j-i-1));
 		if(phrase_decoupee == NULL)
 		{
-			return("MEMORY NOT ALLOCATED");
+			return NULL;
 		}
 		for (int k = i; k<=j; k++)
 		{
