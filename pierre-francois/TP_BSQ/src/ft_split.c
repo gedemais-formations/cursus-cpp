@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <stdio.h>
 
 int est_dans(char lettre, char *phrase)
 {
