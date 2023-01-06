@@ -53,16 +53,22 @@ void newGeneration() {
 		for(y = 0; y < BOARD_HEIGHT*SQUARE_SIZE; y+=SQUARE_SIZE) {
 			n = neighbours(tab, x, y);
 			if(tab[x][y] != EMPTY) {
-				if(n < 2 || n > 3) {
-					tab[x][y] = RED;
+				if(tab[x][y] == RED && n != 3) {
+					tab[x][y] = EMPTY;
 					SDL_Rect rect = { x, y, SQUARE_SIZE, SQUARE_SIZE };
-					SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+					SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 					SDL_RenderFillRect(renderer, &rect);
 				}
-				else if(n == 3) {
+				else if(n == 3 || tab[x][y] == GREEN) {
 					tab[x][y] = BLUE;
 					SDL_Rect rect = { x, y, SQUARE_SIZE, SQUARE_SIZE };
 					SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+					SDL_RenderFillRect(renderer, &rect);
+				}
+				else if(n < 2 || n > 3) {
+					tab[x][y] = RED;
+					SDL_Rect rect = { x, y, SQUARE_SIZE, SQUARE_SIZE };
+					SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 					SDL_RenderFillRect(renderer, &rect);
 				}
 			}
@@ -76,13 +82,6 @@ void newGeneration() {
 					SDL_RenderFillRect(renderer, &rect);
 				}
 			}
-			//Cellule morte
-			/*if(tab[x][y] == RED) {
-				tab[x][y] = EMPTY;
-				SDL_Rect rect = { x, y, SQUARE_SIZE, SQUARE_SIZE };
-				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-				SDL_RenderFillRect(renderer, &rect);
-			}*/
 		}
 	}
 }
@@ -148,11 +147,7 @@ int main() {
 	}
 	SDL_RenderPresent(renderer);
 	SDL_UpdateWindowSurface(window);
-	//sleep(1);
-	//newGeneration(renderer, tab);
     	pthread_create(&threads[1], NULL, newThread, (void *)1);
-    	//SDL_RenderPresent(renderer);
-	//SDL_UpdateWindowSurface(window);
 	while(!quit){ 
     		while(SDL_PollEvent(&e)){ 
     			if(e.type == SDL_QUIT) quit = 1;
