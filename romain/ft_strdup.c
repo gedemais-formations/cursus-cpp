@@ -21,8 +21,9 @@ char *ft_strdup(char *s, char *charset)
 {
  int longueur = 0;
  int i = 0;
+ int taille = strlen(s) ;
  char *test = 0 ; 
-   while (recherche(s[longueur],charset)==0)
+   while ( recherche(s[longueur], charset) == 0 && longueur < taille )
     {
         longueur++;
     }
@@ -34,7 +35,7 @@ char *ft_strdup(char *s, char *charset)
 	else
 {
 
-  while (recherche(s[i],charset)==0)
+  while (recherche(s[i],charset) == 0 && i < taille )
     {
         test[i] = s[i];
         i++;
@@ -47,28 +48,52 @@ char *ft_strdup(char *s, char *charset)
 
 char **ft_split(char *s,char *charset)
 { 
-	int compteur ;
+	int compteur = 1 ;
+    char *strdup = ft_strdup(s , charset);
+	char **tab = NULL ;
 	int i = 0 ;
 	int longueur = strlen(s) ;
-	while (recherche(s[i],charset) && (i+1 < longueur) == 0 )
-			{i++ ;
-			
 
+
+
+	while (i+1 < longueur)
+		{	
 		 if (recherche(s[i], charset) == 1 && recherche(s[i + 1], charset) == 0)
+			{
+				compteur ++ ;
+			//	i ++ ;
+	     	}
+		 i++ ;
+		} 
+	tab = malloc(sizeof(char*)*(compteur+1));
+	tab[0]=strdup ;
+   i = 0 ;
+   int j = 0 ;
+     	while  (i+1 < longueur)
+		{
+		 if (recherche(s[i], charset) == 1 && recherche(s[i + 1], charset) == 0)
+			{
+				j++ ;
+				tab[j] = ft_strdup(&s[i + 1], charset);
+	     	}
+		 i++ ;
+		}
 
-					{ compteur ++ ;
-					}
-			}
-		printf("%d",compteur);
+	    tab[j+1] = NULL ;
+	//	printf("%d",compteur);
+		return tab ;
 }
   
-   
-
-
 int main ()
 {
-	char *resultat = ft_strdup("Bonjour tout le monde","B");
-	printf("%s \n",resultat);
-	free(resultat);
+	int i = 0 ;
+	char **resultat2 = ft_split("Bonjour tout le monde","o");
+	while(resultat2[i] !=NULL)
+			{
+			printf("%s \n", resultat2[i]);
+			free(resultat2[i]);
+			i++ ;
+			}
+	free (resultat2);
 	return 0 ;
 }
