@@ -81,7 +81,7 @@ char **ft_split(char *s, char *charset)
 int main()
 {
 	char *s = "Hello World";
-	char *charset = "or";
+	char *charset = "H";
 	char **resultat = ft_split(s, charset);
 	int i = 0;
 	while(resultat[i]!=NULL)
