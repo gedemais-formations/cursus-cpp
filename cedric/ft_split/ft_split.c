@@ -20,12 +20,14 @@ int count_substring(const char *str, const char *charset){
 		}
 	}
 	count ++;
+	printf("%d\n", count);
 	return (count);
 }
 
 int count_length(const char *str, const char *charset, int index){
 	int length;	for(length = index; (str[length] != '\0') 
 		&& (check_char(str[length], charset) == 0); length ++){}
+	//printf("str[length] value \"%c\" \n", str[length]);
 	return (length - index);
 }
 
@@ -56,9 +58,10 @@ char **ft_split(const char *s, const char *charset){
   		str[j][length] = '\0';
 
   		k = 0;
-  		for(int i = 0; i < length; i++){
+  		for(int i = 0; i < length && s[index+k] != '\0'; i++){
   			str[j][k] = s[index+k];
   			k++;
+  			printf("index+k value : %d\n", index+k);
   		}
   		index = index + length + 1;
   	}
@@ -68,6 +71,7 @@ char **ft_split(const char *s, const char *charset){
 int main(int argc, char const *argv[]){
 	char **str = NULL;
 	int row;
+	printf("%s \n", argv[2]);
 	if(argc != 3){
 		printf("Error, need only 2 args");
 		return (-1);
