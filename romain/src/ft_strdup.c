@@ -7,7 +7,7 @@ int recherche(char lettre, char *phrase)
 	int longue = strlen(phrase);
 		for (int i = 0 ;i<longue ; i++)
 		{
-			if(lettre ==phrase[i])
+			if(lettre ==phrase[i]) //si le charset correspond à la lettre du caractère dans la phrase
 			{ 
 			   return 1 ;
 			}
@@ -23,18 +23,20 @@ char *ft_strdup(char *s, char *charset)
  int i = 0;
  int taille = strlen(s) ;
  char *test = 0 ; 
+ // boucle while qui incrémente longueur pour pour déterminer la taille de la phrase
    while ( recherche(s[longueur], charset) == 0 && longueur < taille )
     {
         longueur++;
     }
 
-   test = malloc(sizeof(char)*(longueur+1));
-   if( test == NULL){
+   test = malloc(sizeof(char)*(longueur+1)); // on attribue a test la taille nécessaire pour la chaine de caractere
+  // On protège le malloc en cas d'erreur
+   if( test == NULL){ 
 	printf("ERROR : OUT OF MEMORY");
 }
 	else
 {
-
+// on parcours la phrase sans trouver de caractere charset
   while (recherche(s[i],charset) == 0 && i < taille )
     {
         test[i] = s[i];
@@ -61,7 +63,7 @@ char **ft_split(char *s,char *charset)
 		 if (recherche(s[i], charset) == 1 && recherche(s[i + 1], charset) == 0)
 			{
 				compteur ++ ;
-			//	i ++ ;
+
 	     	}
 		 i++ ;
 		} 
@@ -87,7 +89,7 @@ char **ft_split(char *s,char *charset)
 int main ()
 {
 	int i = 0 ;
-	char **resultat2 = ft_split("Bonjour tout le monde","o");
+	char **resultat2 = ft_split("Bonjour ce bout de code fonctionne"," ");
 	while(resultat2[i] !=NULL)
 			{
 			printf("%s \n", resultat2[i]);
