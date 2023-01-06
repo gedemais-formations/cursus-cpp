@@ -38,6 +38,7 @@ char **ft_split(const char *s, const char *charset){
 	char **str = NULL;
 	nb_substring = count_substring(s, charset);
 	if(!(str = (char**) malloc(sizeof(char*) * (nb_substring + 1)))){
+    	printf("Error malloc creation\n");
     	return(NULL);
   	}
 
@@ -48,6 +49,15 @@ char **ft_split(const char *s, const char *charset){
   		length = count_length(s, charset, index);
 
   		if(!(str[j] = (char*) malloc(sizeof(char) * (length + 1)))){
+  			printf("Error malloc creation, free previous malloc\n");
+  			for(int i = 0; i < j; i++){
+  				if(str[i]){
+  					free(str[i]);
+  				}
+  				if(str){
+  					free(str);
+  				}
+  			}
   			return(NULL);
   		}
 
@@ -67,11 +77,10 @@ int main(int argc, char const *argv[]){
 	char **str = NULL;
 	int row;
 	if(argc != 3){
-		printf("Error, need only 2 args");
+		printf("Error, need only 2 args : String and list of charset");
 		return (-1);
-	} else {
-		str = ft_split(argv[1], argv[2]);
 	}
+	str = ft_split(argv[1], argv[2]);
 	for(row = 0; str[row]; row++){}
 	row ++; //Count the last row
 
