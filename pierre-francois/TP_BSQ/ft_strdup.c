@@ -58,22 +58,38 @@ char **ft_split(char *s, char *charset)
 					allocation_place++;
 				}
 	}
-	resultat=malloc(sizeof(char)*allocation_place);
+	resultat=malloc(sizeof(char)*(allocation_place+1));
 	if(resultat == NULL)
 	{
-		return ("MEMORY NOT ALLOCATED");
+		return NULL;
 	}
 	int j=0;
+	resultat[0]=ft_strdup(s, charset);
 	for(int i = 0; i<taille_s; i++)
+	{
+		if(est_dans(s[i],charset) && !(est_dans(s[i+1], charset)))
+		{
+			j++;
+			resultat[j]=ft_strdup(&s[i+1],charset);
+		}
+	}
+	resultat[j+1]=NULL;
+	return resultat;
 }
 
 
 int main()
 {
 	char *s = "Hello World";
-	char *charset = "p";
-	char *resultat = ft_strdup(s, charset);
-	printf("%s \n",resultat);
+	char *charset = "or";
+	char **resultat = ft_split(s, charset);
+	int i = 0;
+	while(resultat[i]!=NULL)
+	{
+		printf("%s \n",resultat[i]);
+		free(resultat[i]);
+		i++;
+	}
 	free(resultat);
 	return 0;
 }
