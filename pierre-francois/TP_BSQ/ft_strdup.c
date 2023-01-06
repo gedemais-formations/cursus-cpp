@@ -49,7 +49,7 @@ char *ft_strdup(char *s, char *charset)
 char **ft_split(char *s, char *charset)
 {
 	char **resultat = NULL;
-	int allocation_place = 0;
+	int allocation_place = 1;
 	int taille_s = strlen(s);
 	for (int i = 0; i<taille_s-1; i++)
 	{
@@ -58,7 +58,7 @@ char **ft_split(char *s, char *charset)
 					allocation_place++;
 				}
 	}
-	resultat=malloc(sizeof(char)*(allocation_place+1));
+	resultat=malloc(sizeof(char*)*(allocation_place+1));
 	if(resultat == NULL)
 	{
 		return NULL;
