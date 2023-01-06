@@ -49,17 +49,17 @@ char **ft_split (char *string_char, char *charset){
 	}	
 
 	int j = 0;
-	for (int k = 0; k < string_char_size; k++){
-		if (char_charset(string_char[0], charset) == 0){
-			elts_string[j] = ft_strdup(string_char,charset);
-			if(ft_strdup(string_char, charset)==NULL){
-				printf("Memory allocation trouble");
-				return(NULL);
-			}
-			j++;
-
+	if (char_charset(string_char[0], charset) == 1){
+		elts_string[j] = ft_strdup(string_char,charset);
+		if(ft_strdup(string_char, charset)==NULL){
+			printf("Memory allocation trouble");
+			return(NULL);
 		}
-		else if (k < (string_char_size - 1) && (char_charset(string_char[k], charset) == 0) && (char_charset(string_char[k + 1], charset) == 1)){
+		j++;
+	}
+
+	for (int k = 0; k < string_char_size; k++){
+		if (k < (string_char_size - 1) && (char_charset(string_char[k], charset) == 0) && (char_charset(string_char[k + 1], charset) == 1)){
 			if (j < nb_elts-1){
 				elts_string[j] = ft_strdup(&string_char[k+1], charset);
 					if(ft_strdup(string_char, charset)==NULL){
@@ -73,7 +73,6 @@ char **ft_split (char *string_char, char *charset){
 				return(NULL);
 			}
 		}
-	}
 	elts_string[nb_elts+1]=NULL;
 	return(elts_string);
 }
