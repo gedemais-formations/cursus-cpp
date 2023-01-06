@@ -4,15 +4,16 @@
 #include<unistd.h>
 #include<errno.h>
 #include<string.h>
-#include <sys/stat.h>
-#include <math.h>
+#include<sys/stat.h>
+#include<math.h>
 
 // Open a file, read it, close it and return the file content
 char *open_read(char *file_name, int buffer_size){
   int fd, sz, cl;
-  char *buffer;
+  char *buffer = NULL;
   if (!(buffer = malloc(buffer_size+1))){
-    return(NULL);
+    printf("Error malloc\n");
+    return(buffer);
   }
   
   //Open file
@@ -22,6 +23,7 @@ char *open_read(char *file_name, int buffer_size){
     //printf("Error, cannot open the file : %s\n", strerror(errno));
     perror(strerror(errno));
     perror("Cannot open file\n");
+
     return(NULL);
   }
   
@@ -55,7 +57,6 @@ int count_char_per_line(char *file_content){
     count ++;
   }
   //count++; //Take the '\n'
-  printf("count element per line %d\n", count);
   return count;
 }
 
@@ -69,7 +70,7 @@ int count_lines(char *file_content){
     i++;
   }
   count ++; //The last line doesn't have \n
-  printf("count line : %d\n", count);
+  //printf("count line : %d\n", count);
   return (count);
 }
 
@@ -113,28 +114,37 @@ int print_tab2(char **tab, int count_line, int count_char_per_line){
   return (0);
 }
 
-/*// Try to find a square
-int find_square(char **tab, char size_square){
-  int find = 1;
-  int i = 0;
-  while(i < size_square && find == 1){
-    if(find_an_o(tab, i/size_square, i%size_square)==1){
-      find = 0;
-      return 0;
-    } else {
-      //tab[i/size_square][i%size_square]='x';
-    }
-    i++;
+//Try to find a square and if find, return it
+int find_square(char **tab, int size_square, int count_line, int count_char_per_line){
+  //printf("Paramètres : %d %d %d \n", size_square, count_line, count_char_per_line);
+  if((size_square > count_line) || (size_square > count_char_per_line)){
+    return(0);
   }
-  //print_tab2(tab, int count_line, int count_char_per_line);
-  return (1);
-}*/
 
-//Try to find a square
-int find_square(char **tab, char size_square, int count_line, int count_char_per_line){
-  char i = tab[count_char_per_line/count_char_per_line][count_line/count_line];
-  printf("%d\n", i);
-  return (size_square);
+  //printf("xmax et ymax : %d %d\n", size_square, size_square);
+  printf("irange et jrange : %d %d\n", count_char_per_line - size_square + 1, count_line - size_square + 1);
+  for(int i = 0; i < count_char_per_line - size_square + 1; i++){
+    for (int j = 0; j < count_line - size_square + 1; j++){
+      printf("i et j : %d %d\n", i, j);
+      for(int x = i; x < size_square; x++){
+        for(int y = j; y < size_square; y++){
+          //printf("x et y : %d %d\n", x, y);
+          if(find_an_o(tab, x, y) == 1){
+            return(0);
+          }
+        }
+      }
+      for(int x = 0; x < size_square; x++){
+        for(int y = 0; y < size_square; y++){
+          tab[x][y] = 'x';
+          //printf("On met un x\n");
+        }
+      }
+      return(1);
+    }
+  }
+  //printf("Unexcepted error\n");
+  return(0);
 }
 
 int solve(char *file_content, int count_line, int count_char_per_line){
@@ -165,8 +175,13 @@ int solve(char *file_content, int count_line, int count_char_per_line){
   }
   
   //Find a solution
-  i = count_line;
-  while(find_square(&tab[0], i, count_line, count_char_per_line) == 0 && i < 1){
+  if(count_line < count_char_per_line){
+    i = count_line;
+  } else {
+    i = count_char_per_line;
+  }
+  printf("find_square value : %d\n", find_square(tab, i, count_line, count_char_per_line));
+  while(find_square(tab, i, count_line, count_char_per_line) == 0 && i > 0){
     i--;
   }
 
