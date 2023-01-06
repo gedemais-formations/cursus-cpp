@@ -15,6 +15,9 @@
 // pour utilisert ASSERT
 #include<assert.h>
 
+int char_charset(char string_char_x,char *charset);
+char *ft_strdup (char *string_char, char *charset);
+
 
 char **ft_split (char *string_char, char *charset){
 	
@@ -24,8 +27,8 @@ char **ft_split (char *string_char, char *charset){
 	int nb_elts = 0;
 
 	for (int i = 0; i < string_char_size; i++){
-		char string_char_x = string_char[i];
-		if (i < (string_shar_size - 1) && (char_charset(string_char[i], charset) == 1) && (char_charset(string_char[i + 1] == 0))){
+		// char string_char_x = string_char[i];
+		if (i < (string_char_size - 1) && (char_charset(string_char[i], charset) == 1) && (char_charset(string_char[i + 1], charset) == 0)){
 			nb_elts++;
 		}
 	}
@@ -33,15 +36,19 @@ char **ft_split (char *string_char, char *charset){
 	char **elts_string = (char**) malloc((sizeof(char*) * nb_elts));
 	
 	int j = 0;
-	for (int k = 0, k < string_char_size; k++){
-		if (k < (string_shar_size - 1) && (char_charset(string_char[k], charset) == 1) && (char_charset(string_char[k + 1] == 0))){
+	for (int k = 0; k < string_char_size; k++){
+		if (char_charset(string_char[0], charset) == 0){
+			elts_string[j] = ft_strdup(string_char,charset);
+			j++;
+		}
+		else if (k < (string_char_size - 1) && (char_charset(string_char[k], charset) == 1) && (char_charset(string_char[k + 1], charset) == 0)){
 			if (j < nb_elts){
-				*elts_string[j] = ft_strdup(&elt[k], *charset);
+				elts_string[j] = ft_strdup(&string_char[k+1], charset);
 				j++;
 			}
-			else{
+			else {
 				printf("There is more elts found than previously calculated");
-				return(1);
+				return(NULL);
 			}
 		}
 	}	
@@ -49,8 +56,8 @@ char **ft_split (char *string_char, char *charset){
 }
 
 int main(){
-	// char *result_elt_mem = ft_strdup("Time_to_test thy code", " y");
-	// printf("%s \n", result_elt_mem);
+	char **result_elts_string = ft_split("Time_to_test thy code", " y");
+	printf("%s \n", *result_elts_string);
 
 	return(0);
 }

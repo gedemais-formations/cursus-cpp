@@ -123,9 +123,11 @@ char *ft_strdup (char *string_char, char *charset){
 	(void)argc;
 	(void)argv;
 	*/
-int main(){
+/*
+ * int main(){
 	char *result_elt_mem = ft_strdup("Time_to_test thy code", " y");
 	printf("%s \n", result_elt_mem);
 
 	return(0);
 }
+*/
