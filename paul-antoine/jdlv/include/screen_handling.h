@@ -11,7 +11,7 @@
  * @param color The color to change it with in form 0xRRGGBBAA
  * @return 0 on success, errcode otherwise
  */
-int background(SDL_Window* pWindow, int color);
+int background(SDL_Window* pWindow, unsigned int color);
 
 /**
  * Write a color at "x,y" inside buffer
@@ -21,8 +21,8 @@ int background(SDL_Window* pWindow, int color);
  * @param color The color to put in buffer in form 0xRRGGBBAA
  * @param width Width of one buffer row
  */
-void put_pixel(char* buffer, int x, int y, int color, int width);
+void put_pixel(char* buffer, int x, int y, unsigned int color, int width);
 
-int print_square(SDL_Window* pWindow, int color, int x, int y, int w, int h);
+int print_square(SDL_Window* pWindow, unsigned int color, int x, int y, int w, int h);
 
 #endif //JDLV_SCREEN_HANDLING_H

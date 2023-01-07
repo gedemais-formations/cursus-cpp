@@ -10,7 +10,8 @@
 #define ERROR_SDL_WINDOW_NULL 3, "Can't create window: %\n", SDL_GetError()
 #define ERROR_SDL_NO_SURFACE 4, "Can't get window surface: %\n", SDL_GetError()
 #define ERROR_SDL_WINDOW_UPDATE 5, "Can't update window: %\n", SDL_GetError()
-#define ERROR_NAN 6, "Error: \"%\" is not a valid number\n"
+#define ERROR_NAN 6, "Error: \"%\" is not a valid number\n" // And not ERROR_NAAN where you lack bread to go with your tika-masala
+#define ERROR_CANT_ALLOC_MEMORY 7, "Error: can't allocate memory", ""
 
 int print_error(int errcode, const char* err_msg, const char* context);
 

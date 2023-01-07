@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include "../include/error.h"
 #include "../include/screen_handling.h"
+#include "../include/jdlv.h"
 #include "../include/util.h"
 
 int main(int argc, char **argv) {
@@ -16,6 +17,8 @@ int main(int argc, char **argv) {
     err += a_to_i(argv[3], &caseSize);
     err += a_to_i(argv[4], &nbTik);
     if(err != 0) return err;
+    if(caseRow == 0 || caseSize == 0 || caseCol == 0 ||nbTik == 0)
+        return print_error(ERROR_NAN, "0");
     int screen_width = caseCol * caseSize;
     int screen_height = caseRow * caseSize;
     int interrupt = 1000 / nbTik;
@@ -37,20 +40,31 @@ int main(int argc, char **argv) {
         SDL_Quit();
         return print_error(ERROR_SDL_WINDOW_NULL);
     }
-    err = background(pWindow, 0x45224F00);
-    if (err != 0) {
+
+    t_board* board = NULL;
+    err = create_board(&board, caseRow, caseCol, caseSize);
+    if(err != 0) {
+        SDL_Quit();
         return err;
     }
+    int i=0;
+    while (i<100) {
+        evolve(board);
 
-    //print_square(pWindow, 0x11F11100, 20, 20, 80, 120);
+        err = background(pWindow, 0xFF00FF00);
+        if (err != 0) {
+            return err;
+        }
 
+        print_board(pWindow, *board);
+        if(SDL_UpdateWindowSurface(pWindow)) return print_error(ERROR_SDL_WINDOW_UPDATE);
 
-
-    while (1) {
-
-
-        SDL_Delay(3000);
+        SDL_Delay(interrupt);
+        i++;
     }
+
+    free(board->board);
+    free(board);
 
     SDL_DestroyWindow(pWindow);
 

@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 
             SDL_UpdateWindowSurface(pWindow);
 
-            while (1) SDL_Delay(3000); /* Attendre trois secondes, que l'utilisateur voit la fenêtre */
+            while (strcmp(scanf("%s"), "quit") != 0) SDL_Delay(3000); /* Attendre trois secondes, que l'utilisateur voit la fenêtre */
 
             SDL_DestroyWindow(pWindow);
         }
