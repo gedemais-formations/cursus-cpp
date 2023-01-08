@@ -38,41 +38,44 @@ int recup_nb_elts(char *string_char, char *charset){
 
 char **ft_split (char *string_char, char *charset){
 	
-	int nb_elts = recup_nb_elts(string_char, charset);
-
+	int nb_elts = 1;
 	int string_char_size = strlen(string_char);
 
+	for (int i = 0; i < string_char_size; i++){
+		if (i < string_char_size - 1 && char_charset(string_char[i], charset) == 0 && char_charset(string_char[i + 1], charset) == 1){
+		nb_elts++;
+		}
+	}
+	
 	char **elts_string = (char**) malloc((sizeof(char*) * nb_elts + 1));
 	if (elts_string == NULL){
-		
 		return(NULL);
 	}	
 
 	int j = 0;
 	if (char_charset(string_char[0], charset) == 1){
-		elts_string[j] = ft_strdup(string_char,charset);
+		elts_string[0] = ft_strdup(string_char,charset);
 		if(ft_strdup(string_char, charset)==NULL){
 			printf("Memory allocation trouble");
 			return(NULL);
 		}
-		j++;
 	}
 
 	for (int k = 0; k < string_char_size; k++){
 		if (k < (string_char_size - 1) && (char_charset(string_char[k], charset) == 0) && (char_charset(string_char[k + 1], charset) == 1)){
-			if (j < nb_elts-1){
-				elts_string[j] = ft_strdup(&string_char[k+1], charset);
+			if (j < nb_elts){
+				elts_string[j] = ft_strdup(&string_char[k + 1], charset);
 					if(ft_strdup(string_char, charset)==NULL){
 						printf("Memory allocation trouble");
 						return(NULL);
 					}
-					j++;
 			}
 			else {
 				printf("There is more elts found than previously calculated");
 				return(NULL);
 			}
 		}
+	}
 	elts_string[nb_elts+1]=NULL;
 	return(elts_string);
 }
