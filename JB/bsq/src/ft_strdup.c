@@ -74,7 +74,9 @@ char *ft_strdup (char *string_char, char *charset){
 
 	// allocation d'un espace mémoire de taille elt_length avec malloc
 	// récupération de l'adresse de cet espace en définissant la variable elt_mem
-	char * elt_mem = (char *) malloc(elt_length);
+	
+	char * elt_mem = NULL;
+	elt_mem = (char *) malloc(sizeof(char) * elt_length);
 	
 	if(elt_length == 1){
 		elt_mem[0] = '\0';

@@ -41,28 +41,29 @@ char **ft_split (char *string_char, char *charset){
 	int nb_elts = 1;
 	int string_char_size = strlen(string_char);
 
-	for (int i = 0; i < string_char_size; i++){
-		if (i < string_char_size - 1 && char_charset(string_char[i], charset) == 0 && char_charset(string_char[i + 1], charset) == 1){
+	for (int i = 0; i < string_char_size - 1; i++){
+		if (i < string_char_size && char_charset(string_char[i], charset) == 0 && char_charset(string_char[i + 1], charset) == 1){
 		nb_elts++;
 		}
 	}
 	
-	char **elts_string = (char**) malloc((sizeof(char*) * nb_elts + 1));
+	char **elts_string = (char**) malloc(sizeof(char*) * (nb_elts + 1));
 	if (elts_string == NULL){
 		return(NULL);
 	}	
 
 	int j = 0;
-	if (char_charset(string_char[0], charset) == 1){
-		elts_string[0] = ft_strdup(string_char,charset);
-		if(ft_strdup(string_char, charset)==NULL){
-			printf("Memory allocation trouble");
-			return(NULL);
-		}
+	
+	elts_string[0] = ft_strdup(string_char,charset);
+	if(ft_strdup(string_char, charset)==NULL){
+		printf("Memory allocation trouble");
+		return(NULL);
 	}
-
+	
+	
 	for (int k = 0; k < string_char_size; k++){
-		if (k < (string_char_size - 1) && (char_charset(string_char[k], charset) == 0) && (char_charset(string_char[k + 1], charset) == 1)){
+		if ((k < (string_char_size - 1)) && (char_charset(string_char[k], charset) == 0) && (char_charset(string_char[k + 1], charset) == 1)){
+			j++;
 			if (j < nb_elts){
 				elts_string[j] = ft_strdup(&string_char[k + 1], charset);
 					if(ft_strdup(string_char, charset)==NULL){
@@ -76,13 +77,16 @@ char **ft_split (char *string_char, char *charset){
 			}
 		}
 	}
-	elts_string[nb_elts+1]=NULL;
+	elts_string[j+1] = NULL;
 	return(elts_string);
 }
 
 int main(){
 	
-	char **result_elts_string = ft_split("Time_to_test thy code", " y");
+
+	char *string_char = "Time_to_test thy code";
+	char *charset = " y";
+	char **result_elts_string = ft_split(string_char, charset);
 
 	for (int l = 0; result_elts_string[l] != NULL; l++){ 
 		printf("%s \n", result_elts_string[l]);
