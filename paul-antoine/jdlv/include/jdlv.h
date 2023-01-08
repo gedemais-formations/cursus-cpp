@@ -23,7 +23,7 @@ int evolve(t_board *board);
 
 bool willBeAlive(t_board board, int row, int col);
 
-void print_board(SDL_Window *pWindow, t_board board);
+int print_board(SDL_Window *pWindow, t_board board);
 
 bool get_case(bool *board, int lineWidth, int row, int col);
 

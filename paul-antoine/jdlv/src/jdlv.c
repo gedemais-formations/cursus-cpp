@@ -12,7 +12,6 @@
 
 
 int create_board(t_board **pBoard, int number_row, int number_col, int case_size) {
-    if(*pBoard != NULL) return print_error(ERROR_CANT_ALLOC_MEMORY);
     *pBoard = malloc(sizeof(t_board));
     if(*pBoard == NULL) return print_error(ERROR_CANT_ALLOC_MEMORY);
 
@@ -92,15 +91,19 @@ bool willBeAlive(t_board board, int row, int col) {
     }
 }
 
-void print_board(SDL_Window *pWindow, t_board board) {
+int print_board(SDL_Window *pWindow, t_board board) {
     unsigned short size = board.case_size;
+    int err =0;
     for (int i = 0; i < board.case_row; ++i) {
         for (int j = 0; j < board.case_col; ++j) {
             if(get_case(board.board, board.case_col, i, j)) {
-                print_square(pWindow, 0x00FF0000, j*size, i*size, size, size);
+                err = print_square(pWindow, 0x00FF0000, j*size, i*size, size, size);
+                if(err!=0) return err;
             }
         }
     }
+
+    return 0;
 }
 
 bool get_case(bool *board, int lineWidth, int row, int col) {
