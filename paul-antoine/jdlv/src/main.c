@@ -22,6 +22,7 @@ int main(int argc, char **argv) {
     int screen_width = caseCol * caseSize;
     int screen_height = caseRow * caseSize;
     int interrupt = 1000 / nbTik;
+    SDL_Event event;
 
     /* Initialisation simple */
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -47,20 +48,27 @@ int main(int argc, char **argv) {
         SDL_Quit();
         return err;
     }
-    int i=0;
-    while (i<100) {
-        evolve(board);
 
-        err = background(pWindow, 0xFF00FF00);
+    bool gameRunning = true;
+    while (gameRunning) {
+
+        err = background(pWindow, 0x0000AA00);
         if (err != 0) {
             return err;
         }
 
-        print_board(pWindow, *board);
+        err = print_board(pWindow, *board);
+        if (err != 0) {
+            return err;
+        }
+
         if(SDL_UpdateWindowSurface(pWindow)) return print_error(ERROR_SDL_WINDOW_UPDATE);
 
+        evolve(board);
+
         SDL_Delay(interrupt);
-        i++;
+
+        handleEvents(&event, &gameRunning);
     }
 
     free(board->board);

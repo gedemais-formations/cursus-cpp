@@ -5,6 +5,8 @@
 #ifndef JDLV_SCREEN_HANDLING_H
 #define JDLV_SCREEN_HANDLING_H
 
+#define QUIT_KEY SDLK_ESCAPE
+
 /**
  * Change background color of a window
  * @param pWindow The window to change
@@ -24,5 +26,7 @@ int background(SDL_Window* pWindow, unsigned int color);
 void put_pixel(char* buffer, int x, int y, unsigned int color, int width);
 
 int print_square(SDL_Window* pWindow, unsigned int color, int x, int y, int w, int h);
+
+void handleEvents(SDL_Event *event, bool *gameRunning);
 
 #endif //JDLV_SCREEN_HANDLING_H

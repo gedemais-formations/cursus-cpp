@@ -63,3 +63,28 @@ int print_square(SDL_Window* pWindow, unsigned int color, int x, int y, int w, i
 
     return 0;
 }
+
+void handleEvents(SDL_Event *event, bool* gameRunning) {
+    SDL_KeyCode keyPressed;
+    while (SDL_PollEvent(event)) {
+        switch (event->type) {
+            case SDL_KEYDOWN:
+                keyPressed = event->key.keysym.sym;
+                if (keyPressed == QUIT_KEY)
+                {
+                    *gameRunning = false;
+                    break;
+                }
+
+                break;
+            case SDL_QUIT: /* if mouse click to close window */
+            {
+                *gameRunning = false;
+                break;
+            }
+            case SDL_KEYUP: {
+                break;
+            }
+        }
+    }
+}
