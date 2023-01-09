@@ -18,10 +18,9 @@
 // utilisation de la fonction open
 
 
+// char get_map(char*file_map){}
 
-// char get_map(char*ad_file_map){}
-
-int get_metadata(char* map_init, metadata_t* m_map){
+int get_metadata(char* map_init, t_metadata* m_map){
 
 	char* first_line = ft_strdup(map_init, "\n");
 	if (first_line == NULL){
@@ -61,7 +60,7 @@ int get_metadata(char* map_init, metadata_t* m_map){
 // void get_board(){}
 
 
-char* read_map(char *file_map){					// file_map est une variable qui contient l'adresse du fichier
+char* read_map(char* file_map){					// file_map est une variable qui contient l'adresse du fichier
 	int fd_open_file = open(file_map, O_RDONLY);		// variable open_file est le fd (file descriptor) de file_map
 	// vérification que l'on peut ouvrir et sinon renvoyé une erreur
 	if (fd_open_file < 0){
@@ -103,32 +102,9 @@ char* read_map(char *file_map){					// file_map est une variable qui contient l'
 	
         // libération de l'espace mémoire
         return(map_init);
-
-	
 }
 	
 	
-// 2: lire la première ligne du/des fichier(s) transmis
-// l'adresse du (des) fichier(s) est/sont spécifié(s) dans les arguments de la fonction main
-// utilisation de la fonction read
-// il faut récupérer la première ligne jusqu'au premier \n >> utiliser ft_split()
-
-
-
-// 	a: vérifier que les caractères de la grille sont ceux de la première ligne
-//	>> renvoyer un message erreur spécifique si non
-//
-// 	b: vérifier qu'il y a au moins une ligne d'une case
-// 	Il doit y avoir au moins 2 lignes dans le fichier ET la seconde ligne doit avoir au moins un caractère
-// 	>> renvoyer un message erreur spécifique si non
-// 	
-// 	c: vérifier que toutes les lignes (sauf la première) ont la même longueur
-//	pour toutes les lignes l de l'index 1 à (last = dimension du fichier), size(
-//	>> renvoyer un message erreur spécifique si non
-// 	
-// 	d: vérifier qu'il y a un retour à la ligne à la fin de chaque ligne
-// 	>> renvoyer un message erreur spécifique si non
-//
 //une seconde fraction pour récupérer le board
 // 3: recupérer le board
 // !!: verifier la taille du fichier 
@@ -147,7 +123,16 @@ char* read_map(char *file_map){					// file_map est une variable qui contient l'
 // int bsq(argc, argv)
 
 int main(){
+	char* ad_map_test = "./map_test";	 
 	
+	char* map_init;
+
+	t_metadata* m_map;
+	
+	read_map(ad_map_test){
+		return(map_init);
+	}
+	get_metadata(map_init, m_map);
 	return (0);
 }
 
