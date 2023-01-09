@@ -1,95 +1,65 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <assert.h>
-#include <stdio.h>
 
-int est_dans(char lettre, char *phrase)
-{
-	int taille_phrase=strlen(phrase);
-
-	for(int i=0; i<taille_phrase; i++)
-	{
-		if(lettre==phrase[i])
-		{
-			return 1;
-		}
-	}
-	return 0;
+bool ft_strchr(char c, char *charset) {
+  if (charset == NULL) return (false);
+  for (int i = 0; charset[i] != '\0'; i++) {
+    if (c == charset[i]) return true;
+  }
+  return false;
 }
 
-char *ft_strdup(char *s, char *charset)
-{
-	int i = 0;
-	int taille_s = strlen(s);
-	int compteur_place = 0;
-	char *copie = NULL;
+char *ft_strdup(char *s, char *charset) {
+  int len, i;
+  char *dup_s;
+  if (s == NULL) return (NULL);
+  if (charset == NULL) return (NULL);
 
-	while(est_dans(s[i],charset)==0 && i<taille_s)
-		{
-			compteur_place++;
-			i++;
-		}
-	i=0;
-	copie=malloc(sizeof(char)*(compteur_place+1));
+  len = 0;
+  while (s[len] != '\0' && !ft_strchr(s[len], charset)) len++;
 
-	if(copie == NULL)
-	{
-		return ("MEMORY NOT ALLOCATED");
-	}
-	while(est_dans(s[i],charset)==0 && i<taille_s)
-	{
-		copie[i]=s[i];
-		i++;
-	}
-	copie[i]='\0';
-	return copie;
+  if (len == 0) return (NULL);
+
+  dup_s = (char *)calloc(len + 1, sizeof(char));
+  if (dup_s == NULL) return (NULL);
+  i = 0;
+  while (i != len) {
+    dup_s[i] = s[i];
+    i++;
+  }
+
+  dup_s[i] = '\0';
+
+  return (dup_s);
 }
 
-char **ft_split(char *s, char *charset)
-{
-	char **resultat = NULL;
-	int allocation_place = 1;
-	int taille_s = strlen(s);
-	for (int i = 0; i<taille_s-1; i++)
-	{
-		if(est_dans(s[i],charset) && !(est_dans(s[i+1],charset)))
-				{
-					allocation_place++;
-				}
-	}
-	resultat=malloc(sizeof(char*)*(allocation_place+1));
-	if(resultat == NULL)
-	{
-		return NULL;
-	}
-	int j=0;
-	resultat[0]=ft_strdup(s, charset);
-	for(int i = 0; i<taille_s; i++)
-	{
-		if(est_dans(s[i],charset) && !(est_dans(s[i+1], charset)))
-		{
-			j++;
-			resultat[j]=ft_strdup(&s[i+1],charset);
-		}
-	}
-	resultat[j+1]=NULL;
-	return resultat;
-}
+char **ft_split(char *s, char *charset) {
+  char **res;
+  int row, i;
+  if (s == NULL) return (NULL);
+  if (charset == NULL) return (NULL);
 
+  //  Get number of row
+  row = 0;
+  for (i = 0; s[i] != '\0'; i++) {
+    if (ft_strchr(s[i], charset)) row++;
+  }
 
-int main()
-{
-	char *s = "Hello World";
-	char *charset = "H";
-	char **resultat = ft_split(s, charset);
-	int i = 0;
-	while(resultat[i]!=NULL)
-	{
-		printf("%s \n",resultat[i]);
-		free(resultat[i]);
-		i++;
-	}
-	free(resultat);
-	return 0;
+  res = malloc(sizeof(char *) * (row + 2));
+  if (res == NULL) return (NULL);
+
+  res[row + 1] = NULL;
+
+  for (i = 0; i != row + 1; i++) {
+    res[i] = ft_strdup(s, charset);
+    //  Move the PTR
+    while (*s != '\0' && !ft_strchr(*s, charset)) {
+      s++;
+    }
+    if (*s != '\0') s++;
+  }
+
+  return (res);
 }

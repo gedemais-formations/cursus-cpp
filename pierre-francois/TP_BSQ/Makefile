@@ -18,13 +18,14 @@ ifeq ($(OPTI), 1)
 	FLAGS += -Ofast -ffast-math -march=native
 endif
 
-SRC_PATH = src/
-SRC_NAME = main.c\
-		   ft_split.c
+SRC_PATH=src/
+SRC_NAME=main.c\
+		   ft_split.c\
+		   get_map.c
 
-SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
+SRC=$(addprefix $(SRC_PATH), $(SRC_NAME))
 
-OBJS = $(SRC: .c = .o)
+OBJS=$(SRC:.c=.o)
 
 INC_PATH=include/
 INC_NAME=main.h
