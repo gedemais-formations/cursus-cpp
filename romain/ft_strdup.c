@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-int recherche(char lettre, char *phrase) {
+int recherche(char lettre, char *phrase)
+{
 	int longue = strlen(phrase);
 		for (int i = 0 ;i<longue ; i++)
 		{
@@ -70,12 +71,12 @@ char **ft_split(char *s,char *charset)
 	tab[0]=strdup ;
    i = 0 ;
    int j = 0 ;
-     	while  (i < longueur)
+     	while  (i+1 < longueur)
 		{
 		 if (recherche(s[i], charset) == 1 && recherche(s[i + 1], charset) == 0)
 			{
-				tab[j] = ft_strdup(&s[i + 1], charset);
 				j++ ;
+				tab[j] = ft_strdup(&s[i + 1], charset);
 	     	}
 		 i++ ;
 		}
@@ -98,4 +99,3 @@ int main ()
 	free (resultat2);
 	return 0 ;
 }
-
