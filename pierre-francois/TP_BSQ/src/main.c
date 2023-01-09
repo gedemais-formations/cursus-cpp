@@ -11,11 +11,11 @@ int bsq(int argc ,char **argv)
 	int i = 1 ;
 	while(i<argc)
 	{
-		get_map(argv[i]);
 		if(get_map(argv[i]) ==NULL)
 		{
 			return 1 ;
-		}	
+		}
+		i++;
 	}
 	return 0 ;	
 }

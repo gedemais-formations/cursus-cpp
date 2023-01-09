@@ -7,6 +7,7 @@
 #include<sys/types.h>
 #include<sys/stat.h>
 #include<unistd.h>
+#include<fcntl.h>
 
 // inclure tous les prototypes des fonctions qui seront utilisés
 
@@ -18,10 +19,10 @@ typedef struct s_map
 	char obstacle_char;
 	char full_char;
 	char *map;
-} t_map;
+} map_t;
 
 char **ft_split(char *s, char *charset);
-t_map *get_map(char *path);
+map_t *get_map(char *path);
 
 
 

@@ -16,7 +16,7 @@ char *read_map(char *path)
 	if(!(resultat=malloc(buf_stat.st_size+1)))
 	
 	{
-		perror("malloc :")
+		perror("malloc :");
 		return NULL ;
 	}	
 	
@@ -36,13 +36,14 @@ char *read_map(char *path)
 map_t *get_map(char *path)
 {
 	char *content;
-	map_t map ;
+	map_t *map ;
 	content=read_map(path);
 	if(!content)
 	{ 
 		return NULL;
 	}
 	printf("%s",content);
-	return map ; 
+	(void) map;
+	return NULL; 
 
 }
