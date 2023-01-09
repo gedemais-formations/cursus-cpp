@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <string.h>
 #include <errno.h>
+#include "bsq.h"
 
 //Prolonge potentiellement le carré par le haut (si pas d'obstacle)
 int up_square(int minY, int minX, int maxX, char ** tab) {
