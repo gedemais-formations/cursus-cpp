@@ -38,7 +38,7 @@ int get_metadata(char* map_init, t_metadata* m_map){
 	
 	if(m_map->full_char == m_map->obstacle_char 
 		|| m_map->full_char == m_map->empty_char 
-		|| m_map->obstacle_char != m_map->empty_char){
+		|| m_map->obstacle_char == m_map->empty_char){
 		printf("The three characteres are not unique");
 		return(3);
 	}
@@ -127,12 +127,12 @@ int main(){
 	
 	char* map_init;
 
-	t_metadata* m_map;
+	t_metadata m_map;
 	
-	read_map(ad_map_test){
-		return(map_init);
+	if(!(map_init = read_map(ad_map_test))){
+		return(1);
 	}
-	get_metadata(map_init, m_map);
-	return (0);
+	
+	return (get_metadata(map_init, &m_map));
 }
 
