@@ -6,29 +6,27 @@
 #include <string.h>
 #include <errno.h>
 
-int bsq(int argc ,char **argv){
-int i = 1 ;
-	while(i<argc)
+int bsq(int argc ,char **argv)
 {
-	get_map(argv[i]);
-}
-
+	int i = 1 ;
+	while(i<argc)
+	{
+		get_map(argv[i]);
+		if(get_map(argv[i]) ==NULL)
+		{
+			return 1 ;
+		}	
+	}
+	return 0 ;	
 }
 
 
 int main(int argc, char **argv)
 {
-	char *s = "Hello World";
-	char *charset = "o";
-
-	char **resultat = ft_split(s, charset);
-	int i = 0;
-	while(resultat[i]!=NULL)
+	if(bsq(argc,argv)!=0)
 	{
-		printf("%s \n",resultat[i]);
-		free(resultat[i]);
-		i++;
+		return 1 ;
 	}
-	free(resultat);
+
 	return 0;
 }
