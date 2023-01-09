@@ -19,7 +19,7 @@ ifeq ($(OPTI), 1)
 endif
 
 SRC_PATH=src/
-SRC_NAME=main.c\
+SRC_NAME=get_map.c\
 	 ft_strdup.c\
 	 ft_split.c
 

@@ -30,30 +30,31 @@ int get_metadata(char* map_init, metadata_t* m_map){
 	}
 	int length_fl = strlen(first_line);
 	if (length_fl <= 4){	// nb minimal de caractère à define en tête de fichier
-		print("Not enough arguments in line 1");
+		printf("Not enough arguments in line 1");
 		return(2);
 	}
-	m_map.full_char = first_line[length_fl - 1];
-	m_map.obstacle_char = first_line[length_fl - 2];
-	m_map.empty_char = first_line[length_fl - 3];
+	m_map->full_char = first_line[length_fl - 1];
+	m_map->obstacle_char = first_line[length_fl - 2];
+	m_map->empty_char = first_line[length_fl - 3];
 	
-	if(m_map.full_char == m_map.obstacle_char 
-		|| m_map.full_char == m_map.empty_char 
-		|| m_map.obstacle_char != m_map.empty_char){
-		print("The three characteres are not unique");
+	if(m_map->full_char == m_map->obstacle_char 
+		|| m_map->full_char == m_map->empty_char 
+		|| m_map->obstacle_char != m_map->empty_char){
+		printf("The three characteres are not unique");
 		return(3);
 	}
 	
-	first_line[length_fl - 3] = '\0'
-	m_map.nb_line = atoi(map_init);
-	printf("Numbre of line is : %d \n", m_map.nb_line);
+	first_line[length_fl - 3] = '\0';
+	m_map->nb_line = atoi(map_init);
+	printf("Numbre of line is : %d \n", m_map->nb_line);
 	
-	char** for_second_line = ft_split(map_init, "\n");
-	if (for_second_line == NULL){
+	char** lines = ft_split(map_init, "\n");
+	if (lines == NULL){
 		printf("Memory allocation trouble 2");
 		return(4);
 	}
-	m_map.nb_col = strlen(for_second_line[1]);		
+	m_map->nb_col = strlen(lines[1]);
+	return(0);
 }	
 	
 
@@ -63,7 +64,7 @@ int get_metadata(char* map_init, metadata_t* m_map){
 char* read_map(char *file_map){					// file_map est une variable qui contient l'adresse du fichier
 	int fd_open_file = open(file_map, O_RDONLY);		// variable open_file est le fd (file descriptor) de file_map
 	// vérification que l'on peut ouvrir et sinon renvoyé une erreur
-	if (open_file < 0){
+	if (fd_open_file < 0){
 		printf("File failed to open. \n");
 		return(NULL);
 	}
@@ -101,7 +102,7 @@ char* read_map(char *file_map){					// file_map est une variable qui contient l'
         printf("%s\n", map_init);
 	
         // libération de l'espace mémoire
-        free(map_init);
+        return(map_init);
 
 	
 }
@@ -144,8 +145,9 @@ char* read_map(char *file_map){					// file_map est une variable qui contient l'
 // 7: libérer la mémoire
 
 // int bsq(argc, argv)
-/*
-int main(argc, argv){
-return (0);
+
+int main(){
+	
+	return (0);
 }
-*/
+
