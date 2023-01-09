@@ -1,12 +1,14 @@
 #include "main.h"
 
-char *ft_strdup(char *s, char *charset);
-char **ft_split(char *s, char *charset);
-
 int main(void)
 {
-	char **sortie;
-	if(!(sortie = ft_split("Je m'apelle George", "e")))
+	char **sortie = malloc(20);
+	char *s = malloc(20);
+	char *charset = malloc(5);
+	s = "Je m'apelle George";
+	charset = "e";
+	sortie = ft_split(s, charset);
+	if(!(sortie = ft_split(s, charset)))
 	{
 		return 1;
 	}
@@ -15,12 +17,6 @@ int main(void)
 		printf("%s\n", sortie[i]);
 		free(sortie[i]);
 	}
-	/*char *sortie;
-	if(!(sortie = ft_strdup("Bonjour", j, 0)))
-	{
-		return 1;
-	}
-	printf("%s\n", sortie);*/
 	free(sortie);
 	return 0;
 }

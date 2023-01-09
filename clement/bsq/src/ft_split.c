@@ -43,12 +43,14 @@
 
 char **ft_split(char *s, char *charset)
 {
-	char **sortie = (char **) malloc((int)strlen(s));
 	int iterateur = 0;
-	int ligne = 0;
-	int colonne = 0;
-	int iterSet;
+	//int ligne = 0;
+	//int colonne = 0;
+	int iterSet=0;
+	int nbEntrees = 0;
 	bool horsDeCharset;
+	bool eligible = true;
+	//préparation de la taille de 
 	while(iterateur < (int)strlen(s))
 	{
 		horsDeCharset = true;
@@ -63,6 +65,51 @@ char **ft_split(char *s, char *charset)
 		}
 		if(horsDeCharset)
 		{
+			if(eligible)
+			{
+				nbEntrees++;
+				eligible = false;
+			}
+		}
+		else
+		{
+			eligible = true;
+		}
+		iterateur++;
+	}
+	printf("%d\n", nbEntrees);
+	char **sortie = (char **) malloc(nbEntrees * sizeof(char *));
+	char temp[] = "";
+	iterateur = 0;
+	eligible = true;
+	int i = 0;
+	while(iterateur < (int)strlen(s))
+	{
+		horsDeCharset = true;
+		iterSet = 0;
+		while(iterSet < (int)strlen(charset) && horsDeCharset)
+		{
+			if(charset[iterSet] == s[iterateur])
+			{
+				horsDeCharset = false;
+			}
+			iterSet++;
+		}
+		if(horsDeCharset)
+		{
+			if(eligible)
+			{
+				i++;
+				eligible = false;
+			}
+			//strcat(temp, s[i]);
+		}
+		else
+		{
+			eligible = true;
+		}
+		/*if(horsDeCharset)
+		{
 			if(colonne !=0)
 			{
 				colonne = 0;
@@ -74,7 +121,7 @@ char **ft_split(char *s, char *charset)
 			sortie[ligne][colonne] = s[iterateur];
 		}
 		colonne++;
-		iterateur++;
+		iterateur++;*/
 	}
 	return sortie;
 }
