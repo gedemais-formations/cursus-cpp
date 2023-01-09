@@ -1,5 +1,15 @@
 #include "main.h"
 
+int get_metadata(map_t *map, char *str)
+{
+	char *first_line;
+	int len;
+	first_line=ft_strdup(str, '\n');
+	len = strlen(first_line);
+	map->full_char=first_line[len-1]; 
+	return 0;
+}
+
 char *read_map(char *path)
 {  
 	ssize_t size;
@@ -32,6 +42,7 @@ char *read_map(char *path)
 
 	
 }
+
 
 map_t *get_map(char *path)
 {
