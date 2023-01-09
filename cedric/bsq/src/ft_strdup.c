@@ -1,8 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "bsq.h"
 
-int check_char(char c, const char *str){
+static int check_char(char c, const char *str){
 	int boolean;
 	int length;
 	boolean = 0;

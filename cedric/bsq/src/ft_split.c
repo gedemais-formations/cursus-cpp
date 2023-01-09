@@ -1,8 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "bsq.h"
 
-int check_char(char c, const char *charset){
+static int check_char(char c, const char *charset){
 	int length;
 	for(length = 0; charset[length]!='\0'; length ++){
 		if(c == charset[length]){
@@ -12,7 +10,7 @@ int check_char(char c, const char *charset){
 	return (0);
 }
 
-int count_substring(const char *str, const char *charset){
+static int count_substring(const char *str, const char *charset){
 	int count;
 	for(int i = 0; str[i] != '\0'; i++){
 		if(check_char(str[i], charset) == 1){
@@ -23,7 +21,7 @@ int count_substring(const char *str, const char *charset){
 	return (count);
 }
 
-int count_length(const char *str, const char *charset, int index){
+static int count_length(const char *str, const char *charset, int index){
 	int length;	for(length = index; (str[length] != '\0') 
 		&& (check_char(str[length], charset) == 0); length ++){}
 	return (length - index);
