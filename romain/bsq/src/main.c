@@ -1,21 +1,15 @@
-#include "../include/main.h"
-
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
+#include "main.h"
 
 int bsq(int argc ,char **argv)
 {
 	int i = 1 ;
 	while(i<argc)
 	{
-		get_map(argv[i]);
 		if(get_map(argv[i]) ==NULL)
 		{
 			return 1 ;
 		}	
+		i++;
 	}
 	return 0 ;	
 }

@@ -1,5 +1,5 @@
 #ifndef MAIN_H
-# define MAIN_H
+#define MAIN_H
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <fcntl.h>
 
 typedef struct s_map {
 		int nb_lines ;
@@ -19,6 +20,6 @@ typedef struct s_map {
 
 
 char **ft_split(char *s, char * charset);
-t_map *get_map(char *path); 
+map_t *get_map(char *path); 
 
 #endif
