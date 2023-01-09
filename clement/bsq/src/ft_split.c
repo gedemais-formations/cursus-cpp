@@ -3,23 +3,38 @@
 char *ft_strdup(char *s, char *charset, int n)
 {
 	char *dest = NULL;
-	int iterateur = n;
+	int iterateur = 0;
 	int iterSet;
-	int nbrIncorrect = 0
+	int nbrIncorrect = 0;
 	
 	while(iterateur < strlen(s) && horsDeCharset)
 	{
 		iterSet = 0
 		while(iterSet < strlen(charset))
 		{
-			if(&charset[iterSet] == &s[iterateur] && iterateur != nbrIncorrect)
+			if(&charset[iterSet] == &s[iterateur])
 			{
-				return (dest);
+				if(iterateur > nbrIncorrect)
+				{
+					return (dest);
+				}
+				else
+				{
+					nbrIncorrect++;
+				}
 			}
-			nbrIncorrect++;
+			else
+			{
+				if(n>0)
+				{
+					n--;
+					nbrIncorrect++;
+				}
+			}
+			
 			iterset++;
 		}
-		dest[iterateur-nbrIncorrect-n] = s[iterateur];
+		dest[iterateur-nbrIncorrect] = s[iterateur];
 		iterateur++;
 	}
 	
@@ -34,10 +49,6 @@ char **ft_split(char *s, char *charset)
 	int colonne = 0;
 	int iterSet;
 	bool horsDeCharset;
-	if(&s == NULL)
-	{
-		return NULL;
-	}
 	while(iterateur < strlen(s))
 	{
 		horsDeCharset = true;
