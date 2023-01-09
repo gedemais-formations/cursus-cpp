@@ -1,15 +1,15 @@
 #include "main.h"
 
-char *ft_strdup(char *s, char *charset, int n)
+/*char *ft_strdup(char *s, char *charset, int n)
 {
 	char *dest = NULL;
 	int iterateur = 0;
 	int iterSet;
 	int nbrIncorrect = 0;
 	
-	while(iterateur < strlen(s) && horsDeCharset)
+	while(iterateur < strlen(s))
 	{
-		iterSet = 0
+		iterSet = 0;
 		while(iterSet < strlen(charset))
 		{
 			if(&charset[iterSet] == &s[iterateur])
@@ -32,30 +32,30 @@ char *ft_strdup(char *s, char *charset, int n)
 				}
 			}
 			
-			iterset++;
+			iterSet++;
 		}
 		dest[iterateur-nbrIncorrect] = s[iterateur];
 		iterateur++;
 	}
 	
 	return (dest);
-}
+}*/
 
 char **ft_split(char *s, char *charset)
 {
-	char **sortie /*= malloc()*/;
+	char **sortie = (char **) malloc((int)strlen(s));
 	int iterateur = 0;
 	int ligne = 0;
 	int colonne = 0;
 	int iterSet;
 	bool horsDeCharset;
-	while(iterateur < strlen(s))
+	while(iterateur < (int)strlen(s))
 	{
 		horsDeCharset = true;
-		iterset = 0;
-		while(iterSet < strlen(charset) && horsDeCharset)
+		iterSet = 0;
+		while(iterSet < (int)strlen(charset) && horsDeCharset)
 		{
-			if(&charset[iterSet] == &s[iterateur])
+			if(charset[iterSet] == s[iterateur])
 			{
 				horsDeCharset = false;
 			}
