@@ -81,6 +81,7 @@ char **ft_split (char *string_char, char *charset){
 	return(elts_string);
 }
 
+/*
 int main(){
 	
 
@@ -95,5 +96,5 @@ int main(){
 	free(result_elts_string);
 	return(0);
 }
-
+*/
 // pour la compilation il me faudra ajouter ft_strdup.c dans le gcc avec le ft_split.c
