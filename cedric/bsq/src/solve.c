@@ -54,28 +54,7 @@ int find_square(char **tab, int size_square, int count_line, int count_char_per_
 }
 
 int solve(char *file_content, int count_line, int count_char_per_line){
-  char **tab = NULL;
-  int i = 0;
-  int j = 0;
-  if (! (tab = (char **) malloc(sizeof(char*) * count_line))){
-    return(1);
-  }
-  for(i = 0; i < count_line; i++){
-    if(! (tab[i] = (char *) malloc(sizeof(char) * count_char_per_line))){
-      return(1);
-    }
-  }
   
-  //Transform into a tab
-  i = 0;
-  while(file_content[j] != '\0'){
-    if(file_content[j] == '\n'){
-      j++; //Remove all \n
-    }
-    tab[i/count_char_per_line][i%count_char_per_line] = file_content[j];
-    i++;
-    j++;
-  }
   
   //Find a solution
   if(count_line < count_char_per_line){

@@ -12,7 +12,7 @@
 
 typedef struct s_metadata{
 	int nb_line;
-	int nb_col;
+	int nb_char; //Nb of char per line
 	char empty_char;
 	char obstacle_char;
 	char full_char;
@@ -20,6 +20,6 @@ typedef struct s_metadata{
 } t_file;
 
 int bsq(char *filename);
-char *read_map(char *file_name, int buffer_size);
+int get_map(t_file bsq_file, char *file_content);
 
 #endif
