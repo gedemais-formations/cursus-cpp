@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int check_char(char c, const char *str){
+static int check_char(char c, const char *str){
 	int boolean;
 	int length;
 	boolean = 0;
@@ -36,19 +36,4 @@ char *ft_strdup(const char *s, const char *charset){
 	}
 	str[length] = '\0';
 	return str;
-}
-
-int main(int argc, char const *argv[]){
-	char *str = NULL;
-	if(argc != 3){
-		printf("Error, need only 2 args");
-		return (-1);
-	} else {
-		str = ft_strdup(argv[1], argv[2]);
-		printf("%s \n", str);
-	}
-	if(str){
-		free(str);
-	}
-	return 0;
 }

@@ -39,6 +39,7 @@ static char *read_map(char *file_name, int buffer_size){
   return(buffer);
 } 
 
+/* UNUSED
 // Count elements on the first line
 static int count_char_per_line(char *file_content){
   int count = 0;
@@ -47,7 +48,7 @@ static int count_char_per_line(char *file_content){
   }
   //count++; //Take the '\n'
   return (count);
-}
+}*/
 
 static int count_lines(char *file_content){
   int count = 0;

@@ -19,7 +19,9 @@ typedef struct s_metadata{
 	char** board;	
 } t_file;
 
-int bsq(char *filename);
+int bsq(char *file_name);
 int get_map(t_file bsq_file, char *file_content);
+int solve(t_file bsq_file);
+char *ft_strdup(const char *s, const char *charset);
 
 #endif
