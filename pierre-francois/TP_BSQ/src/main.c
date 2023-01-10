@@ -6,12 +6,13 @@
 #include <string.h>
 #include <errno.h>
 
-void function_free(map_t map)
+void function_free(map_t *map)
 {
 	for(int i=0; map->map_full[i] != NULL; i++)
 		{
 			free(map->map_full[i]);
 		}
+	free(map->map_full);
 }
 
 int bsq(int argc ,char **argv)
@@ -21,9 +22,14 @@ int bsq(int argc ,char **argv)
 	memset(&map, 0, sizeof(map_t));
 	while(i<argc)
 	{
+		if(map.map_full)
+		{
+			function_free(&map);
+			memset(&map, 0, sizeof(map_t));
+		}
 		if(get_map(argv[i],&map)!=0)
 		{
-			return 1 ;
+			continue;
 		}
 		i++;
 	}

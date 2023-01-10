@@ -51,9 +51,9 @@ int get_board(map_t *map, char *str)
 
 	for(int i=0; map->board[i]!=NULL; i++)
 	{
-	 if(map->nb_colums != strlen(map->board[i]))
+	 if(map->nb_columns != (int)strlen(map->board[i]))
 	 {
-		perror("nb colonnes inégal :")
+		perror("nb colonnes inégal :");
 		return 1;
 	 }
 	}
