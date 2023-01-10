@@ -19,9 +19,11 @@ ifeq ($(OPTI), 1)
 endif
 
 SRC_PATH=src/
-SRC_NAME=get_map.c\
-	 ft_strdup.c\
-	 ft_split.c
+SRC_NAME=	main.c\
+		 	bsq.c\
+			get_map.c\
+	 		ft_strdup.c\
+	 		ft_split.c
 
 OBJS=$(SRC:.c=.o)
 

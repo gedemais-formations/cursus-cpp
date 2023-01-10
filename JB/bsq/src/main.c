@@ -1,15 +1,13 @@
 #include"main.h"
 
-int main (void){
-        char **tab;
-        if(!(tab=ft_split("Bonjour tout le monde", " "))){
-                return(1);              
-        }       
-        for (unsigned int i=0; tab[i]; i++){
-                printf("%s\n", tab[i]);
-                free(tab[i]);
-        }
-        free(tab);
-        return (0);
-}
+int			main(int argc, char** argv){
+	t_metadata	m_map;
+	int			errcode;
 
+	memset(&m_map, 0, sizeof(t_metadata));
+
+	if ((errcode = bsq(argc, argv, &m_map)))
+		return (errcode);
+
+	return(0);
+}

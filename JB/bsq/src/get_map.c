@@ -17,49 +17,6 @@
 // 1: ouvrir le/les fichier(s) transmis
 // utilisation de la fonction open
 
-
-// char get_map(char*file_map){}
-
-int get_metadata(char* map_init, t_metadata* m_map){
-
-	char* first_line = ft_strdup(map_init, "\n");
-	if (first_line == NULL){
-		printf("Memory allocation trouble");
-		return(1);
-	}
-	int length_fl = strlen(first_line);
-	if (length_fl <= 4){	// nb minimal de caractère à define en tête de fichier
-		printf("Not enough arguments in line 1");
-		return(2);
-	}
-	m_map->full_char = first_line[length_fl - 1];
-	m_map->obstacle_char = first_line[length_fl - 2];
-	m_map->empty_char = first_line[length_fl - 3];
-	
-	if(m_map->full_char == m_map->obstacle_char 
-		|| m_map->full_char == m_map->empty_char 
-		|| m_map->obstacle_char == m_map->empty_char){
-		printf("The three characteres are not unique");
-		return(3);
-	}
-	
-	first_line[length_fl - 3] = '\0';
-	m_map->nb_line = atoi(map_init);
-	printf("Numbre of line is : %d \n", m_map->nb_line);
-	
-	char** lines = ft_split(map_init, "\n");
-	if (lines == NULL){
-		printf("Memory allocation trouble 2");
-		return(4);
-	}
-	m_map->nb_col = strlen(lines[1]);
-	return(0);
-}	
-	
-
-// void get_board(){}
-
-
 char* read_map(char* file_map){					// file_map est une variable qui contient l'adresse du fichier
 	int fd_open_file = open(file_map, O_RDONLY);		// variable open_file est le fd (file descriptor) de file_map
 	// vérification que l'on peut ouvrir et sinon renvoyé une erreur
@@ -113,6 +70,47 @@ char* read_map(char* file_map){					// file_map est une variable qui contient l'
 // fonction solve
 // 4: trouver le plus grand carré de caractères vides
 // 
+
+int get_metadata(char* map_init, t_metadata* m_map){
+
+	char* first_line = ft_strdup(map_init, "\n");
+	if (first_line == NULL){
+		printf("Memory allocation trouble");
+		return(1);
+	}
+	int length_fl = strlen(first_line);
+	if (length_fl <= 4){	// nb minimal de caractère à define en tête de fichier
+		printf("Not enough arguments in line 1");
+		return(2);
+	}
+	m_map->full_char = first_line[length_fl - 1];
+	m_map->obstacle_char = first_line[length_fl - 2];
+	m_map->empty_char = first_line[length_fl - 3];
+	
+	if(m_map->full_char == m_map->obstacle_char 
+		|| m_map->full_char == m_map->empty_char 
+		|| m_map->obstacle_char == m_map->empty_char){
+		printf("The three characteres are not unique");
+		return(3);
+	}
+	
+	first_line[length_fl - 3] = '\0';
+	m_map->nb_line = atoi(map_init);
+	printf("Numbre of line is : %d \n", m_map->nb_line);
+	
+	char** lines = ft_split(map_init, "\n");
+	if (lines == NULL){
+		printf("Memory allocation trouble 2");
+		return(4);
+	}
+	m_map->nb_col = strlen(lines[1]);
+	return(0);
+}	
+	
+
+// void get_board(){}
+
+
 // 5: si plusieurs solutions, définir le carré à remplir
 // 
 // 6: remplir le carré sélectionné de caractères pleins
@@ -121,7 +119,7 @@ char* read_map(char* file_map){					// file_map est une variable qui contient l'
 // 7: libérer la mémoire
 
 // int bsq(argc, argv)
-
+/*
 int main(){
 	char* ad_map_test = "./map_test";	 
 	
@@ -134,5 +132,22 @@ int main(){
 	}
 	
 	return (get_metadata(map_init, &m_map));
+}*/
+
+int	get_map(char *path, t_metadata *m_map)
+{
+	char	*content;
+
+	content = read_map(path);
+	if (content == NULL)
+		return (1);
+	
+	if (get_metadata(content, m_map))
+		return (1);
+
+	printf("nb_line = %d, nb_col = %d, empty_char = %c, obstacle_char = %c, full_char = %c\n", 
+			m_map->nb_line, m_map->nb_col, m_map->empty_char, m_map->obstacle_char, m_map->full_char);
+
+	return (0);
 }
 
