@@ -7,8 +7,10 @@ int bsq(char *file_name){
     return(-1);
   }
 
-  solve(file_content, count_lines(file_content),
-    count_char_per_line(file_content));
+  solve(&bsq);
+
+  free(&bsq);
+  
   free(file_content);
   return (0);
 }

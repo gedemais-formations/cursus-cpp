@@ -73,10 +73,5 @@ int solve(t_file bsq_file){
 
   print_tab(&bsq_file);
 
-  for(i = 0; i < count_line; i++){
-    free(tab[i]);
-  }
-  free(tab);
-
   return (0);
 }
