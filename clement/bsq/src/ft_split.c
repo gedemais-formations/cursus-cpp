@@ -1,51 +1,8 @@
 #include "main.h"
 
-/*char *ft_strdup(char *s, char *charset, int n)
-{
-	char *dest = NULL;
-	int iterateur = 0;
-	int iterSet;
-	int nbrIncorrect = 0;
-	
-	while(iterateur < strlen(s))
-	{
-		iterSet = 0;
-		while(iterSet < strlen(charset))
-		{
-			if(&charset[iterSet] == &s[iterateur])
-			{
-				if(iterateur > nbrIncorrect)
-				{
-					return (dest);
-				}
-				else
-				{
-					nbrIncorrect++;
-				}
-			}
-			else
-			{
-				if(n>0)
-				{
-					n--;
-					nbrIncorrect++;
-				}
-			}
-			
-			iterSet++;
-		}
-		dest[iterateur-nbrIncorrect] = s[iterateur];
-		iterateur++;
-	}
-	
-	return (dest);
-}*/
-
 char **ft_split(char *s, char *charset)
 {
 	int iterateur = 0;
-	//int ligne = 0;
-	//int colonne = 0;
 	int iterSet=0;
 	int nbEntrees = 0;
 	bool horsDeCharset;
@@ -77,12 +34,19 @@ char **ft_split(char *s, char *charset)
 		}
 		iterateur++;
 	}
-	printf("%d\n", nbEntrees);
 	char **sortie = (char **) malloc(nbEntrees * sizeof(char *));
-	char temp[] = "";
+	//tableau contenant l'index de début de chaque chaine valide ainsi que leur longueur. 
+	int **coordChaines = (int**) malloc(nbEntrees * sizeof(int *));
+	for(int i = 0; i < nbEntrees; i++)
+	{
+		coordChaines[i] = (int*) malloc(nbEntrees * sizeof(int));
+		coordChaines[i][0] = 0;
+		coordChaines[i][1] = 0;
+	}
 	iterateur = 0;
 	eligible = true;
-	int i = 0;
+	int l = 0;
+	//préparation des valeurs de coordChaines pour pouvoir remplir sortie avec memcpy()
 	while(iterateur < (int)strlen(s))
 	{
 		horsDeCharset = true;
@@ -99,29 +63,29 @@ char **ft_split(char *s, char *charset)
 		{
 			if(eligible)
 			{
-				i++;
+				l++;
+				coordChaines[l][0] = iterateur;
 				eligible = false;
 			}
-			//strcat(temp, s[i]);
+			coordChaines[l][1]++;
 		}
 		else
 		{
 			eligible = true;
 		}
-		/*if(horsDeCharset)
-		{
-			if(colonne !=0)
-			{
-				colonne = 0;
-				ligne++;
-			}
-		}
-		else
-		{
-			sortie[ligne][colonne] = s[iterateur];
-		}
-		colonne++;
-		iterateur++;*/
+		iterateur++;
 	}
+	//remplissage de chacune des cases de sortie
+	for(int i = 0; i < nbEntrees; i++)
+	{
+		sortie[i] = (char *) malloc(coordChaines[i][1] * sizeof(char));
+		memcpy(sortie[i], &s[coordChaines[i][0]], coordChaines[i][1]);
+	}
+	//libération de la mémoire prise par coordChaines
+	for(int i = 0; i < nbEntrees; i++)
+	{
+		free(coordChaines[i]);
+	}
+	free(coordChaines);
 	return sortie;
 }
