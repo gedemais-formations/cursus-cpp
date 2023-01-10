@@ -19,7 +19,8 @@ typedef struct s_map
 	char empty_char;
 	char obstacle_char;
 	char full_char;
-	char *map;
+	char **all_content;
+	char **board ;
 } map_t;
 
 char *ft_strdup(char *s, char *charset);

@@ -66,6 +66,18 @@ char *read_map(char *path)
 	return resultat ;
 }
 
+int get_board(map_t *map, char *str)
+{
+ 
+ if((map->all_content = ft_split(str,"\n")) == NULL)
+ {
+	 perror("error ft_split");
+	 return 1 ;
+ }	
+ map->board=&map->all_content[1];
+ 
+return 0 ;
+}
 
 int get_map(char *path,map_t *map)
 {
@@ -81,6 +93,12 @@ int get_map(char *path,map_t *map)
 		return 1;
 	}
 	printf("%d%c%c%c \n", map->nb_lines, map->empty_char, map->obstacle_char, map->full_char);
+	get_board(map,content);
+	for(int i =0 ;map->board[i]!=NULL ;i++)
+	{
+		printf("%s \n",map->board[i]);
+	}
 	return 0; 
+
 
 }

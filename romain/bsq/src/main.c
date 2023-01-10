@@ -10,6 +10,7 @@ int bsq(int argc ,char **argv)
 {
 	int i = 1 ;
 	map_t map;
+	memset(&map,0,sizeof(map_t));
 	while(i<argc)
 	{
 		if(get_map(argv[i],&map)!=0)
@@ -24,6 +25,7 @@ int bsq(int argc ,char **argv)
 
 int main(int argc, char **argv)
 {
+
 	if(bsq(argc,argv)!=0)
 	{
 		return 1 ;
