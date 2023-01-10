@@ -114,6 +114,7 @@ int get_board (char* map_init, t_metadata* m_map){
 			return(1);
 		}
 	}
+	free(map_init);
 	return(0);
 }
 

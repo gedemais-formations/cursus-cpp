@@ -21,6 +21,7 @@ endif
 SRC_PATH=src/
 SRC_NAME=	main.c\
 		 	bsq.c\
+			free.c\
 			get_map.c\
 	 		ft_strdup.c\
 	 		ft_split.c

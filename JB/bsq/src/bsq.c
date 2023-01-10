@@ -3,7 +3,7 @@
 int	bsq(int argc, char** argv, t_metadata *m_map)
 {
 	for (int i = 1; i < argc; i++ ){
-		memset(&m_map, 0, sizeof(t_metadata));
+		memset(m_map, 0, sizeof(t_metadata));
 		if (get_map(argv[i], m_map) != 0){
 			printf("map error");
 			free_array(m_map->map);

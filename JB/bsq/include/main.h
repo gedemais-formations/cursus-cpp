@@ -21,5 +21,6 @@ char *ft_strdup (char *string_char, char *charset);
 char **ft_split (char *string_char, char *charset);
 int	bsq(int argc, char** argv, t_metadata *m_map);
 int	get_map(char *path, t_metadata *m_map);
+void free_array(char** map);
 
 #endif
