@@ -5,7 +5,7 @@
 #include <errno.h>    // errno
 #include <malloc.h>   // dyn memory allocation
 #include <unistd.h>   //read write
-#include "bsq_error.h"
+#include "../include/bsq_error.h"
 
 int print_error(int errcode, const char* context) {
     const char* ERRORS_MESSAGES[6] = {

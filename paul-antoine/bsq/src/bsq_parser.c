@@ -2,8 +2,8 @@
 // Created by pad on 1/3/23.
 //
 
-#include "bsq_parser.h"
-#include "bsq_error.h"
+#include "../include/bsq_parser.h"
+#include "../include/bsq_error.h"
 #include <string.h>   // memcpy
 #include <malloc.h>   // dyn memory allocation
 #include <fcntl.h>    //open

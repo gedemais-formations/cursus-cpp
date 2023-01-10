@@ -1,7 +1,7 @@
 //
 // Created by pad on 1/4/23.
 //
-#include "bsq_parser.h"
+#include "../include/bsq_parser.h"
 #include <stdio.h>
 
 int main(int argc, char** argv) {

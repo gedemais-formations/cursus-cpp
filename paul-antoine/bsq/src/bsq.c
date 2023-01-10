@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "bsq_solver.h"
+#include "../include/bsq_solver.h"
 
 int main(int argc, char **argv) {
     t_field *map;

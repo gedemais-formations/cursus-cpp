@@ -1,8 +1,8 @@
 //
 // Created by pad on 12/20/22.
 //
-#include "bsq_solver.h"
-#include "bsq_error.h"
+#include "../include/bsq_solver.h"
+#include "../include/bsq_error.h"
 
 #include <unistd.h>   //read write
 #include <malloc.h>   // dyn memory allocation
