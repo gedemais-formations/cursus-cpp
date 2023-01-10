@@ -10,7 +10,9 @@ int	bsq(int argc, char** argv, t_metadata *m_map)
 			continue;
 		}
 		else {
+			solve(m_map);
 			free_array(m_map->map);
+			return(1);
 		}
 		// obtenir les données stockés dans la metadata
 	}

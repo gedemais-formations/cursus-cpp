@@ -4,6 +4,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<stdbool.h>
 
 typedef struct s_metadata{
          int nb_line;
@@ -22,5 +23,7 @@ char **ft_split (char *string_char, char *charset);
 int	bsq(int argc, char** argv, t_metadata *m_map);
 int	get_map(char *path, t_metadata *m_map);
 void free_array(char** map);
+int solve(t_metadata* m_map);
+int min_val (int x, int y);
 
 #endif
