@@ -39,13 +39,13 @@ char **ft_split(char *s, char *charset)
 	int **coordChaines = (int**) malloc(nbEntrees * sizeof(int *));
 	for(int i = 0; i < nbEntrees; i++)
 	{
-		coordChaines[i] = (int*) malloc(nbEntrees * sizeof(int));
+		coordChaines[i] = (int*) malloc(2 * sizeof(int));
 		coordChaines[i][0] = 0;
 		coordChaines[i][1] = 0;
 	}
 	iterateur = 0;
 	eligible = true;
-	int l = 0;
+	int l = -1;
 	//préparation des valeurs de coordChaines pour pouvoir remplir sortie avec memcpy()
 	while(iterateur < (int)strlen(s))
 	{
