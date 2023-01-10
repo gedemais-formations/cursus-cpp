@@ -9,9 +9,10 @@
 int bsq(int argc ,char **argv)
 {
 	int i = 1 ;
+	map_t map;
 	while(i<argc)
 	{
-		if(get_map(argv[i]) ==NULL)
+		if(get_map(argv[i],&map)!=0)
 		{
 			return 1 ;
 		}

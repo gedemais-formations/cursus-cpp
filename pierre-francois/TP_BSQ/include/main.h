@@ -24,7 +24,7 @@ typedef struct s_map
 
 char *ft_strdup(char *s, char *charset);
 char **ft_split(char *s, char *charset);
-map_t *get_map(char *path);
+int get_map(char *path, map_t *map);
 
 
 

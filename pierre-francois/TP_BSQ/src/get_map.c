@@ -67,22 +67,20 @@ char *read_map(char *path)
 }
 
 
-map_t *get_map(char *path)
+int get_map(char *path,map_t *map)
 {
 	char *content;
-	map_t map;
 	content=read_map(path);
 	if(!content)
 	{ 
-		return NULL;
+		return 1;
 	}
-	if(get_metadata(&map,content)!=0)
+	if(get_metadata(map,content)!=0)
 	{
 		perror("get_metadata :");
-		return NULL;
+		return 1;
 	}
-	printf("%d%c%c%c \n", map.nb_lines, map.empty_char, map.obstacle_char, map.full_char);
-	(void) map;
-	return NULL; 
+	printf("%d%c%c%c \n", map->nb_lines, map->empty_char, map->obstacle_char, map->full_char);
+	return 0; 
 
 }
