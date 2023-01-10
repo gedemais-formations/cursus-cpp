@@ -58,21 +58,14 @@ char *ft_strdup (char *string_char, char *charset){
 		}
 	}
 	
-	if (elt_length == string_char_size){
+	/*
+	 * if (elt_length == string_char_size){
 		printf("No char of charset found in string_char \n");
 		// return(NULL);	
 	}
-	
-	/*
-	 * // récupération du file descriptor de elt grace à la fct OPEN
-	int fd_string_char = open(string_char, O_RDONLY);
-	if (fd_string_char == -1){
-		printf("No file descriptor for string_char \n");
-		return(NULL);
-	}
 	*/
 
-	// allocation d'un espace mémoire de taille elt_length avec malloc
+		// allocation d'un espace mémoire de taille elt_length avec malloc
 	// récupération de l'adresse de cet espace en définissant la variable elt_mem
 	
 	char * elt_mem = NULL;
@@ -97,34 +90,8 @@ char *ft_strdup (char *string_char, char *charset){
 	// printf("%s\n", elt_mem);
 
 	return(elt_mem);
-
-	
-	/*
-	// copie les cut_elt_length-1 premier char dans l'espace alloué avec read
-	// et stocké dans rd_elt_mem le nombre d'octet lus
-	rd_elt_mem = read(fd_string_char, elt_mem, (elt_length - 1));
-	
-	// ajout de \O en position rd_elt_mem (fin de chaine) soit elt_length
-	// normalement
-	// > pour signifier la fin de la chaine de caractère (cc)
-	// caractère obligatoire sinon continuera à lire après la fin de la cc
-	elt_mem[rd_elt_mem] = '\0';
-
-	// vérification que cela à bien ecrit à l'adresse dédié
-	printf("%s\n", elt_mem);
-
-	// libération de l'espace mémoire
-	free(elt_mem);
-
-*/
-
 }
 
-
-/* int main(int argc, char **argv){
-	(void)argc;
-	(void)argv;
-	*/
 /*
  * int main(){
 	char *result_elt_mem = ft_strdup("Time_to_test thy code", " y");

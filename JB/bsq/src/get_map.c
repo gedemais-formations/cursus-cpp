@@ -55,7 +55,7 @@ char* read_map(char* file_map){					// file_map est une variable qui contient l'
         map_init[rd_file_map] = '\0';
 
         // vérification que cela à bien ecrit à l'adresse dédié
-        printf("%s\n", map_init);
+        // printf("%s\n", map_init);
 	
         // libération de l'espace mémoire
         return(map_init);
@@ -89,7 +89,7 @@ int get_metadata(char* map_init, t_metadata* m_map){
 	
 	first_line[length_fl - 3] = '\0';
 	m_map->nb_line = atoi(map_init);
-	printf("Numbre of line is : %d \n", m_map->nb_line);
+	// printf("Numbre of line is : %d \n", m_map->nb_line);
 	
 	char** lines = ft_split(map_init, "\n");
 	if (lines == NULL){

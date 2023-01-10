@@ -21,8 +21,8 @@ bool check (t_metadata* m_map, int start_x, int start_y, int sqr_side){
 }
 
 void write_full_char(t_metadata* m_map, int start_x, int start_y, int sqr_side){
-	for (int n = 0; n < start_x + sqr_side; n++){
-		for (int o = 0; o < start_y + sqr_side; o++){
+	for (int n = start_x; n < start_x + sqr_side; n++){
+		for (int o = start_y; o < start_y + sqr_side; o++){
 			m_map->board[n][o] = m_map->full_char;
 		}
 	}
@@ -40,7 +40,12 @@ int solve(t_metadata* m_map){
 					write_full_char(m_map, j, k, sqr_side);
 					printf("IT WORKS \n");
 					printf("Square start at %d:%d and its side is %d \n", k, j, sqr_side);
-					printf("%s\n", *m_map->board);
+					for (int p = 0; p < m_map->nb_line; p++){
+						printf("%s\n", m_map->board[p]);
+						// ou 
+						// write(1, m_map->board[p], m_map->nb_columns);
+						// write(1, "\n", 1);
+					}
 					exit(0);
 				}
 			}
