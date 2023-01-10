@@ -66,11 +66,13 @@ int get_metadata(char* map_init, t_metadata* m_map){
 	char* first_line = ft_strdup(map_init, "\n");
 	if (first_line == NULL){
 		printf("Memory allocation trouble\n");
+		free(first_line);
 		return(1);
 	}
 	int length_fl = strlen(first_line);
 	if (length_fl < 4){	// nb minimal de caractère à define en tête de fichier
 		printf("Not enough arguments in line 1\n");
+		free(first_line);
 		return(2);
 	}
 	m_map->full_char = first_line[length_fl - 1];
@@ -81,6 +83,7 @@ int get_metadata(char* map_init, t_metadata* m_map){
 		|| m_map->full_char == m_map->empty_char 
 		|| m_map->obstacle_char == m_map->empty_char){
 		printf("The three characteres are not unique\n");
+		free(first_line);
 		return(3);
 	}
 	
@@ -91,9 +94,12 @@ int get_metadata(char* map_init, t_metadata* m_map){
 	char** lines = ft_split(map_init, "\n");
 	if (lines == NULL){
 		printf("Memory allocation trouble 2\n");
+		free(first_line);
 		return(4);
 	}
 	m_map->nb_col = strlen(lines[1]);
+	free(first_line);
+	free_array(lines);
 	return(0);
 }	
 	
@@ -105,12 +111,16 @@ int get_metadata(char* map_init, t_metadata* m_map){
 // fonction solve
 // 4: trouver le plus grand carré de caractères vides
  
-int get_board (char* map_init, t_metadata* m_map){
-	m_map->map = ft_split(map_init, "\n");
+int get_board (char* map_init, t_metadata* m_map)
+{
+	if (!(m_map->map = ft_split(map_init, "\n")))
+		return (-1);
+
 	m_map->board = &m_map->map[1];
 	for (int i = 0; i < m_map->nb_line; i++){
 		if ((int)strlen(m_map->board[i]) != m_map->nb_col){
 			printf("lines do not have the same size \n");
+			free(map_init);
 			return(1);
 		}
 	}
