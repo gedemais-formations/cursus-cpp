@@ -40,7 +40,7 @@ char* read_map(char* file_map){					// file_map est une variable qui contient l'
 	char* map_init = NULL;
 	map_init = (char*)malloc(sizeof(char) * (file_size + 1));
 	if (!map_init){
-		printf("No more memory available");
+		printf("No more memory available\n");
 		return(NULL);
 	}
 
@@ -75,12 +75,12 @@ int get_metadata(char* map_init, t_metadata* m_map){
 
 	char* first_line = ft_strdup(map_init, "\n");
 	if (first_line == NULL){
-		printf("Memory allocation trouble");
+		printf("Memory allocation trouble\n");
 		return(1);
 	}
 	int length_fl = strlen(first_line);
-	if (length_fl <= 4){	// nb minimal de caractère à define en tête de fichier
-		printf("Not enough arguments in line 1");
+	if (length_fl < 4){	// nb minimal de caractère à define en tête de fichier
+		printf("Not enough arguments in line 1\n");
 		return(2);
 	}
 	m_map->full_char = first_line[length_fl - 1];
@@ -90,7 +90,7 @@ int get_metadata(char* map_init, t_metadata* m_map){
 	if(m_map->full_char == m_map->obstacle_char 
 		|| m_map->full_char == m_map->empty_char 
 		|| m_map->obstacle_char == m_map->empty_char){
-		printf("The three characteres are not unique");
+		printf("The three characteres are not unique\n");
 		return(3);
 	}
 	
@@ -100,7 +100,7 @@ int get_metadata(char* map_init, t_metadata* m_map){
 	
 	char** lines = ft_split(map_init, "\n");
 	if (lines == NULL){
-		printf("Memory allocation trouble 2");
+		printf("Memory allocation trouble 2\n");
 		return(4);
 	}
 	m_map->nb_col = strlen(lines[1]);
@@ -139,13 +139,15 @@ int	get_map(char *path, t_metadata *m_map)
 	char	*content;
 
 	content = read_map(path);
-	if (content == NULL)
-		printf("map error");
+	if (content == NULL){
+		printf("map error\n");
 		return (1);
+	}
 	
-	if (get_metadata(content, m_map))
-		printf("map error");
+	if (get_metadata(content, m_map)){
+		printf("map error\n");
 		return (1);
+	}
 
 	printf("nb_line = %d, nb_col = %d, empty_char = %c, obstacle_char = %c, full_char = %c\n", 
 			m_map->nb_line, m_map->nb_col, m_map->empty_char, m_map->obstacle_char, m_map->full_char);
