@@ -21,7 +21,11 @@ endif
 SRC_PATH=src/
 
 SRC_NAME=main.c\
-		bsq.c
+		bsq.c\
+		get_map.c\
+		solve.c\
+		free.c\
+		strdup.c
 
 SRC=$(addprefix $(SRC_PATH), $(SRC_NAME))
 

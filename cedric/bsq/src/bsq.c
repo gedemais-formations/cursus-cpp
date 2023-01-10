@@ -1,16 +1,18 @@
-#include "bsq.h"
+#include "main.h"
 
 int bsq(char *file_name){
   t_file bsq_file;
-  if(get_map(&bsq_file, *file_name)){
+  
+  memset(&bsq_file, 0, sizeof(bsq_file));
+
+  if(get_map(&bsq_file, file_name)){
     printf("Error in get_map");
     return(-1);
   }
 
-  solve(&bsq);
+  solve(&bsq_file);
 
-  free(&bsq);
+  free_bsq(&bsq_file);
   
-  free(file_content);
   return (0);
 }

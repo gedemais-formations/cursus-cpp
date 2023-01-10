@@ -11,8 +11,8 @@
 #include<math.h>
 
 typedef struct s_metadata{
-	int nb_line;
-	int nb_char; //Nb of char per line
+	unsigned int nb_line;
+	unsigned int nb_char; //Nb of char per line
 	char empty_char;
 	char obstacle_char;
 	char full_char;
@@ -20,9 +20,9 @@ typedef struct s_metadata{
 } t_file;
 
 int bsq(char *file_name);
-int get_map(t_file bsq_file, char *file_content);
-int solve(t_file bsq_file);
-int free(t_file bsq_file);
+int get_map(t_file *bsq_file, char *file_content);
+int solve(t_file *bsq_file);
+int free_bsq(t_file *bsq_file);
 
 char *ft_strdup(const char *s, const char *charset);
 
