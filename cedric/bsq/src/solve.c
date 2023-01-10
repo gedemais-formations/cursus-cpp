@@ -1,8 +1,8 @@
 #include "main.h"
 
 // Find an o on a cell
-static int find_an_o(char **tab, int x, int y){
-  if(tab[x][y]=='o'){
+static int find_an_obstacle(t_file *bsq_file, int x, int y){
+  if(bsq_file->board[x][y] == bsq_file->obstacle_char){
     return (1);
   } else {
     return (0);
@@ -42,7 +42,7 @@ static int find_square(t_file *bsq_file, unsigned int size_square){
       boolean = 1;
       for(unsigned int x = i; x < size_square + i && boolean == 1; x++){
         for(unsigned int y = j; y < size_square + j && boolean == 1; y++){
-          if(find_an_o(bsq_file->board, x, y) == 1){
+          if(find_an_obstacle(bsq_file, x, y) == 1){
             boolean = 0;
           }
         }
@@ -50,7 +50,7 @@ static int find_square(t_file *bsq_file, unsigned int size_square){
       if(boolean == 1){
         for(unsigned int x = i; x < size_square + i; x++){
           for(unsigned int y = j; y < size_square + j; y++){
-            bsq_file->board[x][y] = 'x';
+            bsq_file->board[x][y] = bsq_file->full_char;
           }
         }
         return(1);
