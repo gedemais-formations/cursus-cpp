@@ -4,9 +4,35 @@ int get_metadata(map_t *map, char *str)
 {
 	char *first_line;
 	int len;
-	first_line=ft_strdup(str, '\n');
-	len = strlen(first_line);
+	if((first_line=ft_strdup(str, "\n"))==NULL)
+	{
+		perror("strdup :");
+		return 1;
+	}
+
+	if((len = strlen(first_line))<4)
+	{
+		perror("strlen :");
+		return 1;
+	}
+
 	map->full_char=first_line[len-1]; 
+	map->obstacle_char=first_line[len-2];
+	map->empty_char=first_line[len-3];
+	first_line[len-3]='\0';
+
+	if(map->full_char==map->obstacle_char || map->obstacle_char==map->empty_char || map->full_char==map->empty_char)
+	{
+		perror("map error :");
+		return 1;
+	}
+
+	if((map->nb_lines=atoi(first_line))==0)
+	{
+		perror("atoi :");
+		return 1;
+	}
+	
 	return 0;
 }
 
@@ -38,22 +64,24 @@ char *read_map(char *path)
 	resultat[size]='\0';
 	close(fd);
 	return resultat ;
-	
-
-	
 }
 
 
 map_t *get_map(char *path)
 {
 	char *content;
-	map_t *map ;
+	map_t map;
 	content=read_map(path);
 	if(!content)
 	{ 
 		return NULL;
 	}
-	printf("%s",content);
+	if(get_metadata(&map,content)!=0)
+	{
+		perror("get_metadata :");
+		return NULL;
+	}
+	printf("%d%c%c%c \n", map.nb_lines, map.empty_char, map.obstacle_char, map.full_char);
 	(void) map;
 	return NULL; 
 

@@ -8,6 +8,7 @@
 #include<sys/stat.h>
 #include<unistd.h>
 #include<fcntl.h>
+#include<string.h>
 
 // inclure tous les prototypes des fonctions qui seront utilisés
 
