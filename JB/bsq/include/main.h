@@ -11,7 +11,8 @@ typedef struct s_metadata{
          char empty_char;
          char obstacle_char;
          char full_char;
-	 char** board;	
+	 char** map;
+	 char** board;
 }        t_metadata;
 
 // inclure tous les prototypes des fonctions qui seront utilisés

@@ -60,16 +60,6 @@ char* read_map(char* file_map){					// file_map est une variable qui contient l'
         // libération de l'espace mémoire
         return(map_init);
 }
-	
-	
-//une seconde fraction pour récupérer le board
-// 3: recupérer le board
-// !!: verifier la taille du fichier 
-// >> allouer un espace mémoire suffisant avec malloc pour la fonction
-// 
-// fonction solve
-// 4: trouver le plus grand carré de caractères vides
-// 
 
 int get_metadata(char* map_init, t_metadata* m_map){
 
@@ -107,8 +97,27 @@ int get_metadata(char* map_init, t_metadata* m_map){
 	return(0);
 }	
 	
+//une seconde fraction pour récupérer le board
+// 3: recupérer le board
+// !!: verifier la taille du fichier 
+// >> allouer un espace mémoire suffisant avec malloc pour la fonction
+ 
+// fonction solve
+// 4: trouver le plus grand carré de caractères vides
+ 
+int get_board (char* map_init, t_metadata* m_map){
+	m_map->map = ft_split(map_init, "\n");
+	m_map->board = &m_map->map[1];
+	for (int i = 0; i < m_map->nb_line; i++){
+		if ((int)strlen(m_map->board[i]) != m_map->nb_col){
+			printf("lines do not have the same size \n");
+			return(1);
+		}
+	}
+	return(0);
+}
 
-// void get_board(){}
+
 
 
 // 5: si plusieurs solutions, définir le carré à remplir
@@ -141,17 +150,22 @@ int	get_map(char *path, t_metadata *m_map)
 	content = read_map(path);
 	if (content == NULL){
 		printf("map error\n");
-		return (1);
+		return(1);
 	}
 	
 	if (get_metadata(content, m_map)){
 		printf("map error\n");
-		return (1);
+		return(1);
+	}
+	
+	if (get_board(content, m_map)){
+		printf("map error\n");
+		return(1);
 	}
 
 	printf("nb_line = %d, nb_col = %d, empty_char = %c, obstacle_char = %c, full_char = %c\n", 
 			m_map->nb_line, m_map->nb_col, m_map->empty_char, m_map->obstacle_char, m_map->full_char);
 
-	return (0);
+	return(0);
 }
 
