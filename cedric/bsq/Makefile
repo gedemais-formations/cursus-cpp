@@ -20,9 +20,8 @@ endif
 
 SRC_PATH=src/
 
-SRC_NAME=bsq.c\
-		ft_split.c\
-		ft_strdup.c
+SRC_NAME=main.c\
+		bsq.c
 
 SRC=$(addprefix $(SRC_PATH), $(SRC_NAME))
 
