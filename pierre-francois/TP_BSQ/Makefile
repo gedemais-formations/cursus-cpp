@@ -5,7 +5,7 @@ FLAGS=-Wall -Werror -Wextra
 
 DEBUG ?= 0
 ifeq ($(DEBUG), 1)
-	FLAGS += -g3 -fsanitize=adress
+	FLAGS += -g3 -fsanitize=address
 endif
 
 VALGRIND_CHECK ?= 0
