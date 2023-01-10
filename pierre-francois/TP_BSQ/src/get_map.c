@@ -112,5 +112,4 @@ int get_map(char *path,map_t *map)
 	}
 	
 	return 0; 
-
 }

@@ -33,9 +33,9 @@ int bsq(int argc ,char **argv)
 		}
 		i++;
 	}
+	function_free(&map);
 	return 0 ;	
 }
-
 
 int main(int argc, char **argv)
 {
@@ -43,6 +43,5 @@ int main(int argc, char **argv)
 	{
 		return 1 ;
 	}
-
 	return 0;
 }
