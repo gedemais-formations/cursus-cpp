@@ -13,6 +13,7 @@ int get_metadata(map_t *map, char *str)
 	if((len = strlen(first_line))<4)
 	{
 		perror("strlen :");
+		free(first_line);
 		return 1;
 	}
 
@@ -24,15 +25,17 @@ int get_metadata(map_t *map, char *str)
 	if(map->full_char==map->obstacle_char || map->obstacle_char==map->empty_char || map->full_char==map->empty_char)
 	{
 		perror("map error :");
+		free(first_line);
 		return 1;
 	}
 
 	if((map->nb_lines=atoi(first_line))==0)
 	{
 		perror("atoi :");
+		free(first_line);
 		return 1;
 	}
-	
+	free(first_line);
 	return 0;
 }
 
@@ -75,9 +78,18 @@ int get_board(map_t *map, char *str)
 	 return 1 ;
  }	
  map->board=&map->all_content[1];
- 
+ map->nb_columns =strlen(map->board[1]);
+for (int i = 0 ;map->board[i]!=NULL ; i++)
+		{  
+		  if(map->nb_columns != (int)strlen(map->board[i]))
+			{
+			perror("Error number of columns");
+			return 1 ;
+			}
+		}
 return 0 ;
 }
+
 
 int get_map(char *path,map_t *map)
 {
@@ -94,11 +106,13 @@ int get_map(char *path,map_t *map)
 	}
 	printf("%d%c%c%c \n", map->nb_lines, map->empty_char, map->obstacle_char, map->full_char);
 	get_board(map,content);
+	if(solve(map)!=0)
+	{
+		printf("solve not  ok");
+	}
 	for(int i =0 ;map->board[i]!=NULL ;i++)
 	{
 		printf("%s \n",map->board[i]);
 	}
 	return 0; 
-
-
 }
