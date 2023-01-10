@@ -13,17 +13,17 @@ char **ft_split(char *s, char *charset) {
 
   //  Get number of row
   row = 0;
-  for (i = 0; s[i] != '\0'; i++) {
+  for (i = 0; s[i] != '\0'; i++)
     if (ft_strchr(s[i], charset)) row++;
-  }
 
-  res = malloc(sizeof(char *) * (row + 2));
+  res = calloc((row + 1), sizeof(char *));
   if (res == NULL) return (NULL);
 
-  res[row + 1] = NULL;
+  res[row] = NULL;
 
-  for (i = 0; i != row + 1; i++) {
+  for (i = 0; i != row; i++) {
     res[i] = ft_strdup(s, charset);
+    if (res[i] == NULL) return (NULL);
     //  Move the PTR
     while (*s != '\0' && !ft_strchr(*s, charset)) {
       s++;

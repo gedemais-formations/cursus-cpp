@@ -1,7 +1,7 @@
 #include "main.h"
 
-void free_board(char **board) {
-  if (board != NULL) {
+void free_board(char** board) {
+  if (board) {
     for (int i = 0; board[i] != NULL; i++) {
       free(board[i]);
     }
@@ -9,8 +9,9 @@ void free_board(char **board) {
   }
 }
 
-void free_env(Env *env) {
+void free_env(Env* env) {
   free_board(env->board);
-  free(env->dp);
-  free(env->str);
+
+  // if (env->str)
+  // free(env->str);
 }

@@ -8,6 +8,7 @@ enum e_error_id {
   ERROR_MEM,
   ERROR_POINTER,
   ERROR_BOARD,
+  ERROR_OPEN,
   ERROR_MAX
 };
 
@@ -19,6 +20,7 @@ static const t_error errors[ERROR_MAX] = {
     [ERROR_MEM] = {"Memory allocation failed\n"},
     [ERROR_POINTER] = {"NULL Pointer\n"},
     [ERROR_BOARD] = {"The board is not right\n"},
+    [ERROR_OPEN] = {"The path is incorect\n"},
 };
 
 #endif

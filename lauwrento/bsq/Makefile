@@ -5,9 +5,19 @@ FLAGS=-Wall
 FLAGS+=-Werror
 FLAGS+=-Wextra
 
-DEBUG ?= 0
+DEBUG?=0
 ifeq ($(DEBUG), 1)
-  FLAGS += -g3 -fsanitize=address
+  FLAGS+=-g3 -fsanitize=address
+endif
+
+VALGRIND_CHECK?=0
+ifeq ($(VALGRIND_CHECK), 1)
+  FLAGS+=-g
+endif
+
+OPTI?=0
+ifeq ($(OPTI), 1)
+  FLAGS+=-Ofast -ffast-math -march=native
 endif
 
 SRC_PATH=src/
@@ -22,7 +32,9 @@ SRC_NAME=bsq.c\
   read_fd.c\
   math.c\
   free.c\
-  print.c
+  print.c\
+  get_metadata.c\
+  get_board.c
 
 
 SRC=$(addprefix $(SRC_PATH), $(SRC_NAME))
@@ -33,22 +45,22 @@ INC_NAME=error.h\
 
 INC=$(addprefix $(INC_PATH), $(INC_NAME))
 
-BIN_PATH=bin/
-OBJ_PATH=$(addprefix $(BIN_PATH), $(SRC_NAME))
-OBJS=$(OBJ_PATH:.c=.o)
+OBJ_PATH=obj/
+OBJ_NAME=$(addprefix $(OBJ_PATH), $(SRC_NAME))
+OBJS=$(OBJ_NAME:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(FLAGS) $(OBJS) -o $(NAME)
 	
-$(BIN_PATH)%.o: $(SRC_PATH)%.c $(INC)
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c $(INC)
 	@printf "Compiling $@"
-	@printf "									   \\r"
+	@printf "                     \\n\r"
 	@$(CC) $(FLAGS) -I$(INC_PATH) -o $@ -c $<
 
 clean:
-	rm -rf bin/*.o
+	rm -rf $(OBJ_PATH)*.o
 
 fclean: clean
 	rm -rf $(NAME)

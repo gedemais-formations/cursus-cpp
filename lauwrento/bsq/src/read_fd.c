@@ -1,27 +1,25 @@
 #include "main.h"
 
-char *read_fd(int fd, int *code_error) {
+char* read_fd(int fd, Env* env) {
   char buf[BUFFER_SIZE];
   int size;
   int i = 0;
-  char *str;
+  char* str;
 
-  str = (char *)calloc(BUFFER_SIZE, sizeof(char));
+  str = (char*)calloc(BUFFER_SIZE + 1, sizeof(char));
   if (str == NULL) {
-    *code_error = ERROR_MEM;
+    env->err_code = ERROR_MEM;
     return (NULL);
   }
   // Get the content of the file directory
   do {
-    fflush(stdin);
     size = read(fd, buf, BUFFER_SIZE);
+    fflush(stdin);
 
     if (size > 0) {
       if (i > 0) {
-        str = (char *)realloc(str, BUFFER_SIZE * (i + 1) + 1);
-
-        if (str == NULL) {
-          *code_error = ERROR_MEM;
+        if (!(str = (char*)realloc(str, BUFFER_SIZE * (i + 1) + 1))) {
+          env->err_code = ERROR_MEM;
           return (NULL);
         }
       }
@@ -33,5 +31,7 @@ char *read_fd(int fd, int *code_error) {
   } while (size == BUFFER_SIZE);
 
   str[BUFFER_SIZE * (i - 1) + size] = '\0';
+  // close(fd);
+
   return (str);
 }
