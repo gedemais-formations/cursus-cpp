@@ -1,14 +1,41 @@
 #include "main.h"
-int get_metadata(map_t *map, char * str)
+
+int get_metadata(map_t *map, char *str)
 {
-	char *firstline ;
-	firstline=ft_strdup(str, '\n');
-	int length ;
-	length = strlen(firstline);
-	map->full=firstline[length-1];
-	return 0 ;
+	char *first_line;
+	int len;
+	if((first_line=ft_strdup(str, "\n"))==NULL)
+	{
+		perror("strdup :");
+		return 1;
+	}
+
+	if((len = strlen(first_line))<4)
+	{
+		perror("strlen :");
+		return 1;
+	}
+
+	map->full_char=first_line[len-1]; 
+	map->obstacle_char=first_line[len-2];
+	map->empty_char=first_line[len-3];
+	first_line[len-3]='\0';
+
+	if(map->full_char==map->obstacle_char || map->obstacle_char==map->empty_char || map->full_char==map->empty_char)
+	{
+		perror("map error :");
+		return 1;
+	}
+
+	if((map->nb_lines=atoi(first_line))==0)
+	{
+		perror("atoi :");
+		return 1;
+	}
 	
+	return 0;
 }
+
 char *read_map(char *path)
 {  
 	ssize_t size;
@@ -36,23 +63,24 @@ char *read_map(char *path)
     }
 	resultat[size]='\0';
 	close(fd);
-	return resultat ;	
+	return resultat ;
 }
 
-map_t *get_map(char *path)
+
+int get_map(char *path,map_t *map)
 {
 	char *content;
-	map_t *map ;
 	content=read_map(path);
 	if(!content)
 	{ 
-		return NULL;
+		return 1;
 	}
-	printf("Test");
-	printf("%s",content);
+	if(get_metadata(map,content)!=0)
+	{
+		perror("get_metadata :");
+		return 1;
+	}
+	printf("%d%c%c%c \n", map->nb_lines, map->empty_char, map->obstacle_char, map->full_char);
+	return 0; 
 
-	(void) map;
-	return NULL; 
 }
-
-
