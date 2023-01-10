@@ -10,8 +10,8 @@ int main(int argc, char **argv) {
     if (argc != 5)
         return print_error(ERROR_ARG_NBR);
 
-    int caseRow, caseCol, caseSize, nbTik;
-    int err;
+    int caseRow, caseCol, caseSize, nbTik, err;
+
     err = a_to_i(argv[1], &caseRow);
     err += a_to_i(argv[2], &caseCol);
     err += a_to_i(argv[3], &caseSize);
@@ -21,16 +21,18 @@ int main(int argc, char **argv) {
         return print_error(ERROR_NAN, "0");
     int screen_width = caseCol * caseSize;
     int screen_height = caseRow * caseSize;
+
+    // Interrupt is the number of ms to wait between two call of "evolve"
     int interrupt = 1000 / nbTik;
     SDL_Event event;
 
-    /* Initialisation simple */
+    // SDL initialization
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         return print_error(ERROR_SDL_INIT);
     }
 
 
-    /* Création de la fenêtre */
+    // Window creation
     SDL_Window *pWindow;
     pWindow = SDL_CreateWindow("Jeu de la vie", 0,
                                0,
@@ -46,6 +48,10 @@ int main(int argc, char **argv) {
     err = create_board(&board, caseRow, caseCol, caseSize);
     if(err != 0) {
         SDL_Quit();
+        if(board != NULL){
+            if(board->data != NULL) free(board->data);
+            free(board);
+        }
         return err;
     }
 
@@ -54,24 +60,41 @@ int main(int argc, char **argv) {
 
         err = background(pWindow, 0x0000AA00);
         if (err != 0) {
+            SDL_Quit();
+            free(board->data);
+            free(board);
             return err;
         }
 
         err = print_board(pWindow, *board);
         if (err != 0) {
+            SDL_Quit();
+            free(board->data);
+            free(board);
             return err;
         }
 
-        if(SDL_UpdateWindowSurface(pWindow)) return print_error(ERROR_SDL_WINDOW_UPDATE);
+        if(SDL_UpdateWindowSurface(pWindow)) {
+            SDL_Quit();
+            free(board->data);
+            free(board);
+            return print_error(ERROR_SDL_WINDOW_UPDATE);
+        }
 
-        evolve(board);
+        err = evolve(board);
+        if (err != 0) {
+            SDL_Quit();
+            free(board->data);
+            free(board);
+            return err;
+        }
 
         SDL_Delay(interrupt);
 
         handleEvents(&event, &gameRunning);
     }
 
-    free(board->board);
+    free(board->data);
     free(board);
 
     SDL_DestroyWindow(pWindow);
