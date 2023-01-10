@@ -105,6 +105,12 @@ int get_map(char *path,map_t *map)
 		return 1;
 	}
 	get_board(map, content);
+	if(solve(map)==0)
+	{
+		printf("solve ok");
+	}else{
+		printf("solve not ok");
+	}
 	printf("%d%c%c%c \n", map->nb_lines, map->empty_char, map->obstacle_char, map->full_char);
 	for(int i=0; map->board[i]!=NULL;i++)
 	{

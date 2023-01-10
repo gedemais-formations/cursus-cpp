@@ -9,6 +9,7 @@
 #include<unistd.h>
 #include<fcntl.h>
 #include<string.h>
+#include<stdbool.h>
 
 // inclure tous les prototypes des fonctions qui seront utilisés
 
