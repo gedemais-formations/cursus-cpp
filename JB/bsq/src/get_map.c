@@ -140,9 +140,11 @@ int	get_map(char *path, t_metadata *m_map)
 
 	content = read_map(path);
 	if (content == NULL)
+		printf("map error");
 		return (1);
 	
 	if (get_metadata(content, m_map))
+		printf("map error");
 		return (1);
 
 	printf("nb_line = %d, nb_col = %d, empty_char = %c, obstacle_char = %c, full_char = %c\n", 
