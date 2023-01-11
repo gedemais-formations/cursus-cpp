@@ -1,6 +1,12 @@
 #include <main.h>
 
-
+int min(int a, int b)
+{
+	if(a<=b)
+		return a;
+	else
+		return b;
+}
 bool check(int x , int y , int size, map_t *map)
 	
 {
@@ -24,13 +30,13 @@ bool check(int x , int y , int size, map_t *map)
 					}
 			   if(map->board[i][j] == map->obstacle_char)
 			   {
-				   printf("pas de carré");
+				  // printf("pas de carré");
 				   return 1 ;
 				   
 			   }
 		}
 	}
-	printf("il y a un carré");
+	printf("il y a un carré \n");
 
 	return  0 ;
 	
@@ -62,7 +68,7 @@ int solve(map_t *map)
 		{
 			for(int j=0; j<nb_colonnes-side; j++)
 			{
-				if(check(map,i,j,side)== 0 )
+				if(check(i,j,side,map)== 0 )
 				{
 					pose_x(map,i,j,side);
 					return 0;
