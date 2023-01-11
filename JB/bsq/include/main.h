@@ -1,10 +1,13 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include<stdio.h>
-#include<string.h>
-#include<stdlib.h>
-#include<stdbool.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <unistd.h>
+
+# define DISPLAY_WRITE false
 
 typedef struct s_metadata{
          int nb_line;
