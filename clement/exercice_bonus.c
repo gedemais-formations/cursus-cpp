@@ -5,12 +5,12 @@
 int main (int argc, char **argv){
 	int c;
 	int i = 3;
-	if(sizeof(*argv) <= 4){
+	if(argc < 4){
 		printf("error : invalid number of arguments\n");
 	}
 	else{
-		c=atoi(argv[i]);
-		while(i <= sizeof(*argv));{
+		c=atoi(argv[1]);
+		while(i <= argc);{
 			if(strcmp(argv[i-1], "+") == 0){
 				c+=atoi(argv[i]);
 			}

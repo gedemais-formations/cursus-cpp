@@ -5,7 +5,7 @@ int main(void)
 	char **sortie = malloc(20);
 	char *s = malloc(20);
 	char *charset = malloc(5);
-	s = "Je m'apelle George";
+	s = "Je m'apelle Georges";
 	charset = "e";
 	sortie = ft_split(s, charset);
 	if(!(sortie = ft_split(s, charset)))
